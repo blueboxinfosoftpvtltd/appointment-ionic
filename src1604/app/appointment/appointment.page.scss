@@ -1,0 +1,96 @@
+
+.header-ios ion-toolbar:last-child {
+    --border-width: 0 0 0.55px;
+    --background: #374767;
+  }
+  
+  .header-md ion-toolbar:last-child {
+    --border-width: 0 0 0.55px;
+    --background: #374767;
+  }
+.btncss{
+background-color: #04564c;
+--background: #04564c;
+font-size: 13px;
+height: 28px; 
+width: 90%;
+margin-left: 12px;
+border-radius: 6px;
+}
+.btncssro{
+    background-color: #57D2C0;
+    --background: #57D2C0;
+    font-size: 13px;
+    height: 28px; 
+    width: 90%;
+    margin-left: 12px;
+    border-radius: 6px;
+    }
+
+.btncssv{
+    background-color: #05A28F;
+    --background: #05A28F;
+    font-size: 13px;
+    height: 28px;
+    width: 90%;
+    margin-left: 10px;
+    border-radius: 6px;
+//  background-color: #009688;
+// --background: #009688;
+// font-size: 13px;
+// height: 28px;
+// width:100%;
+// background-color: #374767;
+// --background: #374767;
+// font-size: 13px;
+// height: 28px;
+// width: 95%;
+// margin-left: 2px;
+}
+
+.my-custom-modal-css .modal-wrapper {
+    height: 100%;
+ }
+.custom-popover .popover-content {
+ position: static;
+  }
+.iconcss{
+    font-size: 16px;
+    margin-bottom: -4px;
+    margin-right: 3px;
+}
+.rawcss{
+    border-bottom: 1.5px solid #000000;
+    padding: 2px;
+    width: 100%
+}
+.rawcss1{
+    padding: 2px;
+    width: 100%
+}
+
+.footerbtn{
+    --background: #009688;
+}
+
+ion-item {
+    transition: .9s ease-in-out;
+}
+
+.exit-enter-styles {
+
+    //opacity: 0;
+     transform: translate3d(30px, 30px,10px);
+
+}
+.inputcss{
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    text-align: center;
+    height: 36px;
+}
+
+ion-item{
+    --inner-padding-end: 0px;
+    --padding-start:0px
+}

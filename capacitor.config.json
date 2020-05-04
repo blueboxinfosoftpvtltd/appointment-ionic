@@ -1,0 +1,8 @@
+{
+  "appId": "com.bluebox.appointment",
+  "appName": "Appointment",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

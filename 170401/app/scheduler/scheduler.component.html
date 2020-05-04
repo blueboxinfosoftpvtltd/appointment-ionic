@@ -1,0 +1,98 @@
+<!-- <sw-scheduler [editMode]="editMode"
+           [ensureEventVisible]="ensureEventVisibleId"
+           resourceOrientation="none"
+           [getNewEvent]="getNewEvent"
+           [(view)]="view"
+           [date]="date"
+           (selectEvent)="onSelectEvent($event)"
+           (addEvent)="onAddEvent($event)"
+           (updateEvent)="onUpdateEvent($event)"
+           (closeEventModal)="onCloseEventModal()"
+           (viewChanged)="onViewChanged($event)"
+           (dateChanged)="onDateChanged($event)">
+  <sw-calendar *ngFor="let calendar of calendars" [name]="calendar.name" [events]="calendar.events">
+  </sw-calendar>
+  <ng-template schedulerEventTemplate let-data="data">
+    <div><i>{{data.id}}</i></div>
+    <div>{{data.resourceId}}</div>
+  </ng-template> -->
+  <!-- <ng-template schedulerReadSeletedEventTemplate let-selectedEvent="selectedEvent">
+
+  </ng-template> -->
+  <!-- <ng-template schedulerEditSeletedEventTemplate style="width: 0%;height: 0%;" >
+    <app-edit-event ></app-edit-event>
+  </ng-template> -->
+<!-- </sw-scheduler>
+<spinner *ngIf="processing"></spinner> -->
+<!-- <ion-content no-padding> -->
+<!-- <sw-scheduler  [(view)]="view" [date]="date" (dateChanged)="onDateChanged($event)" (viewChanged)="onViewChanged($event)" (updateEvent)="onUpdateEvent($event)" (selectEvent)="onSelectEvent($event)"> -->
+  <!-- <sw-scheduler [editMode]="editMode"
+            [ensureEventVisible]="ensureEventVisibleId"
+            resourceOrientation="none"
+            [getNewEvent]="getNewEvent"
+            [(view)]="view"
+            [date]="date"
+            (selectEvent)="onSelectEvent($event)"
+            (addEvent)="onAddEvent($event)"
+            (updateEvent)="onUpdateEvent($event)"
+            (closeEventModal)="onCloseEventModal()"
+            (viewChanged)="onViewChanged($event)"
+            (dateChanged)="onDateChanged($event)">
+  <sw-calendar *ngFor="let calendar of calendars" [name]="calendar.name" [events]="calendar.events">
+  </sw-calendar> -->
+  <!-- <div (click)="edit()"> -->
+     
+  <!-- <ng-template schedulerEventTemplate let-data="data"> -->
+    <!-- <div><i>{{data.id}}</i></div> -->
+    <!-- <div>{{data.resourceId}}</div> -->
+  <!-- </ng-template> -->
+  <!-- <ng-template schedulerEditSeletedEventTemplate  let-selectedEvent="selectedEvent">
+    
+   </ng-template> -->
+  <!-- <ng-template schedulerEditSeletedEventTemplate style="width: 0%;height: 0%;" > -->
+    <!-- <app-createappointment></app-createappointment> -->
+    <!-- <app-edit-event ></app-edit-event> -->
+    <!-- <app-edit-appointment></app-edit-appointment> -->
+  <!-- </ng-template> -->
+<!-- </div> -->
+<!-- </sw-scheduler>
+</ion-content> -->
+
+<sw-scheduler [editMode]="true"
+            [ensureEventVisible]="ensureEventVisibleId"
+            resourceOrientation="none"
+            [getNewEvent]="getNewEvent"
+            [(view)]="view"
+            [date]="date"
+            [draggable]="false"
+            (selectEvent)="onSelectEvent($event)"
+            (addEvent)="onAddEvent($event)"
+            
+            (closeEventModal)="onCloseEventModal()"
+            (viewChanged)="onViewChanged($event)"
+            (dateChanged)="onDateChanged($event)">
+    <sw-calendar *ngFor="let calendar of calendars" [name]="calendar.name" [events]="calendar.events">
+    </sw-calendar>
+    <ng-template schedulerEventTemplate let-data="data">
+      <div><i>{{data.subject}}</i></div>
+      <div>{{data.id}}</div>
+    </ng-template>
+    <!-- <ng-template schedulerReadSeletedEventTemplate let-selectedEvent="selectedEvent">
+      <app-edit-event [event]="selectedEvent"></app-edit-event>
+      <div class="modal-footer">        
+          <button type="button" (click)="edit(selectedEvent)" class="btn btn-success">
+            Edit
+          </button>
+          <button type="button" (click)="delete(selectedEvent)" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove"></span>Delete
+          </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            <span class="glyphicon glyphicon-log-out"></span>Close
+          </button>        
+      </div>
+    </ng-template> -->
+    <ng-template schedulerEditSeletedEventTemplate let-selectedEvent="selectedEvent">
+       <!-- <app-edit-event [event]="selectedEvent"></app-edit-event> -->
+       
+    </ng-template>
+  </sw-scheduler>

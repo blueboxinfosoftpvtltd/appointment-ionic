@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+      </ion-buttons>
+    <ion-title style="color: #ffffff">Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <!-- <dx-scheduler
+    [dataSource]="appointmentsData"         
+    [remoteFiltering] ="true"
+    [views]="['day', 'week', 'month']"
+    currentView="day"
+    [currentDate]="currentDate"
+    [startDayHour]="8"
+    [endDayHour]="19"
+    [height]="600"
+    textExpr="Text"
+    startDateExpr="StartDate"
+    endDateExpr="EndDate"
+    allDayExpr="AllDay">
+</dx-scheduler> -->
+<!-- <ion-item lines="none">
+    <ion-label>My Appointment</ion-label>
+    <ion-checkbox color="primary" [(ngModel)]="ismyapp" (ionChange)="myapp($event)" slot="start"></ion-checkbox>
+  </ion-item> -->
+<dx-scheduler
+    [dataSource]="appointmentsData"
+    [views]='["day","week", "month"]'
+    currentView="day"
+    [currentDate]="currentDate"
+    [startDayHour]="8"
+    [endDayHour]="19"
+    [height]="600">
+</dx-scheduler>
+</ion-content>

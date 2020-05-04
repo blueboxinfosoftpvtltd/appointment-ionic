@@ -1,0 +1,38 @@
+     .footerbtn{
+        --background: #009688;
+    }
+    .rawcss{
+        border-bottom: 1px solid #d4d4d4;
+    }
+    .labelcss{
+        padding-top: 14px;
+        font-size: 15px;
+    }
+    .inputcss{
+        font-size: 15px;
+    }
+    .colcss{
+        padding: 14px;
+    }
+    .selectcss{
+        font-size: 15px;
+        margin-left: -14px;
+    }
+    .btn {
+        position: fixed;
+        left: 0;
+        bottom: -23px;
+        right: 0;
+        z-index: 100;
+    }
+    .forecast_container{
+        overflow-x: scroll!important;
+        overflow-y: hidden;
+        word-wrap: break-word;
+      
+    }
+    .fixed {
+        width: 100%;
+        background: #fff;
+    }
+   

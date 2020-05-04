@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+      </ion-buttons>
+      <ion-title style="color: #ffffff">Create RO</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="opcodes">
+
+  <ion-row>
+    <ion-col size="5" style="align-self: center;">
+        <ion-label style="font-weight: 700;margin-left: 20px;">Tag Number : </ion-label>
+    </ion-col>
+    <ion-col size="7">
+        <ion-input style="margin-left: 5px" type='tel' placeholder='Tag Number' [(ngModel)]='tagno' class="inputcss"></ion-input>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+      <ion-col size="5" style="align-self: center;">
+          <ion-label style="font-weight: 700;margin-left: 20px;">Mileage In : </ion-label>
+      </ion-col>
+      <ion-col size="7">
+          <ion-input style="margin-left: 5px" max="999999" min="0" maxlength="6" type='tel' placeholder='Mileage In' [(ngModel)]='mileage' class="inputcss" (ionBlur)="getmil()"></ion-input>
+      </ion-col>
+    </ion-row>
+
+
+  <ion-card *ngFor="let op of opcodes.opcode; let i = index">
+
+    <ion-row>
+        <ion-col size="5" style="align-self: center;">
+            <ion-label style="font-weight: 700">OpCode : </ion-label>
+          </ion-col>
+          <ion-col size="7">
+              <ion-label>{{op.OpCode}}</ion-label>
+            </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="5" style="align-self: center;">
+            <ion-label style="font-weight: 700">Description : </ion-label>
+          </ion-col>
+          <ion-col size="7">
+              <ion-label>{{op.Description}}</ion-label>
+            </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="5" style="align-self: center;">
+          <ion-label style="font-weight: 700;">Sold Hours : </ion-label>
+      </ion-col>
+      <ion-col size="7">
+          <!-- min="00.00" max="99.99" step=".01" maxlength="5" inputmode="decimal" -->
+          <ion-input style="margin-left: 5px" maxlength="5" inputmode="decimal" placeholder='Sold Hours' class="inputcss" (ionBlur)="changehour($event,i)"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="4" style="align-self: center;">
+            <ion-label style="font-weight: 700">Labour Type : </ion-label>
+          </ion-col>
+          <ion-col size="8">
+              <!-- interface="popover" -->
+                  <ion-select  placeholder="Select One" (ionChange)="Changelabour($event,i)" style="max-width: 100%;font-weight: 100;font-weight: 400;margin-left: 15px;">
+                    <ion-select-option style = "white-space: normal;" *ngFor="let lab of laourdata" value="{{lab.PayType}}">{{lab.PayType}}</ion-select-option>
+                  </ion-select>
+               
+              <!-- <ion-label>{{op.Description}}</ion-label> -->
+            </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="4" style="align-self: center;">
+            <ion-label style="font-weight: 700">Technician : </ion-label>
+          </ion-col>
+          <ion-col size="8">
+             
+                  <ion-select placeholder="Select One" (ionChange)="Changetech($event,i)" style="max-width: 100%;font-weight: 100;font-weight: 400;margin-left: 15px;" value="{{techno}}">
+                    <ion-select-option  style = "white-space: normal;" *ngFor="let tech of techdata" value="{{tech.Number}}">{{tech.TechnicianName}}</ion-select-option>
+                  </ion-select>
+               
+              <!-- <ion-label>{{op.Description}}</ion-label> -->
+            </ion-col>
+    </ion-row>
+  </ion-card>
+
+    <!-- <ion-list style="margin-left: 5px;margin-right: 5px;" *ngFor="let op of opcodes.opcode;">
+        <ion-row class="rawcss" style="margin-left: 5px;margin-right: 5px;">
+            <ion-col>
+                <ion-item lines="none">
+
+                  <ion-row>
+                  <ion-col size="6">
+                    <ion-label>OpCode : </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                      <ion-label>{{op.OpCode}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                      <ion-col size="6">
+                          <ion-label>Description : </ion-label>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-label>{{op.Description}}</ion-label>
+                          </ion-col>
+                  </ion-row>
+                  <ion-row>
+
+                  </ion-row>
+
+                    <ion-label style="margin-left: 30px;white-space: inherit;">
+
+                        <h3>
+                            <b>OpCode:</b> {{op.OpCode}}</h3>
+                        <h4>
+                            <b>Description:</b>{{op.Description}}</h4>
+                          
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+</ion-list> -->
+</ion-content>
+<ion-footer>
+    <ion-toolbar style="height: 60px">    
+<ion-row>
+    <ion-col style="text-align: center" class="btn">
+        <ion-button style="margin-top: -2%;" (click)="createro()" expand="full" class="footerbtn">Create RO</ion-button>
+    </ion-col>
+</ion-row>
+
+</ion-toolbar>
+</ion-footer>

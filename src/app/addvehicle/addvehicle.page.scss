@@ -1,0 +1,41 @@
+.footerbtn{
+    --background: #009688;
+}
+.rawcss{
+    border-bottom: 1px solid #d4d4d4;
+}
+.labelcss{
+    padding-top: 14px;
+    font-size: 15px;
+}
+.inputcss{
+    font-size: 15px;
+}
+.colcss{
+    padding: 14px;
+}
+.selectcss{
+    font-size: 15px;
+    margin-left: -14px;
+}
+.btn {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+}
+// .btnstyle{
+//     height: 40px;
+//     border-radius: 6px;
+//     --background-activated:none;
+//     --color-activated:none;
+//     --color-focused: none;
+// }
+.icons{
+    font-size: 25px;color: #000;
+}
+
+.footer-ios ion-toolbar:first-child {
+    --border-width: 0.55px 0 0;
+    height: 75px;
+    }

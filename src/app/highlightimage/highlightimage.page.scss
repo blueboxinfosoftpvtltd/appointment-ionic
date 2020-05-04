@@ -1,0 +1,24 @@
+canvas {
+    border: 1px solid #333;
+}
+img {
+    border-radius: 50%;   
+}
+.commentText{
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    color: white;
+}
+ion-footer {
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+ion-content {
+    --overflow: hidden;
+}

@@ -1,0 +1,26 @@
+<ion-row class="rawcss">
+    <ion-col size="6" style="    margin-top: 10px;">
+      <ion-label>Select Date</ion-label>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-datetime max="2025-12-31" placeholder='Start Date' [(ngModel)]="sdate" 
+        displayFormat="MM/DD/YYYY" pickerFormat="MMMM DD YYYY" (ionChange)="ChangeDate($event)"></ion-datetime>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="rawcss" *ngIf="sdate != null">
+      <ion-col ion-item size="6" class="colcss">
+        <ion-label class="labelcss">Time Slots</ion-label>
+      </ion-col>
+      <ion-col ion-item size="6">
+          <ion-select placeholder="Select Time Slots" class="selectcss" (ionChange)="ChangeTime($event)">
+            <ion-select-option value="{$value: friend.$value, userName: friend.userName}" *ngFor="let interval of intervaldata">{{interval.TimeInerrvals}}</ion-select-option>
+          </ion-select>                      
+      </ion-col>
+    </ion-row>
+<ion-row style="margin-top: 8%;margin-right: 10px;" class="btn">
+    <ion-col>
+        <ion-button expand="full" class="footerbtn" (click)="Next()">Next</ion-button>
+    </ion-col>
+  </ion-row>

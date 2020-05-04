@@ -1,0 +1,130 @@
+<ion-header>
+    <ion-toolbar>
+         <ion-buttons slot="start">
+              <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+          </ion-buttons>
+          <ion-title style="color: #ffffff">
+            Book Appointment
+         </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+          <ion-row>
+                  <ion-col class="colcss"  size="6">
+                    <ion-input class="inputcss"  type="text" placeholder="First Name" [(ngModel)]="fname"></ion-input>
+                  </ion-col>
+                  <ion-col class="colcss"  size="6">
+                    <ion-input class="inputcss"  type="text" placeholder="Last Name" [(ngModel)]="lname"></ion-input>
+                  </ion-col>
+                 
+          </ion-row>
+
+          <ion-row>
+            
+            <ion-col class="colcss"  size="6">
+              <ion-input class="inputcss"  type="text" placeholder="Company Name" [(ngModel)]="cname"></ion-input>
+            </ion-col>
+            <ion-col class="colcss" size="6">
+              <ion-button size="small" style="margin-top: 2px;height: 31px;--background: #009688;width: 100%" (click)="Search()">Search</ion-button>
+            </ion-col>
+    </ion-row> 
+
+      <ion-list style="margin-left: 5px;margin-right: 5px;display: contents;"  appAnimateItems *ngIf="res != ''">
+      <ion-item *ngFor="let item of res;let i = index">
+         
+        <ion-row class="rawcss">
+
+              <ion-col size="1">
+                  <ion-icon ios="ios-add-circle" md="md-add-circle" style="font-size: 25px;" (click)="openlist(i)" *ngIf="IsValue == 0" ></ion-icon>
+                  <ion-icon ios="ios-add-circle" md="md-add-circle" style="font-size: 25px;" *ngIf="IsValue != 0  && i != index" (click)="openlist(i)"></ion-icon>
+                  <ion-icon ios="ios-remove-circle" md="md-remove-circle" style="font-size: 25px;" (click)="hidelist()" *ngIf="IsValue == 1 && i == index" ></ion-icon>
+              </ion-col>
+
+            <ion-col size="6.1">
+              <ion-label>
+                <h3>{{item.FirstName}} {{item.LastName}} {{item.OtherName}}</h3>
+                <h3><ion-icon name="mail" class="iconcss"></ion-icon>{{item.EmailId}}</h3>
+                <h3><ion-icon name="phone-portrait" class="iconcss"></ion-icon>{{item.MobilePhone}}</h3>
+              </ion-label>
+            </ion-col>
+
+            <ion-col size="4.7" style="align-self: center;margin-right: 5px;">
+             <ion-button expand="full" (click)="AddVehicle(item.CustomerId)" class="btncss">+ Vehicle</ion-button>
+            </ion-col>
+  
+              <!-- <ion-col size="6.2">
+                  <ion-label>
+                      <h3>{{item.FirstName}} {{item.LastName}}</h3>
+                      <h3><ion-icon name="mail" class="iconcss"></ion-icon>{{item.EmailId}}</h3>
+                      <h3><ion-icon name="phone-portrait" class="iconcss"></ion-icon>{{item.MobilePhone}}</h3>
+                    </ion-label>
+              </ion-col>
+
+              <ion-col size="2" style="  display: flex!important;align-content: center!important;align-items: center!important;"> 
+                <ion-icon name="md-add"></ion-icon>                      
+                    <ion-button expand="full" (click)="AddVehicle(item.CustomerId)"> Vehicle</ion-button> 
+                </ion-col> -->
+  
+           <!-- <ion-col size="1">
+                  <! <ion-button style="margin-left: -9px;" class="btncss" (click)="AddVehicle(item.CustomerId)">Add Vehicle</ion-button>  -->
+                      <!-- <ion-icon ios="ios-more" md="md-more" style="font-size: 25px;float: right;" (click)="openpopover($event)"></ion-icon> -->
+           <!-- </ion-col> --> 
+              <!-- <div *ngIf="IsValue == 1 && i == index">
+              <ion-row class="rawcss"   *ngFor="let vehicle of item.vehicleList;let i = index">
+                      <ion-col size="1">
+                      </ion-col>
+                      <ion-col size="6.8">
+                          <ion-label>
+                           
+                              <h3><b>VIN: </b>{{vehicle.VIN}}</h3>
+                              <h3><b>Year: </b>{{vehicle.Year}}</h3>
+                              <h3><b>Make: </b>{{vehicle.MakeName}}</h3>
+                              <h3><b>Model: </b>{{vehicle.Model}}</h3>
+                            </ion-label>
+                      </ion-col>
+                      <ion-col size="4">        
+                        <ion-icon name="md-add"></ion-icon>               
+                          <ion-button expand="full"  (click)="CreateAppointment(item.CustomerId,vehicle.VIN)" > Appointment</ion-button>  
+                      </ion-col>
+               </ion-row>
+              </div> -->
+              <!-- <div *ngIf="IsValue == 1 && i == index"> -->
+              <ion-row class="rawcss" *ngIf="IsValue == 1 && i == index" >
+                <ion-row class="rawcss" *ngFor="let vehicle of item.vehicleList;let i = index">
+               <!-- <div > -->
+                <ion-col size="1">
+                </ion-col>
+  
+              <ion-col size="6.1" >
+                <ion-label>
+                  <h3><b>VIN: </b>{{vehicle.VIN}}</h3>
+                  <h3><b>Year: </b>{{vehicle.Year}}</h3>
+                  <h3><b>Make: </b>{{vehicle.MakeName}}</h3>
+                  <h3><b>Model: </b>{{vehicle.Model}}</h3>
+                </ion-label>
+              </ion-col>
+  
+              <ion-col size="4.7" style="align-self: center;margin-right: 5px;">
+               <ion-button expand="full" (click)="CreateAppointment(item.CustomerId,vehicle.VIN)" class="btncss">+ Appointment</ion-button>
+              </ion-col>
+            <!-- </div> -->
+          </ion-row>
+              </ion-row>
+              <!-- </div> -->
+                  </ion-row>
+                 
+                </ion-item> 
+                <br><br>
+        <p *ngIf="res == ''" style="text-align: center;color: brown;font-size: 17px;">No data Found</p>
+        <p *ngIf="res == ''" style="text-align: center;color: brown;font-size: 15px;margin-top: -10px;">Try with other search keyword !! </p>
+        </ion-list>
+        
+  </ion-content>
+  
+  <ion-footer>
+          <ion-toolbar>
+                  <ion-button expand="full" class="footerbtn" (click)="addcust()">Add New Customer</ion-button>
+          </ion-toolbar>
+  </ion-footer>
+  

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: #ffffff">
+      Images
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="images">
+
+  <ion-grid>
+    <ion-row>
+
+      <ion-col size="4" col-md-1 col-xl-1 *ngFor="let image of images;let i = index;">
+        <ion-icon name="close" (click)="remove(i)" style="color: black"></ion-icon>
+        <div class="image-container" (click)="edit(i,image)">
+          <img src="{{image}}" />
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <div *ngFor="let image of images; let i = index;"> -->
+  <!-- <ion-row>
+    <ion-col col-4 *ngFor="let image of images; let i = index;">
+      <img src="{{image}}" />
+    </ion-col>
+  </ion-row> -->
+  <!-- </div> -->
+  <!-- <ion-grid >
+    <ion-row>
+      <ion-col col-6 col-md-4 col-xl-3 >
+          <ion-img [src]="photo.avatarUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row *ngIf="images.length == 0">
+      <ion-button class="footerbtn" (click)="takeimage()">Take Image</ion-button>
+    </ion-row>
+    <ion-row *ngIf="images.length > 0">
+      <ion-col>
+        <ion-button class="footerbtn" (click)="takeimage()">Take Image</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button class="footerbtn" (click)="save()">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

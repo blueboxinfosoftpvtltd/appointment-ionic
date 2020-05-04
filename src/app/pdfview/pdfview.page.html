@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: #ffffff">
+      Document
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="furl">
+  <pdf-viewer [src]="furl" 
+  
+></pdf-viewer>
+</ion-content>
+
+<ion-footer style="bottom: 20px;">
+  <ion-toolbar>
+      <!-- style="margin-top: 8%;margin-right: 10px;bottom: 30px;" -->
+      <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;">
+          <ion-col size="12" style="text-align: center">
+              <ion-button style="width: 100%;" class="footerbtn" (click)="print()">Print</ion-button>
+          </ion-col>
+      </ion-row>
+      </ion-toolbar>
+      </ion-footer>

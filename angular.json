@@ -31,8 +31,10 @@
                 "output": "./svg"
               }
             ],
-            "styles": [
+            "styles": ["node_modules/devextreme/dist/css/dx.common.css",
+              "node_modules/devextreme/dist/css/dx.light.css",
               {
+              
                 "input": "src/theme/variables.scss"
               },
               {

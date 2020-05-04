@@ -1,0 +1,37 @@
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal-dialog {
+    margin: 2px auto;
+    z-index: 1100 !important;
+}
+/* .jqx-scheduler-appointment {
+    pointer-events: none;
+    overflow: visible;
+    border: 1px solid #555;
+    white-space: pre-line;
+    cursor: pointer;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+} */
+jqx-scheduler-appointment {
+    overflow: visible;
+    border: 1px solid #555;
+    white-space: pre-line;
+    /* cursor: pointer; */
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.modal-content {
+    display: none;
+}
