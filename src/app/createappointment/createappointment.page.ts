@@ -105,6 +105,7 @@ export class CreateappointmentPage implements OnInit {
    ciname:any;
   state: any;
   city: any;
+  cres:any;
   cityid: any;
   dealerid: any;
   userid: any;
@@ -209,7 +210,8 @@ export class CreateappointmentPage implements OnInit {
     this.title = 'Customer Info';
     this.step = '1';
     this.step1 = '1';
-    this.button1Color = '#009688';
+    // this.button1Color = '#009688';
+    this.button1Color = '#374767';
     this.button2Color = '#fff';
     this.button3Color = '#fff';
     this.button4Color = '#fff';
@@ -779,7 +781,8 @@ else{
     this.ionContent.scrollToTop();
     if (op == '1') {
       this.title = 'Customer Info';
-      this.button1Color = '#009688';
+      // this.button1Color = '#009688';
+      this.button1Color = '#374767';
       this.button2Color = '#fff';
       this.button3Color = '#fff';
       this.button4Color = '#fff';
@@ -802,7 +805,8 @@ else{
     else if (op == '2') {
       this.title = 'Vehicle Info';
       this.button1Color = '#fff';
-      this.button2Color = '#009688';
+      // this.button2Color = '#009688';
+      this.button2Color = '#374767';
       this.button3Color = '#fff';
       this.button4Color = '#fff';
       this.button5Color = '#fff';
@@ -824,7 +828,8 @@ else{
       this.title = 'Maintenance & Repairs';
       this.button1Color = '#fff';
       this.button2Color = '#fff';
-      this.button3Color = '#009688';
+      // this.button3Color = '#009688';
+      this.button3Color = '#374767';
       this.button4Color = '#fff';
       this.button5Color = '#fff';
       this.button6Color = '#fff';
@@ -850,7 +855,8 @@ else{
         this.button1Color = '#fff';
         this.button2Color = '#fff';
         this.button3Color = '#fff';
-        this.button4Color = '#009688';
+        //this.button4Color = '#009688';
+        this.button4Color = '#374767';
         this.button5Color = '#fff';
         this.button6Color = '#fff';
         this.button7Color = '#fff';
@@ -874,7 +880,8 @@ else{
       this.button2Color = '#fff';
       this.button3Color = '#fff';
       this.button4Color = '#fff';
-      this.button5Color = '#009688';
+      //this.button5Color = '#009688';
+      this.button5Color = '#374767';
       this.button6Color = '#fff';
       this.button7Color = '#fff';
       this.button8Color = '#fff';
@@ -900,7 +907,8 @@ else{
       this.button3Color = '#fff';
       this.button4Color = '#fff';
       this.button5Color = '#fff';
-      this.button6Color = '#009688';
+      // this.button6Color = '#009688';
+      this.button6Color = '#374767';
       this.button7Color = '#fff';
       this.button8Color = '#fff';
       this.button9Color = '#fff';
@@ -926,7 +934,8 @@ else{
       this.button6Color = '#fff';
       this.button8Color = '#fff';
       this.button9Color = '#fff';
-      this.button7Color = '#009688';
+      // this.button7Color = '#009688';
+      this.button7Color = '#374767';
       this.txt1color = '#000';
       this.txt2color = '#000';
       this.txt3color = '#000';
@@ -946,7 +955,8 @@ else{
       this.button4Color = '#fff';
       this.button5Color = '#fff';
       this.button6Color = '#fff';
-      this.button8Color = '#009688';
+      // this.button8Color = '#009688';
+      this.button8Color = '#374767';
       this.button9Color = '#fff';
       this.button7Color = '#fff';
       this.txt1color = '#000';
@@ -969,7 +979,8 @@ else{
       this.button5Color = '#fff';
       this.button6Color = '#fff';
       this.button8Color = '#fff';
-      this.button9Color = '#009688';
+      // this.button9Color = '#009688';
+      this.button9Color = '#374767';
       this.button7Color = '#fff';
       this.txt1color = '#000';
       this.txt2color = '#000';
@@ -1028,7 +1039,7 @@ GetCustomer(){
     this.authservice.GetState(this.countryid,this.dealerid).subscribe(res =>{
       this.state = res;
       this.stateid = this.customerdata[0].StateId;
-      this.GetCity();
+      //this.GetCity();
       console.log(this.state);
     })
 }
@@ -1045,12 +1056,15 @@ GetCustomer(){
   }
 
   GetCity(){
-  this.authservice.GetCity(this.stateid,this.dealerid).subscribe(res =>{
+  this.authservice.GetCity(this.stateid,this.dealerid,this.customerdata[0].CityId).subscribe(res =>{
     this.city = res;
+  //   JSON.parse(this.cres).forEach(item => {
+  //     this.city.push(item);
+  // });
     console.log("call again");
-    if(this.city != "" || this.city != undefined ){
+    // if(this.city.length != 0 ){
       this.cityid = this.customerdata[0].CityId;
-    }
+    // }
     this.authservice.dismissLoading();
     console.log(this.city);
   })
@@ -1120,7 +1134,8 @@ getMake(){
 getColors(){
   this.authservice.GetColors(this.dealerid).subscribe(res =>{
     this.colors = res;
-    this.GetTrimDetails();
+    //this.GetTrimDetails();
+    this.GetVehicleDetailByVINCustomerID();
     console.log(this.colors);
   })
 }
@@ -1204,6 +1219,7 @@ GetVehicleDetailByVINCustomerID(){
   this.authservice.GetVehicleDetailByVINCustomerID(this.dealerid,this.CustomerId,this.VIN,this.appointmentid).subscribe(res =>{
     this.vehicledata = res;
     this.vin = this.vehicledata[0].VIN;
+    this.authservice.setvin(this.vin);
     this.yearid = this.vehicledata[0].YearId;
     setTimeout(() => {
       for(let i=0 ;i<this.years.length;i++){

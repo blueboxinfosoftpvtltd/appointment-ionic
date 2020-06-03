@@ -56,16 +56,20 @@ button[disabled], html input[disabled] {
     .labelcss{
       color: #009688;
     }
+    .ion-color-newcolor {
+        --ion-color-base: #374767;
+        --ion-color-contrast: #374767;
+      }
     .btnsubmit{
         margin:auto;
         display:block;
-        height: 35px;
+        height: 45px;
         margin-bottom: 7px;
-        width: 95%;
+        width: 60%;
         font-size: 16px;
-        color: #fff;
-        border-radius: 10px;
-        background: #009688;
+        color: #374767;
+        border-radius: 4px;
+        background: #fff;
     }
     .gridcss{
         position: absolute;
@@ -73,6 +77,10 @@ button[disabled], html input[disabled] {
     }
     .toolbar-content-md {
         background-color: #ffffff;
+    }
+
+    ion-label{
+        font-style: italic;
     }
 
     .toolbar-background-md {

@@ -24,6 +24,7 @@ import { InMemEventService } from './in-mem-event-service';
 import { ComponentsModule } from '../app/component/components.module';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { HighlightimagePageModule } from './highlightimage/highlightimage.module';
+import {CitylistPageModule} from './citylist/citylist.module';
 import { MessageService } from './message.service';
 import { EventService } from './event.service';
 import { LoaderService } from './loader.service';
@@ -36,6 +37,8 @@ import { File } from '@ionic-native/file/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { VideoPlayer } from '@ionic-native/video-player/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { Media } from '@ionic-native/media/ngx';
+import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
 // import { AnimateItemsDirective } from './directives/animate-items.directive';
 import { IonicStorageModule } from '@ionic/storage';
 import { VideoEditor } from '@ionic-native/video-editor/ngx';
@@ -45,8 +48,23 @@ import { DocumentViewer,DocumentViewerOptions } from '@ionic-native/document-vie
 // import { PreviewAnyFile } from '@ionic-native/preview-any-file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-capture-plus/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+//import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-capture-plus/ngx';
 //import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import * as firebase from 'firebase';
+
+var firebaseConfig = {
+  apiKey: "AIzaSyBh2JUhyoH4ud90Cd4cffv5crtXhoCzv88",
+  authDomain: "appointment-1cebd.firebaseapp.com",
+  databaseURL: "https://appointment-1cebd.firebaseio.com",
+  projectId: "appointment-1cebd",
+  storageBucket: "appointment-1cebd.appspot.com",
+  messagingSenderId: "861556203367",
+  appId: "1:861556203367:web:fd46ee68fede9eafad99c2",
+  measurementId: "G-CET0FGHEJW"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 @NgModule({
   declarations: [AppComponent
 
@@ -66,6 +84,7 @@ import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-
     PopoverPageModule,
     AddnewopcodePageModule,
     HighlightimagePageModule,
+    CitylistPageModule,
     ComponentsModule,
     IonicStorageModule.forRoot()
   ],
@@ -87,7 +106,10 @@ import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-
     DocumentViewer,
     Base64,
     ScreenOrientation,
-    VideoCapturePlus,
+    Media,
+    StreamingMedia,
+    FileTransfer,
+    //ideoCapturePlus,
    // FileTransfer,
     // PreviewAnyFile,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }

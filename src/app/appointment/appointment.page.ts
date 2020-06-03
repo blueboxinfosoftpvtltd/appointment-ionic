@@ -79,13 +79,27 @@ export class AppointmentPage {
     return await modal.present();
   }
 
-  openlist(i) {
+  openlist(i,e) {
+    e.stopPropagation();
     console.log(i);
     this.IsValue = 1;
     this.index = i;
   }
 
-  hidelist() {
+  openbtn(i,e){
+    e.stopPropagation();
+    if(this.IsValue == 0){
+      this.IsValue = 1;
+      this.openlist(i,e);
+    }
+    else{
+       this.hidelist(e);
+    }
+
+  }
+
+  hidelist(e) {
+    e.stopPropagation();
     this.IsValue = 0;
   }
 
@@ -161,12 +175,18 @@ export class AppointmentPage {
       this.authservice.GetSearchCustomer(this.fname, this.lname, this.vin, this.cname, this.phno, this.stockno, this.dealerid,0, 10).subscribe(res => {
         this.res = [];
         this.gres = res;
-        for(let i=0;i<this.gres.length;i++){
-          this.res.push(this.gres[i]);
+        if(this.gres != null){
+          for(let i=0;i<this.gres.length;i++){
+            this.res.push(this.gres[i]);
+          }
+          
+          console.log(this.res);
+          this.authservice.dismissLoading();
+        }
+        else{
+          this.authservice.dismissLoading();
         }
         
-        console.log(this.res);
-        this.authservice.dismissLoading();
 
       })
     }

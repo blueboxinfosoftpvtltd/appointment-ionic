@@ -7,6 +7,7 @@ import { LoadingController, MenuController, AlertController } from '@ionic/angul
 import { MergeMapOperator } from 'rxjs/internal/operators/mergeMap';
 import { DxSchedulerModule, DxSchedulerComponent } from 'devextreme-angular';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 //import Scheduler from "devextreme/ui/scheduler";
 //import { $ } from 'protractor';
 @Component({
@@ -30,6 +31,7 @@ export class HomePage {
   op: any;
   val: any;
   isval: boolean = false;
+  uname:any;
   // dealers: any[] = [
   //   {
   //     id: 1,
@@ -74,7 +76,7 @@ export class HomePage {
   rodata: any[] = [];
   furl:any;
   issearch: boolean = false;
-  constructor(public activatedRoute: ActivatedRoute, private router: Router, private authservice: AuthService, public storage: Storage, public menuCtrl: MenuController, public loadingController: LoadingController, public alertCtrl: AlertController) {
+  constructor(public activatedRoute: ActivatedRoute, private router: Router, private authservice: AuthService, public storage: Storage, public menuCtrl: MenuController, public loadingController: LoadingController, public alertCtrl: AlertController,private speechRecognition: SpeechRecognition) {
     this.menuCtrl.enable(true);
     // this.storage.get('dealerid').then((val) => {
     //   this.dealers = this.authservice.getdealers();   
@@ -83,6 +85,7 @@ export class HomePage {
     //    this.dealername = val;
     //   // console.log(this.dealerid);
     // })
+    //this.speechRecognition.stopListening();
     this.ActiveSegment = "app";
     this.selecttxt = "My Appointment";
     this.currentDate = (moment(new Date).format('YYYY-MM-DD'));
@@ -107,6 +110,12 @@ export class HomePage {
             this.dealername = val;
             console.log(this.dealername);
 
+          })
+           this.storage.get('fullname').then((val) => {
+             var op = val;
+            this.uname = val;
+            // op.split(',');
+            // this.uname = op[0]+" "+op[1];
           })
           this.storage.get('idsflag').then((val) => {
             this.authservice.setids(val);
@@ -144,7 +153,64 @@ export class HomePage {
         })
       }
       //this.isEnabled ="false";
-
+      if(data.refresh){
+        this.authservice.presentLoading();
+        console.log("ionViewDidLoad call");
+        this.storage.get('showall').then((val) => {
+          if (val == undefined) {
+            this.ismyapp = true;
+          }
+          else {
+            if (val == "1") {
+              this.ismyapp = true;
+            }
+            else {
+              this.ismyapp = false;
+            }
+          }
+        })
+        this.storage.get('showallro').then((val) => {
+          if (val == undefined) {
+            this.ismyapp1 = true;
+          }
+          else {
+            if (val == "1") {
+              this.ismyapp1 = true;
+            }
+            else {
+              this.ismyapp1 = false;
+            }
+          }
+        })
+        this.storage.get('userid').then((val) => {
+          this.advisorid = val;
+          this.storage.get('dealerid').then((val) => {
+            this.dealerid = val;
+            var appointment;
+            if (this.ismyapp == true) {
+              appointment = "1";
+            }
+            else {
+              appointment = "0";
+            }
+    
+            this.authservice.getappointdata(this.advisorid, this.dealerid, appointment, this.currentDate, this.type).subscribe((res) => {
+    
+              console.log(res);
+              if (res == null) {
+                this.appointmentsData = "null";
+              }
+              else {
+                this.appointmentsData = res;
+              }
+              this.authservice.dismissLoading();
+              // for(let i=0 ; i<this.resdata.length;i++){
+              //   this.appointmentsData.push(this.resdata[i]);
+              // }
+            },err => this.authservice.dismissLoading())
+          })
+        })
+      }
 
 
     })
@@ -195,7 +261,8 @@ export class HomePage {
             this.authservice.dismissLoading();
           }
 
-        })
+        },
+        err => this.authservice.dismissLoading())
       })
     }
   }
@@ -254,12 +321,16 @@ export class HomePage {
   myapp(e) {
     if (this.ActiveSegment == "app") {
       console.log(e.detail.checked);
+      this.storage.get("dealerid").then(val=>{
+        this.dealerid = val;
       if (e.detail.checked == true) {
         if (this.type == undefined) {
           this.type = "0";
         }
         //
         this.storage.set("showall", "1");
+        
+       
         if (this.appointmentsData != undefined) {
 
           var appointment = "1";
@@ -283,7 +354,7 @@ export class HomePage {
             // for(let i=0 ; i<this.resdata.length;i++){
             //   this.appointmentsData.push(this.resdata[i]);
             // }
-          })
+          },err => this.authservice.dismissLoading())
         }
       }
       else {
@@ -312,16 +383,21 @@ export class HomePage {
             // for(let i=0 ; i<this.resdata.length;i++){
             //   this.appointmentsData.push(this.resdata[i]);
             // }
-          })
+          },err => this.authservice.dismissLoading())
         }
       }
+    })
     }
   }
 
   myapp1(e) {
     if (this.ActiveSegment == "ro") {
       this.rodata = [];
+       this.storage.get("dealerid").then(val =>{
+          this.dealerid = val;
+        
       if (e.detail.checked == true) {
+       
         this.storage.set("showallro", "1");
         var ro = "1";
         if (this.rodata.length != 0)
@@ -344,7 +420,7 @@ export class HomePage {
             }
           }
 
-        })
+        },err => this.authservice.dismissLoading())
       }
       else {
         this.storage.set("showallro", "0");
@@ -369,9 +445,11 @@ export class HomePage {
           }
 
 
-        })
+        },err => this.authservice.dismissLoading())
       }
+    })
     }
+  
   }
 
   GoToScheduler() {
@@ -435,7 +513,7 @@ export class HomePage {
           // for(let i=0 ; i<this.resdata.length;i++){
           //   this.appointmentsData.push(this.resdata[i]);
           // }
-        })
+        },err => this.authservice.dismissLoading())
       })
     })
 
@@ -495,7 +573,7 @@ export class HomePage {
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
               // }
-            })
+            },err => this.authservice.dismissLoading())
           })
         })
       }
@@ -527,7 +605,7 @@ export class HomePage {
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
               // }
-            })
+            },err => this.authservice.dismissLoading())
           })
         })
       }
@@ -623,7 +701,7 @@ export class HomePage {
           // for(let i=0 ; i<this.resdata.length;i++){
           //   this.appointmentsData.push(this.resdata[i]);
           // }
-        })
+        },err => this.authservice.dismissLoading())
       })
     })
   }
@@ -657,7 +735,7 @@ export class HomePage {
         // for(let i=0 ; i<this.resdata.length;i++){
         //   this.appointmentsData.push(this.resdata[i]);
         // }
-      })
+      },err => this.authservice.dismissLoading())
     }
   }
 
@@ -679,6 +757,8 @@ export class HomePage {
       "VIN": e.appointmentData.VIN,
       "data": e.appointmentData
     }
+    this.authservice.setvideolist(e.appointmentData.VideoList);
+    
     this.appointmentdate = moment(e.appointmentData.StartDate).format('YYYY-MM-DD');
     console.log(this.appointmentdate);
     this.appointmenttime = moment(e.appointmentData.StartDate).format('HH:mm');
@@ -698,6 +778,40 @@ export class HomePage {
   }
 
   empty(e) {
+    setTimeout(() => {
+      //var scheduler = new Scheduler(e);
+      // Scheduler.hideAppointmentTooltip();
+      //console.log(this.sche);
+      this.scheduler.instance.hideAppointmentTooltip();
+    }, 500);
+
+
+    // var tooltipInstance = ($("#scheduler").find('.dx-tooltip')[0]).dxTooltip('instance');  
+    //                 tooltipInstance.hide();
+    console.log(e.appointmentData);
+    let data = {
+      'CustomerId': e.appointmentData.FkCustomerId,
+      "VIN": e.appointmentData.VIN,
+      "data": e.appointmentData
+    }
+    this.authservice.setvideolist(e.appointmentData.VideoList);
+    
+    this.appointmentdate = moment(e.appointmentData.StartDate).format('YYYY-MM-DD');
+    console.log(this.appointmentdate);
+    this.appointmenttime = moment(e.appointmentData.StartDate).format('HH:mm');
+    console.log(this.appointmenttime);
+    if (this.appointmentdate == this.currentDateor) {
+      if (this.currenttime < "18:00") {
+        if (this.appointmenttime > this.currenttime) {
+          this.authservice.secustidvin(data);
+          this.router.navigateByUrl('/createappointment');
+        }
+      }
+    }
+    else if (this.appointmentdate > this.currentDateor) {
+      this.authservice.secustidvin(data);
+      this.router.navigateByUrl('/createappointment');
+    }
     e.cancel = true;
   }
   // hidetool(e){
@@ -734,7 +848,7 @@ export class HomePage {
               this.rodata.push(this.rod[i]);
             }
             e.target.complete();
-          })
+          },err => this.authservice.dismissLoading())
         })
       }
       else {
@@ -760,7 +874,7 @@ export class HomePage {
               this.rodata.push(this.rod[i]);
             }
             e.target.complete();
-          })
+          },err => this.authservice.dismissLoading())
         })
       }
     }, 2000)
@@ -787,7 +901,7 @@ export class HomePage {
             this.authservice.dismissLoading();
           }
 
-        })
+        },err => this.authservice.dismissLoading())
       })
     }
     else {
@@ -825,7 +939,7 @@ export class HomePage {
             this.authservice.dismissLoading();
           }
 
-        })
+        },err => this.authservice.dismissLoading())
       })
 
     }
@@ -872,7 +986,7 @@ export class HomePage {
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
               // }
-            })
+            },err => this.authservice.dismissLoading())
           })
         })
 
@@ -910,15 +1024,51 @@ export class HomePage {
                 this.rodata.push(this.rod[i]);
                 event.target.complete();
               }
-            })
+            },err => this.authservice.dismissLoading())
           })
         })
       }
     }, 2000);
   }
 
+  // vsearch(){
+
+  //   let option ={
+  //     language : 'en-US'
+  //   }
+  //   this.speechRecognition.isRecognitionAvailable()
+  //   .then((available: boolean) => {
+  //     if(available){
+  //       this.speechRecognition.hasPermission()
+  //       .then((hasPermission: boolean) => {
+
+  //         if(!hasPermission){
+  //           this.speechRecognition.requestPermission()
+  //           .then(
+  //             () => console.log('Granted'),
+  //             () => console.log('Denied')
+  //           )
+  //         }
+  //         else{
+  //           setTimeout(() => {
+  //             this.speechRecognition.stopListening();
+  //           }, 10000);
+  //           this.speechRecognition.startListening(option)
+  //           .subscribe(
+  //         (matches: string[]) => this.val = matches[0],
+  //         (onerror) => console.log('error:', onerror)
+  //       )
+  //           }
+          
+  //         })
+
+  //         }
+  //       })
+   
+  // }
+
   print(rono){
-    this.authservice.printro(this.dealerid,rono,this.username).subscribe(res =>{
+    this.authservice.printro(this.dealerid,rono,this.uname).subscribe(res =>{
       console.log(res);
       this.furl = res;
       if (this.furl.URL) {
@@ -926,8 +1076,9 @@ export class HomePage {
           fileurl: this.furl.URL,
           delaerid:this.dealerid,
           rono:rono,
-          username: this.username,
-          uid:this.advisorid
+          username: this.uname,
+          uid:this.advisorid,
+          isback : true
         }
          
       this.router.navigate(['/pdfview'], { queryParams: object });
@@ -935,7 +1086,7 @@ export class HomePage {
       else{
       //  this.presentAlert3(this.furl.Message);
       }
-    })
+    },err => this.authservice.dismissLoading())
   }
   // async presentAlert3(msg) {
   //   const alert = await this.alertController.create({

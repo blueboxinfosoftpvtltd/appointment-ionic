@@ -79,24 +79,34 @@ ion-segment {
 }
 
 ion-segment-button {
-  border: 1px solid #488aff;
+  border: 1px solid #374767;
     width: 0%;
     height: 35px;
+    color: #000;
 }
 
 .segment-md .segment-button.activated,
 .segment-md .segment-button.segment-activated {
-  border-color: #488aff;
+  border-color: #374767;
   opacity: 1;
-  background-color: #488aff;
+  --background-color: #374767;
   color: white;
 }
-
+.segment-button-checked{
+  background: #374767;
+  color: #fff;
+ // border-bottom: 3px solid var(--ion-color-primary);
+}
+.segment-button-unchecked{
+  //background: #374767;
+  color: #000;
+ // border-bottom: 3px solid var(--ion-color-primary);
+}
 .segment-ios .segment-button.activated,
 .segment-ios .segment-button.segment-activated {
-  border-color: #488aff;
+  border-color: #374767;
   opacity: 1;
-  background-color: #488aff;
+  --background-color: #374767;
   color: white;
 }
 
@@ -128,4 +138,7 @@ overflow: hidden;
 box-sizing: border-box;
 white-space: normal;
 
+}
+.dx-scheduler-appointment{
+  --background : #374767!important;
 }

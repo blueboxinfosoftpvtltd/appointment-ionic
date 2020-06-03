@@ -1,0 +1,25 @@
+<ion-content>
+  <!-- (ionSelect)="AdvisorSelection(advisor.AdvisorId,$event);" -->
+  <ion-list style="margin-top: 15%">
+    <ion-radio-group>
+      <ion-item lines="none" *ngFor="let sel of cityf;let i = index;">
+        <ion-label style="color: black;font-size: 14px">{{sel.CityName}}</ion-label>
+        <ion-radio slot="end" color="primary" value={{sel.CityId}} [checked]="sel.checked" (ionSelect)="cityselect(sel.CityId,sel.CityName,$event);"></ion-radio>
+        <!-- <ion-checkbox color="primary" checked slot="start"></ion-checkbox> -->
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-infinite-scroll threshold="70%" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button expand="full" (click)="cancel()" color="light">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="full" (click)="ok()" color="light">Ok</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

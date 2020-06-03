@@ -140,6 +140,7 @@ UpdateVehicleInfo(){
       console.log(this.res);
       this.authservice.dismissLoading();
       this.authservice.showToast(this.res.Message);
+      this.modalCtrl.dismiss();
       this.loc.back();
     })
   }

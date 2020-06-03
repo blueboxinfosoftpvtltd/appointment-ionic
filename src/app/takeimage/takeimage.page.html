@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <!-- <div style="margin-top: 15px;">
+  <div style="margin-top: 15px;">
     <ion-segment mode="ios" [(ngModel)]="ActiveSegment">
       <ion-segment-button value="pic" (click)="Ispic()">
         <ion-label>Picture</ion-label>
@@ -18,9 +18,10 @@
         <ion-label>Video</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </div> -->
-  <!-- *ngIf="ActiveSegment == 'pic'" -->
-  <ion-row  class="rowcss scroll" style="background-image: url(../assets/imgs/c.png);margin-bottom: 20%;">
+  </div>
+  <!--  -->
+  <ion-row *ngIf="ActiveSegment == 'pic'" class="rowcss scroll image">
+
 
     <ion-row class="rowone">
       <ion-col size="4">
@@ -227,15 +228,37 @@
 
   </ion-row>
 
-  <!-- <div *ngIf="ActiveSegment == 'vid'">
-
-
-  </div> -->
+  <div *ngIf="ActiveSegment == 'vid'">
+    <!-- <div *ngIf="files" style="margin-bottom: 100px;text-align: -webkit-center"> -->
+      <ion-row *ngIf="files" style="margin-bottom: 100px">
+        <ion-col size="6" col-md-1 col-xl-1 *ngFor="let data of files; let i = index " style="text-align: -webkit-right">
+          <ion-card class="vcard"  >
+            <!-- <ion-label (click)="playvideo(data.url)">{{data.name}}</ion-label> -->
+            <ion-row>
+              <ion-col style="text-align: center">
+               <!-- <img class="vimg" src={{data.ImagePath}}/> -->
+               <img class="vimg" [src]="'data:image/jpeg;base64,'+data.ImagePath"/>
+               </ion-col>
+            </ion-row>
+            <ion-row style="justify-content: center">
+            <ion-icon (click)="playvideo(data.VideoPath)" class="vp" name="play"></ion-icon>
+            </ion-row>
+            <ion-row style="justify-content: flex-end;margin-right: 10px">
+            <ion-icon  (click)="remove(i)" class="vr" name="trash"></ion-icon>
+            </ion-row>
+           
+           </ion-card>
+        </ion-col>
+      
+   
+  </ion-row>
+ <!-- </div> -->
+  </div>
 
 </ion-content>
 
 <!-- <ion-footer *ngIf="ActiveSegment == 'pic'"> -->
-  <ion-footer>
+  <ion-footer *ngIf="ActiveSegment == 'pic'">
   <ion-toolbar>
     <ion-row>
       <ion-col>
@@ -260,22 +283,22 @@
   </ion-toolbar>
 </ion-footer>
 
-<!-- <ion-footer *ngIf="ActiveSegment == 'vid'">
+<ion-footer *ngIf="ActiveSegment == 'vid'">
   <ion-toolbar>
     <ion-row>
-      <ion-col>
+      <!-- <ion-col>
         <ion-button class="footerbtn" (click)="skip()" *ngIf="!Page">Skip</ion-button>
-      </ion-col>
+      </ion-col> -->
       <ion-col>
         <ion-button class="footerbtn" (click)="Next()" *ngIf="!Page">Next</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button class="footerbtn" (click)="upload()" *ngIf="!Page">Upload Video</ion-button>
+        <ion-button class="footerbtn" (click)="video()" *ngIf="!Page">Record Video</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button class="footerbtn" (click)="upload()" *ngIf="Page">Upload Video</ion-button>
+        <ion-button class="footerbtn" (click)="video()" *ngIf="Page">Upload Video</ion-button>
       </ion-col>
       <ion-col>
         <ion-button class="footerbtn" (click)="Save()" *ngIf="Page">Save</ion-button>
@@ -283,4 +306,4 @@
     </ion-row>
 
   </ion-toolbar>
-</ion-footer> -->
+</ion-footer>

@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { IonInput } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { ModalController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CitylistPage } from '../citylist/citylist.page';
 @Component({
   selector: 'app-createcust',
   templateUrl: './createcust.page.html',
@@ -47,7 +49,7 @@ export class CreatecustPage implements OnInit {
   username: any;
   password: any;
   Page; any;
-  constructor(private authservice: AuthService, private storage: Storage, private router: Router, public activatedRoute: ActivatedRoute) { }
+  constructor(private authservice: AuthService, private storage: Storage, private router: Router, public activatedRoute: ActivatedRoute, public modalCtrl: ModalController) { }
 
   ngOnInit() {
 
@@ -58,6 +60,7 @@ export class CreatecustPage implements OnInit {
     this.storage.get('dealerid').then((val) => {
       console.log('dealerid', val);
       this.dealerid = val;
+      this.authservice.presentLoading();
       this.getCountry();
       this.getYears();
     });
@@ -105,19 +108,20 @@ export class CreatecustPage implements OnInit {
     this.authservice.GetState(this.countryid, this.dealerid).subscribe(res => {
       this.state = res;
       this.stateid = "43";
-      this.GetCity();
+      //this.GetCity();
       console.log(this.state);
     })
   }
   GetCity() {
-    this.authservice.GetCity(this.stateid, this.dealerid).subscribe(res => {
-      this.city = res;
+    this.authservice.GetCitycust(this.stateid, this.dealerid).subscribe(res => {
+      // this.city = res;
+      this.authservice.setcity(res);
       console.log("call again");
-      if (this.city != "" || this.city != undefined) {
-        // this.cityid = this.customerdata[0].CityId;
-      }
+      // if (this.city != "" || this.city != undefined) {
+      //   // this.cityid = this.customerdata[0].CityId;
+      // }
       this.authservice.dismissLoading();
-      console.log(this.city);
+      //  console.log(this.city);
     })
   }
   getYears() {
@@ -299,5 +303,19 @@ export class CreatecustPage implements OnInit {
       })
     }
   }
+  cityselect() {
+    this.openmodel();
+  }
 
+  async openmodel() {
+    const modal = await this.modalCtrl.create({
+      component: CitylistPage,
+      cssClass: "modal-fullscreen2"
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      this.city = this.authservice.getcityn();
+      this.cityid = this.authservice.getcityi();
+    })
+    return await modal.present();
+  }
 }

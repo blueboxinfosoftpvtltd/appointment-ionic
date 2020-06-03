@@ -35,7 +35,9 @@ const routes: Routes = [
   { path: 'rfid', loadChildren: './rfid/rfid.module#RfidPageModule' },
   { path: 'rotab', loadChildren: './rotab/rotab.module#RotabPageModule' },
   { path: 'moreimage', loadChildren: './moreimage/moreimage.module#MoreimagePageModule' },
-  // { path: 'pdfpage', loadChildren: './pdfpage/pdfpage.module#PdfpagePageModule' },
+  
+  { path: 'citylist', loadChildren: './citylist/citylist.module#CitylistPageModule' },
+  { path: 'video', loadChildren: './video/video.module#VideoPageModule' },
 ];
 
 @NgModule({

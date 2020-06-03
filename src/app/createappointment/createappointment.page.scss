@@ -51,7 +51,8 @@
     display: none; 
   }
   .footerbtn{
-    --background: #009688;
+    //  --background: #009688;
+    --background: #374767;
     margin-bottom: 10px;
 }
 .btnstyle{
@@ -132,7 +133,9 @@
     color: #FFFFFF;
     font-weight: bold;
  }
- 
+//  ion-label{
+//     font-style: italic;
+// }
 @media only screen and (max-width: 767px) {
     /* For mobile phones: */
     img {

@@ -144,6 +144,9 @@
       <ion-col size="1" (click)="search()">
         <ion-icon name="search" style="color: black;margin-top: 5px"></ion-icon>
       </ion-col>
+      <!-- <ion-col size="1" (click)="vsearch()">
+        <ion-icon name="mic" style="color: black;margin-top: 5px"></ion-icon>
+      </ion-col> -->
 
       <!-- <ion-col>
         <ion-button (click)="search()">Search</ion-button>
@@ -158,7 +161,7 @@
         <ion-col size="9">
           <ion-row>
             <ion-col size="5" style="align-self: center;">
-              <ion-label style="font-weight: 700;color: black;">#RO : </ion-label>
+              <ion-label style="font-weight: 700;color: black;">RO# : </ion-label>
             </ion-col>
             <ion-col size="7">
               <ion-label style="font-weight: 400;color: black;">{{data.PkRONumber}}</ion-label>
@@ -231,7 +234,7 @@
           </ion-row> -->
         </ion-col>
         <ion-col style="text-align: center;align-self: center" size="3">
-          <ion-button style="width: 100%" (click)="print(data.PkRONumber)">Print RO</ion-button>
+          <ion-button style="width: 100%;--background: #374767;" (click)="print(data.PkRONumber)">Print RO</ion-button>
         </ion-col>
         <!-- <ion-col col-5 style="text-align: center">
           <ion-label>Create RO</ion-label>
@@ -247,7 +250,7 @@
     </ion-infinite-scroll>
   </div>
   <ion-fab (click)="addapp()" horizontal="end" vertical="bottom" slot="fixed" edge>
-    <ion-fab-button style="margin-bottom: 60px">
+    <ion-fab-button style="margin-bottom: 60px;--background:#374767">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

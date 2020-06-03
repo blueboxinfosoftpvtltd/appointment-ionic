@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
-import { IonicModule } from '@ionic/angular';
 import {
   MediaCapture,
   MediaFile,
@@ -12,13 +10,16 @@ import {
 import { File, FileEntry } from '@ionic-native/File/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
-import { TakeimagePage } from './takeimage.page';
-import { VideoEditor } from '@ionic-native/video-editor/ngx';
-//import {VideoPageModule} from '../video/video.module';
+import { IonicModule } from '@ionic/angular';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { VideoPage } from './video.page';
+import * as AWS from 'aws-sdk';
+
+
 const routes: Routes = [
   {
     path: '',
-    component: TakeimagePage
+    component: VideoPage
   }
 ];
 
@@ -27,17 +28,15 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
-  
-    //VideoPageModule
+    RouterModule.forChild(routes)
   ],
-  providers :[
-    MediaCapture,
+  providers: [
     File,
+    MediaCapture,
     Media,
     StreamingMedia,
-    VideoEditor
+    FileTransfer,
   ],
-  declarations: [TakeimagePage]
+  declarations: [VideoPage]
 })
-export class TakeimagePageModule {}
+export class VideoPageModule {}

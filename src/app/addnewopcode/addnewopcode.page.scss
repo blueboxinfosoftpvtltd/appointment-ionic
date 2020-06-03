@@ -1,5 +1,8 @@
 .footerbtn{
-    --background: #009688;
+    //--background: #009688;
+    --background: #374767;
+    width: 60%;
+    height: 45px;
 }
 .rawcss{
     border-bottom: 1px solid #d4d4d4;
@@ -18,3 +21,6 @@
     font-size: 15px;
     margin-left: -14px;
 }
+// ion-label{
+//     font-style: italic;
+// }

@@ -18,12 +18,16 @@
     font-size: 15px;
 }
 .footerbtn{
-  --background: #009688;
+  //--background: #009688;
+  --background: #374767;
     font-size: 14px;
     padding: 4px;
-    width: 65%;
+    width: 60%;
     height: 45px;
 }
+// ion-label{
+//   font-style: italic;
+// }
 ion-item{
     --inner-padding-end: 0px;
     --padding-start:4px

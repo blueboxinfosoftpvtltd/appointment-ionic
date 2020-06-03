@@ -235,6 +235,8 @@ export class RotabPage implements OnInit {
   username:any;
   furl:any;
   contstr:any;
+  appno:any;
+  islabor : boolean = false;
   //techno:any;
   public myForm: FormGroup;
   constructor(private formBuilder: FormBuilder, public events: Events, private storage: Storage, private authservice: AuthService,
@@ -245,11 +247,19 @@ export class RotabPage implements OnInit {
     this.pdate = this.pdate + " " + "5:00 PM";
     console.log(this.pdate);
     this.opcodes = this.authservice.getopcodero();
+    if(this.opcodes){
+      this.appno = this.opcodes.appid;
+    }
+    else{
+      this.appno = "";
+    }
+    
   }
 
   ngOnInit() {
     this.storage.get("fullname").then(val => {
       this.saname = val;
+      this.saname.replace(',','');
     })
     // this.storage.get("userid").then(val =>{
     //   this.sid = val;
@@ -405,12 +415,12 @@ export class RotabPage implements OnInit {
   }
 
   GetCity() {
-    this.authservice.GetCity(this.stateid, this.dealerid).subscribe(res => {
+    this.authservice.GetCity(this.stateid, this.dealerid,this.customerdata[0].CityId).subscribe(res => {
       this.city = res;
       console.log("call again");
-      if (this.city != "" || this.city != undefined) {
-        this.cityid = this.customerdata[0].CityId;
-      }
+      // if (this.city != "" || this.city != undefined) {
+         this.cityid = this.customerdata[0].CityId;
+      // }
       this.authservice.dismissLoading();
       console.log(this.city);
     })
@@ -566,6 +576,7 @@ export class RotabPage implements OnInit {
       this.authservice.GetVehicleDetailByVINCustomerID(this.dealerid, this.CustomerId, this.VIN, this.appointmentid).subscribe(res => {
         this.vehicledata = res;
         this.vin = this.vehicledata[0].VIN;
+        this.authservice.setvin(this.vin);
         this.yearid = this.vehicledata[0].YearId;
         setTimeout(() => {
           for (let i = 0; i < this.years.length; i++) {
@@ -1106,6 +1117,15 @@ export class RotabPage implements OnInit {
             this.rline = this.alphaarr[i + 1];
           }
         }
+        for(let i=0 ; i<this.addrolist.length;i++){
+          if(this.addrolist[i].LaborType == ""){
+            this.islabor = false;
+          }
+          else{
+            this.islabor = true;
+          }
+          
+        }
         // for(let j=0;j<this.addrolist.length;j++){
         //   this.totalesti = this.totalesti + this.addrolist[j].LineEstimate;
         // }
@@ -1205,15 +1225,22 @@ export class RotabPage implements OnInit {
       this.presentAlert3("Enter MileageIn");
     }
 
-    else if (this.cemail == undefined || this.cphone == undefined || this.csms == undefined) {
-      this.presentAlert3("Select Contact Method");
+    else if (this.cemail == false && this.cphone == false && this.csms == false) {
+      // if(this.cemail == false || this.cphone == false || this.csms == false){
+        this.presentAlert3("Select Contact Method");
+      // }
+     
     }
     else if (this.tagno == undefined || this.tagno == null || this.tagno == "") {
       this.presentAlert3("Enter TagNo");
     }
     else if (this.addrolist == undefined) {
-      this.presentAlert3("Enter OpCode");
+      
     }
+    else if(this.islabor == false){
+      this.presentAlert3("Select LaborType");
+    }
+
     else {
       
       if (this.cemail == true) {
@@ -1279,6 +1306,16 @@ export class RotabPage implements OnInit {
   }
 
   async presentAlertCheckbox2() {
+    this.authservice.setvideodata("");
+    this.authservice.setvideolist("");
+    this.authservice.setvimgbaselist("");
+    this.authservice.setvimglist("");
+    this.authservice.setvlist("");
+    this.authservice.setvimgbaselist("");
+    this.authservice.setvimgnamelist("");
+    this.authservice.setvnlist("");
+    this.authservice.setimagedata("");
+    this.authservice.seimage("");
     var email, text;
     const alert = await this.alertController.create({
       header: 'Do you want to print RO?',
@@ -1314,7 +1351,7 @@ export class RotabPage implements OnInit {
             if (data == "yes") {
               //this.presentAlertCheckbox("yes");
               this.authservice.presentLoading();
-              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate).subscribe(res => {
+              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
                 console.log(res);
                 this.authservice.dismissLoading();
                 this.rores = res;
@@ -1329,7 +1366,7 @@ export class RotabPage implements OnInit {
             else if (data == "no") {
               //this.router.navigateByUrl('/home');
               this.authservice.presentLoading();
-              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate).subscribe(res => {
+              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
                 console.log(res);
                 this.authservice.dismissLoading();
                 this.rores = res;
@@ -1387,7 +1424,8 @@ export class RotabPage implements OnInit {
                     delaerid:this.dealerid,
                     rono:this.rono,
                     username: this.username,
-                    uid:this.sno
+                    uid:this.sno,
+                    isback : false
                   }
                    
                 this.router.navigate(['/pdfview'], { queryParams: object });
@@ -1629,6 +1667,15 @@ export class RotabPage implements OnInit {
         this.totalesti = parseFloat(this.totalesti) + parseFloat(this.addrolist[i].LineEstimate);
       }
       this.authservice.dismissLoading();
+      for(let i=0 ; i<this.addrolist.length;i++){
+        if(this.addrolist[i].LaborType == ""){
+          this.islabor = false;
+        }
+        else{
+          this.islabor = true;
+        }
+        
+      }
       var l = this.addrolist[this.addrolist.length - 1].Line;
       var ai;
       for (let i = 0; i < this.alphaarr.length; i++) {
@@ -1803,12 +1850,35 @@ export class RotabPage implements OnInit {
   }
 
   getrono() {
-    this.authservice.getronumber(this.CustomerId, this.VIN, this.sno, this.dealerid).subscribe(res => {
+    this.authservice.getronumber(this.CustomerId, this.VIN, this.sno, this.dealerid,this.appno).subscribe(res => {
       console.log(res);
       this.ronores = res;
       this.rono = this.ronores.RONumber;
       this.rodate = this.ronores.RODate;
-      // RONumber: "666273"
+      this.addrolist = this.ronores.techStoryList;
+      this.totalesti = 0.00;
+      for (let i = 0; i < this.addrolist.length; i++) {
+
+        this.totalesti = parseFloat(this.totalesti) + parseFloat(this.addrolist[i].LineEstimate);
+      }
+      var l = this.addrolist[this.addrolist.length - 1].Line;
+        var ai;
+        for (let i = 0; i < this.alphaarr.length; i++) {
+          if (this.alphaarr[i] == l) {
+            //  ai = i;
+            this.rline = this.alphaarr[i + 1];
+          }
+        }
+        for(let i=0 ; i<this.addrolist.length;i++){
+          if(this.addrolist[i].LaborType == ""){
+            this.islabor = false;
+          }
+          else{
+            this.islabor = true;
+          }
+          
+        }
+            // RONumber: "666273"
       // Message: ""
       // RODate: "3/27/2020 2:56:22 AM"
     })

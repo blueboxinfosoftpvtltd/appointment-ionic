@@ -39,10 +39,21 @@ export class AuthService {
   imgdata: any;
   signdata: any;
   eimage:any;
+  city: any;
+  cityname: any;
+  cityid: any;
+  videodata:any;
+  vin:any;
+  vlist:any;
+  vnlist:any;
+  vimglist:any;
+  vimgbase:any;
+  videolist:any;
+  vimgnamelist:any;
   constructor(private http: HttpClient, public loadingController: LoadingController, public toastController: ToastController) {
 
-    //this.url = "http://appointmentapi.itsguru.com/api/Appointment";
-    this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
+    this.url = "http://appointmentapi.itsguru.com/api/Appointment";
+    //this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
 
 
   }
@@ -282,7 +293,19 @@ export class AuthService {
     return this.http.post(this.url + "/GetState", state, { headers: headers });
   }
 
-  GetCity(StateId, dealerid) {
+  GetCity(StateId, dealerid,cityid) {
+    let city = {
+      "StateId": StateId,
+      "IDSFlag": this.idsflag,
+      "DealershipId": dealerid,
+      "CityID":cityid
+    }
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url + "/GetCityByRecord", city, { headers: headers });
+  }
+
+  GetCitycust(StateId, dealerid) {
     let city = {
       "StateId": StateId,
       "IDSFlag": this.idsflag,
@@ -292,7 +315,6 @@ export class AuthService {
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/GetCity", city, { headers: headers });
   }
-
   CustomerInsertUpdate(CustomerId, fname, lname, email, homephone, workphone, mobile, saddress, saddress1, countryid,
     cityid, stateid, zipcode, userid, dealerid) {
     let customerdata = {
@@ -485,7 +507,7 @@ export class AuthService {
 
 
   InsertAppointment(dealerid, CustomerId, fname, lname, cname, userid, status, notes, sdate, time, AppointmentTime, tvalue, colorid, licenseplate
-    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist) {
+    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist,vlist) {
 
     var CustomerName;
     if (fname == "" || fname == undefined || fname == null) {
@@ -565,7 +587,8 @@ export class AuthService {
       "Address2": add2,
       "IDSFlag": this.idsflag,
       "Notes": sub,
-      "CarImageList": carlist
+      "CarImageList": carlist,
+      "VideoList":vlist
       //"ExtraImageList":[]
     }
     console.log(appointmentdata);
@@ -575,7 +598,7 @@ export class AuthService {
   }
 
   UpdateAppointment(dealerid, CustomerId, fname, lname, cname, userid, status, notes, sdate, time, AppointmentTime, tvalue, colorid, licenseplate
-    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist) {
+    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist,vlist) {
     // UpdateAppointment(dealerid,CustomerId,fname,lname,userid,status,notes,sdate,time,AppointmentTime,tvalue,colorid,licenseplate
     //   ,avgmileage,mileage,VIN,makeid,yearid,modelid,trimid,opArray,lfw,lft,lrw,lrt,rfw,rft,rrw,rrt,WipersAndLightsList,appointmentid,advisorid,homeno,workphone,cellno,zip,country,state,city,add1,add2){
     var CustomerName;
@@ -655,7 +678,8 @@ export class AuthService {
       "Address2": add2,
       "IDSFlag": this.idsflag,
       "Notes": sub,
-      "CarImageList": carlist
+      "CarImageList": carlist,
+      "VideoList":vlist
       //"ExtraImageList":[]
 
 
@@ -1089,7 +1113,7 @@ export class AuthService {
 
   }
 
-  createtabro(custid, vin, min, sano, tagno, pono, contact, cname, add, city, state, zip, homeno, workno, email, year, make, model, license, color, uid, mout, wsdate, wedate, dlrid, rnotes, techlist, carlist, rotype, rono, prodate) {
+  createtabro(custid, vin, min, sano, tagno, pono, contact, cname, add, city, state, zip, homeno, workno, email, year, make, model, license, color, uid, mout, wsdate, wedate, dlrid, rnotes, techlist, carlist, rotype, rono, prodate,vlist) {
     var aww, awnw, hp, pr, cb, nw;
     if (rotype == "hp") {
       hp = "1";
@@ -1172,7 +1196,9 @@ export class AuthService {
       "Comments": rnotes,
       "IDSFlag": this.idsflag,
       "techStoryList": techlist,
-      "CarImageList": carlist
+      "CarImageList": carlist,
+      "VideoList":vlist,
+      "VIN":vin
       //"ExtraImageList":[]
     }
 
@@ -1261,7 +1287,7 @@ export class AuthService {
     return this.http.post(this.url + "/GetRental", rentdata, { headers: headers })
   }
 
-  getronumber(custid, vin, sno, dlrid) {
+  getronumber(custid, vin, sno, dlrid,appno) {
     let rodata = {
       "FkCustomerId": custid,
       "VIN": vin,
@@ -1269,7 +1295,8 @@ export class AuthService {
       "TagNumber": "",
       "UserId": sno,
       "DlrshipId": dlrid,
-      "IDSFlag": this.idsflag
+      "IDSFlag": this.idsflag,
+      "AppointmentID":appno
     }
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
@@ -1522,5 +1549,73 @@ export class AuthService {
     let header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/PrintRO", print, { headers: header });
+  }
+  setcity(val){
+    this.city = val;
+  }
+  getcity() {
+    return this.city;
+  }
+  setcityn(val) {
+    this.cityname = val;
+  }
+  getcityn() {
+    return this.cityname;
+  }
+  setcityi(val) {
+    this.cityid = val;
+  }
+  getcityi() {
+    return this.cityid;
+  }
+  setvideodata(data){
+   this.videodata = data;
+  }
+  getvideodata(){
+   return this.videodata;
+  }
+  setvin(data){
+   this.vin =data;
+  }
+  getvin(){
+    return this.vin;
+  }
+  setvlist(data){
+   this.vlist = data;
+  }
+  getvlist(){
+   return this.vlist;
+  }
+  setvnlist(data){
+   this.vnlist = data;
+  }
+  getvnlist(){
+  return this.vnlist;
+  }
+  setvimglist(data){
+   this.vimglist = data;
+  }
+  getvimglist(){
+  return this.vimglist;
+  }
+  setvimgbaselist(data){
+  this.vimgbase = data;
+  }
+  getvimgbaselist(){
+   return this.vimgbase;
+  }
+
+  setvideolist(data){
+   this.videolist = data;
+  }
+  getvideolist(){
+  return this.videolist;
+  }
+
+  setvimgnamelist(data){
+    this.vimgnamelist = data;
+  }
+  getvimgnamelist(){
+   return this.vimgnamelist;
   }
 }

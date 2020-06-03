@@ -18,6 +18,8 @@ export class PdfviewPage implements OnInit {
   username:any;
   uid:any;
   pres:any;
+  previousUrl : any;
+  isback:any;
   constructor(public activatedRoute: ActivatedRoute, private document: DocumentViewer, private file: File, private ft: FileTransfer,public auth : AuthService,private alertController: AlertController,private router: Router) {
 
     this.activatedRoute.queryParams.subscribe((data) => {
@@ -27,6 +29,10 @@ export class PdfviewPage implements OnInit {
       this.rono=data.rono;
       this.username=data.username;
       this.uid=data.uid;
+      if(data.isback != undefined || data.isback != null){
+       this.isback = data.isback;
+      }
+     
       //this.downloadAndOpenPdf();
 
       //this.document.viewDocument(this.furl, 'application/pdf', options)
@@ -43,6 +49,9 @@ export class PdfviewPage implements OnInit {
     })
   }
 
+  backbtn(){
+    this.router.navigateByUrl('/home');
+  }
   async presentAlert3(msg) {
     const alert = await this.alertController.create({
       header: 'ION APPT',

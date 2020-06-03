@@ -117,7 +117,7 @@ GetCustomer(CustomerId,dealerid){
   }
 
   GetCity(){
-  this.authservice.GetCity(this.stateid,this.dealerid).subscribe(res =>{
+  this.authservice.GetCity(this.stateid,this.dealerid,0).subscribe(res =>{
     this.city = res;
     console.log("call again");
     if(this.city != "" || this.city != undefined ){

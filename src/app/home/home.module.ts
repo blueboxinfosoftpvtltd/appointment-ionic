@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import {DxSchedulerModule} from 'devextreme-angular';
 import { HomePage } from './home.page';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 //import Scheduler from 'devextreme/ui/scheduler';
 @NgModule({
   imports: [
@@ -20,6 +21,6 @@ import { HomePage } from './home.page';
     ])
   ],
   declarations: [HomePage],
-  //providers: [Scheduler]
+  providers: [SpeechRecognition]
 })
 export class HomePageModule {}

@@ -14,7 +14,12 @@
     --border-width: 0 0 0.55px;
     --background: #374767;
   }
-
+  .footerbtn{
+    //  --background: #009688;
+    --background: #374767;
+    width: 100%;
+    height: 45px;
+}
   .sc-ion-card-ios-h {
     margin-left: unset;
     margin-right: unset;
@@ -24,6 +29,9 @@
     margin-inline-end: 16px;
     color: black;
 }
+// ion-label{
+//   font-style: italic;
+// }
 ion-label-ios-h {
   --color: initial;
   display: block;

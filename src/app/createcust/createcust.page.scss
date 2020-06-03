@@ -51,7 +51,10 @@
     display: none; 
   }
   .footerbtn{
-    --background: #009688;
+    // --background: #009688;
+    --background: #374767;
+    width: 60%;
+    height: 45px;
 }
 .btnstyle{
     height: 40px;
@@ -91,7 +94,8 @@
     background: #fff;
 }
 .footerbtn{
-    --background: #009688;
+    // --background: #009688;
+    --background: #374767;
 }
 // .btnstyle{
 //     height: 40px;
@@ -103,3 +107,6 @@
 .icons{
     font-size: 25px;color: #000;
 }
+// ion-label{
+//     font-style: italic;
+// }

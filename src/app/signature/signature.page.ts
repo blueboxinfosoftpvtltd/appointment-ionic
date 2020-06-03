@@ -34,10 +34,12 @@ export class SignaturePage implements OnInit {
   CarImageList: any[] = [];
   furl:any;
   username:any;
+  videolist:any[]=[];
+  appno:any;
   //ExtraImageList:any[]=[];
   public signaturePadOptions: Object = {
     'minWidth': 2,
-    'canvasWidth': 1000,
+    'canvasWidth': 700,
     'canvasHeight': 300,
     'backgroundColor': '#f6fbff',
     'penColor': '#666a73'
@@ -72,36 +74,13 @@ export class SignaturePage implements OnInit {
       this.delarid = val;
       // console.log(this.dealerid);
     })
-    this.storage.get('username').then((val => {
+    this.storage.get('fullname').then((val => {
       this.username = val;
+      this.username.replace(',','');
     }))
     this.storage.get('userid').then((val) => {
       this.userid = val;
       if (this.isedit == "true") {
-        this.authservice.presentLoading();
-        // this.authservice.getcarimage(this.delarid, this.AppointmentId).subscribe((res => {
-        //   this.getres = res;
-        //   if (this.getres == null) {
-        //     this.authservice.dismissLoading();
-        //   }
-        //   else {
-        //     for (let i = 0; i < this.getres.length; i++) {
-        //       if (this.getres[i].ImageType == 1) {
-        //         this.imagurl = this.getres[i].BuketURL;
-        //       }
-        //     }
-        //     // this.getBase64ImageFromURL(this.imagurl).subscribe(base64data => {
-        //     //   console.log(base64data);
-        //     //   //this.base64Image = 'data:image/jpg;base64,'+base64data;
-        //     // });
-        //     // this.convertToDataURLviaCanvas(this.getres, "image/jpeg").then(base64 => console.log(base64));
-        //     this.signaturePad.fromDataURL(this.imagurl);
-        //     setTimeout(() => {
-        //       this.authservice.dismissLoading();
-        //     }, 1000);
-        //   }
-
-        // }))
       }
       // console.log(this.dealerid);
     })
@@ -126,8 +105,12 @@ export class SignaturePage implements OnInit {
   }
 
   finish() {
-
-    this.router.navigateByUrl('/home');
+    let object = {
+      refresh : true
+      }
+     //this.presentAlertCheckbox2();
+     this.router.navigate(['/home'],{ queryParams: object});
+   // this.router.navigateByUrl('/home');
   }
 
   savePad() {
@@ -148,7 +131,12 @@ export class SignaturePage implements OnInit {
         console.log(this.data);
         this.authservice.dismissLoading();
         this.authservice.showToast(this.data.Message);
-        this.router.navigateByUrl('/home');
+        let object = {
+          refresh : true
+          }
+         //this.presentAlertCheckbox2();
+         this.router.navigate(['/home'],{ queryParams: object});
+       // this.router.navigateByUrl('/home');
       })
     }
 
@@ -175,35 +163,7 @@ export class SignaturePage implements OnInit {
   clearPad() {
     this.signaturePad.clear();
   }
-  // getBase64ImageFromURL(url: string) {
-  //   return Observable.create((observer: Observer<string>) => {
-  //     let img = new Image();
-  //     img.crossOrigin = 'Anonymous';
-  //     img.src = url;
-  //     if (!img.complete) {
-  //       img.onload = () => {
-  //         observer.next(this.getBase64Image(img));
-  //         observer.complete();
-  //       };
-  //       img.onerror = (err) => {
-  //         observer.error(err);
-  //       };
-  //     } else {
-  //       observer.next(this.getBase64Image(img));
-  //       observer.complete();
-  //     }
-  //   });
-  // }
-
-  // getBase64Image(img: HTMLImageElement) {
-  //   var canvas = document.createElement("canvas");
-  //   canvas.width = img.width;
-  //   canvas.height = img.height;
-  //   var ctx = canvas.getContext("2d");
-  //   ctx.drawImage(img, 0, 0);
-  //   var dataURL = canvas.toDataURL("image/png");
-  //   return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-  // }
+  
 
   async presentAlertCheckbox1() {
     var email, text;
@@ -269,6 +229,85 @@ export class SignaturePage implements OnInit {
       this.authservice.showToast("Please select opcode");
     }
     else {
+      var appointmentdata = this.authservice.getappdata();
+      let imgdata = {
+        "DealershipID": appointmentdata.DealershipId,
+        "AppointmentID": appointmentdata.AppointmentId,
+        "RONumber": "0",
+        "VIN": appointmentdata.VIN,
+        "CreatedBy": appointmentdata.CreatedBy,
+        "ImageType": "0",
+        "ImagePathList": "",
+        "DisplayOrderList": ""
+        // "type": "0",
+        // "CompleteImage": this.takeimage,
+        // "takeorder": this.takeorder
+      }
+      console.log(appointmentdata);
+      console.log(imgdata);
+      let signdata = {
+        "DealershipID": appointmentdata.DealershipId,
+        "AppointmentID": appointmentdata.AppointmentId,
+        "RONumber": "0",
+        "VIN": appointmentdata.VIN,
+        "CreatedBy": appointmentdata.CreatedBy,
+        "ImageType": "1",
+        "ImagePathList": "",
+        "DisplayOrderList": 0
+      }
+      var eximage = this.authservice.geimage();
+      if(eximage){
+        eximage = eximage.join();
+      }
+      else{
+        eximage = "";
+      }
+      var vlist = this.authservice.getvlist();
+      if(vlist){
+       vlist = vlist.join();
+      }
+      else{
+        vlist = "";
+      }
+      var vnlist = this.authservice.getvnlist();
+      if(vnlist){
+       vnlist = vnlist.join();
+      }
+      else{
+        vnlist = "";
+      }
+      var eviimage = this.authservice.getvimgbaselist();
+      if(eviimage){
+        eviimage = eviimage.join();
+      }
+      else{
+        eviimage = "";
+      }
+      var evimgname = this.authservice.getvimgnamelist();
+      if(evimgname){
+        evimgname = evimgname.join();
+      }
+      let vdata = {
+        "VideoNameList": "",
+        "VideoPathList": "",
+        "VideoImageNameList":"",
+        "VideoImagePathList":"",
+        "VideoType": "0",
+      }
+      this.videolist.push(vdata);
+      let eimage = {
+        "DealershipID": appointmentdata.DealershipId,
+        "AppointmentID": appointmentdata.AppointmentId,
+        "RONumber": "0",
+        "VIN": appointmentdata.VIN,
+        "CreatedBy": appointmentdata.CreatedBy,
+        "ImageType": "2",
+        "ImagePathList": "",
+        "DisplayOrderList": 0
+      }
+     
+  
+      this.CarImageList.push(signdata, imgdata,eimage);
       console.log(finalopcode);
       let data = {
         'opcode': finalopcode,
@@ -290,7 +329,9 @@ export class SignaturePage implements OnInit {
         'color': appointmentdata.ColorId,
         'uid': appointmentdata.CreatedBy,
         'image': "no",
-        'carimage': this.CarImageList
+        'carimage': [],
+        'videodata':this.videolist,
+        'appid':this.appno
        // 'eimage':this.ExtraImageList
       }
       this.authservice.setopcodero(data);
@@ -372,7 +413,7 @@ export class SignaturePage implements OnInit {
                 }
                 else {
                   text = false;
-                  email = false
+                  email = false;
                 }
               }
               this.authservice.presentLoading();
@@ -394,7 +435,42 @@ export class SignaturePage implements OnInit {
               if(eximage){
                 eximage = eximage.join();
               }
-              
+              else{
+                eximage = "";
+              }
+              var vlist = this.authservice.getvlist();
+              if(vlist){
+               vlist = vlist.join();
+              }
+              else{
+                vlist = "";
+              }
+              var vnlist = this.authservice.getvnlist();
+              if(vnlist){
+               vnlist = vnlist.join();
+              }
+              else{
+                vnlist = "";
+              }
+              var eviimage = this.authservice.getvimgbaselist();
+              if(eviimage){
+                eviimage = eviimage.join();
+              }
+              else{
+                eviimage = "";
+              }
+              var evimgname = this.authservice.getvimgnamelist();
+              if(evimgname){
+                evimgname = evimgname.join();
+              }
+              let vdata = {
+                "VideoNameList": vnlist,
+                "VideoPathList": vlist,
+                "VideoImageNameList":evimgname,
+                "VideoImagePathList":eviimage,
+                "VideoType": "0",
+              }
+              this.videolist.push(vdata);
               let eimage = {
                 "DealershipID": appointmentdata.DealershipId,
                 "AppointmentID": appointmentdata.AppointmentId,
@@ -405,21 +481,25 @@ export class SignaturePage implements OnInit {
                 "ImagePathList": eximage,
                 "DisplayOrderList": 0
               }
+             
+          
               this.CarImageList.push(signdata, imgdata,eimage);
               //this.ExtraImageList.push(eimage);
               console.log(signdata);
               console.log(this.CarImageList);
               if (appointmentdata.AppointmentId == "") {
-                this.authservice.InsertAppointment(appointmentdata.DealershipId, appointmentdata.CustomerId, appointmentdata.fname, appointmentdata.lname, appointmentdata.cname, appointmentdata.CreatedBy, appointmentdata.Status, appointmentdata.NotesList, appointmentdata.PromiseDate, appointmentdata.Promisetime, appointmentdata.AppointmentTime, appointmentdata.Transportation, appointmentdata.ColorId, appointmentdata.LicensePlate, appointmentdata.AverageMilesOrMonth, appointmentdata.Mileage, appointmentdata.VIN, appointmentdata.MakeId, appointmentdata.YearId, appointmentdata.ModelId, appointmentdata.TrimId, appointmentdata.OPCodeList, appointmentdata.LeftFrontwheel, appointmentdata.LeftFrontTire, appointmentdata.LeftRearwheel, appointmentdata.LeftRearTire, appointmentdata.RightFrontWheel, appointmentdata.RightFrontTire, appointmentdata.RightRearWheel, appointmentdata.RightRearTire, appointmentdata.WipersAndLightsList, appointmentdata.AppointmentId, appointmentdata.CreatedFor, appointmentdata.Vehicalemake, appointmentdata.Vehicalemodel, appointmentdata.CustomerEmail, appointmentdata.Vehicaleyear, appointmentdata.AdvisorName, email, text, appointmentdata.HomeNo, appointmentdata.WorkNo, appointmentdata.CellNo, appointmentdata.Zip, appointmentdata.Country, appointmentdata.State, appointmentdata.City, appointmentdata.Address1, appointmentdata.Address2, appointmentdata.Notes, this.CarImageList).subscribe(res => {
+                this.authservice.InsertAppointment(appointmentdata.DealershipId, appointmentdata.CustomerId, appointmentdata.fname, appointmentdata.lname, appointmentdata.cname, appointmentdata.CreatedBy, appointmentdata.Status, appointmentdata.NotesList, appointmentdata.PromiseDate, appointmentdata.Promisetime, appointmentdata.AppointmentTime, appointmentdata.Transportation, appointmentdata.ColorId, appointmentdata.LicensePlate, appointmentdata.AverageMilesOrMonth, appointmentdata.Mileage, appointmentdata.VIN, appointmentdata.MakeId, appointmentdata.YearId, appointmentdata.ModelId, appointmentdata.TrimId, appointmentdata.OPCodeList, appointmentdata.LeftFrontwheel, appointmentdata.LeftFrontTire, appointmentdata.LeftRearwheel, appointmentdata.LeftRearTire, appointmentdata.RightFrontWheel, appointmentdata.RightFrontTire, appointmentdata.RightRearWheel, appointmentdata.RightRearTire, appointmentdata.WipersAndLightsList, appointmentdata.AppointmentId, appointmentdata.CreatedFor, appointmentdata.Vehicalemake, appointmentdata.Vehicalemodel, appointmentdata.CustomerEmail, appointmentdata.Vehicaleyear, appointmentdata.AdvisorName, email, text, appointmentdata.HomeNo, appointmentdata.WorkNo, appointmentdata.CellNo, appointmentdata.Zip, appointmentdata.Country, appointmentdata.State, appointmentdata.City, appointmentdata.Address1, appointmentdata.Address2, appointmentdata.Notes, this.CarImageList,this.videolist).subscribe(res => {
                   this.appres = res;
+                  this.appno = this.appres.AppointmentId;
                   this.authservice.dismissLoading();
                   this.presentAlert1(this.appres.message, val);
                 })
 
               }
               else {
-                this.authservice.UpdateAppointment(appointmentdata.DealershipId, appointmentdata.CustomerId, appointmentdata.fname, appointmentdata.lname, appointmentdata.cname, appointmentdata.CreatedBy, appointmentdata.Status, appointmentdata.NotesList, appointmentdata.PromiseDate, appointmentdata.Promisetime, appointmentdata.AppointmentTime, appointmentdata.Transportation, appointmentdata.ColorId, appointmentdata.LicensePlate, appointmentdata.AverageMilesOrMonth, appointmentdata.Mileage, appointmentdata.VIN, appointmentdata.MakeId, appointmentdata.YearId, appointmentdata.ModelId, appointmentdata.TrimId, appointmentdata.OPCodeList, appointmentdata.LeftFrontwheel, appointmentdata.LeftFrontTire, appointmentdata.LeftRearwheel, appointmentdata.LeftRearTire, appointmentdata.RightFrontWheel, appointmentdata.RightFrontTire, appointmentdata.RightRearWheel, appointmentdata.RightRearTire, appointmentdata.WipersAndLightsList, appointmentdata.AppointmentId, appointmentdata.CreatedFor, appointmentdata.Vehicalemake, appointmentdata.Vehicalemodel, appointmentdata.CustomerEmail, appointmentdata.Vehicaleyear, appointmentdata.AdvisorName, email, text, appointmentdata.HomeNo, appointmentdata.WorkNo, appointmentdata.CellNo, appointmentdata.Zip, appointmentdata.Country, appointmentdata.State, appointmentdata.City, appointmentdata.Address1, appointmentdata.Address2, appointmentdata.Notes, this.CarImageList).subscribe(res => {
+                this.authservice.UpdateAppointment(appointmentdata.DealershipId, appointmentdata.CustomerId, appointmentdata.fname, appointmentdata.lname, appointmentdata.cname, appointmentdata.CreatedBy, appointmentdata.Status, appointmentdata.NotesList, appointmentdata.PromiseDate, appointmentdata.Promisetime, appointmentdata.AppointmentTime, appointmentdata.Transportation, appointmentdata.ColorId, appointmentdata.LicensePlate, appointmentdata.AverageMilesOrMonth, appointmentdata.Mileage, appointmentdata.VIN, appointmentdata.MakeId, appointmentdata.YearId, appointmentdata.ModelId, appointmentdata.TrimId, appointmentdata.OPCodeList, appointmentdata.LeftFrontwheel, appointmentdata.LeftFrontTire, appointmentdata.LeftRearwheel, appointmentdata.LeftRearTire, appointmentdata.RightFrontWheel, appointmentdata.RightFrontTire, appointmentdata.RightRearWheel, appointmentdata.RightRearTire, appointmentdata.WipersAndLightsList, appointmentdata.AppointmentId, appointmentdata.CreatedFor, appointmentdata.Vehicalemake, appointmentdata.Vehicalemodel, appointmentdata.CustomerEmail, appointmentdata.Vehicaleyear, appointmentdata.AdvisorName, email, text, appointmentdata.HomeNo, appointmentdata.WorkNo, appointmentdata.CellNo, appointmentdata.Zip, appointmentdata.Country, appointmentdata.State, appointmentdata.City, appointmentdata.Address1, appointmentdata.Address2, appointmentdata.Notes, this.CarImageList,this.videolist).subscribe(res => {
                   this.appres = res;
+                  this.appno = this.appres.AppointmentId;
                   this.authservice.dismissLoading();
                   this.presentAlert1(this.appres.message, val);
                 })
@@ -487,6 +567,9 @@ export class SignaturePage implements OnInit {
         if(eximage){
           eximage = eximage.join();
         }
+        else{
+          eximage = "";
+        }
        
         let eimage = {
           "DealershipID": rocdata.dlrid,
@@ -498,10 +581,46 @@ export class SignaturePage implements OnInit {
           "ImagePathList": eximage,
           "DisplayOrderList": 0
         }
-        this.CarImageList.push(signdata, imgdata,eimage);
+       
+        var vlist = this.authservice.getvlist();
+              if(vlist){
+               vlist = vlist.join();
+              }
+              else{
+                vlist = "";
+              }
+              var vnlist = this.authservice.getvnlist();
+              if(vnlist){
+               vnlist = vnlist.join();
+              }
+              else{
+                vnlist = "";
+              }
+              var eviimage = this.authservice.getvimgbaselist();
+              if(eviimage){
+                eviimage = eviimage.join();
+              }
+              else{
+                eviimage = "";
+              }
+              var evimgname = this.authservice.getvimgnamelist();
+              if(evimgname){
+                evimgname = evimgname.join();
+              }
+              let vdata = {
+                "VideoNameList": vnlist,
+                "VideoPathList": vlist,
+                "VideoImageNameList":evimgname,
+                "VideoImagePathList":eviimage,
+                "VideoType": "0",
+              }
+              this.videolist.push(vdata);
+            
+              
+              this.CarImageList.push(signdata, imgdata,eimage);
         //this.ExtraImageList.push(eimage);
         if (rocdata.rolist) {
-          this.authservice.createtabro(rocdata.cid, rocdata.vin, rocdata.min, rocdata.sano, rocdata.tagno, rocdata.pono, rocdata.contact, rocdata.cname, rocdata.add1, rocdata.city, rocdata.state, rocdata.zip, rocdata.homeno, rocdata.workno, rocdata.email, rocdata.year, rocdata.make, rocdata.model, rocdata.license, rocdata.color, rocdata.uid, rocdata.mout, rocdata.wsdate, rocdata.wedate, rocdata.dlrid, rocdata.rnotes, rocdata.rolist, this.CarImageList, rocdata.rotype, rocdata.rono, rocdata.prodate).subscribe(res => {
+          this.authservice.createtabro(rocdata.cid, rocdata.vin, rocdata.min, rocdata.sano, rocdata.tagno, rocdata.pono, rocdata.contact, rocdata.cname, rocdata.add1, rocdata.city, rocdata.state, rocdata.zip, rocdata.homeno, rocdata.workno, rocdata.email, rocdata.year, rocdata.make, rocdata.model, rocdata.license, rocdata.color, rocdata.uid, rocdata.mout, rocdata.wsdate, rocdata.wedate, rocdata.dlrid, rocdata.rnotes, rocdata.rolist, this.CarImageList, rocdata.rotype, rocdata.rono, rocdata.prodate,this.videolist).subscribe(res => {
             console.log(res);
             this.authservice.dismissLoading();
             this.rores = res;
@@ -545,6 +664,9 @@ export class SignaturePage implements OnInit {
         if(eximage){
           eximage = eximage.join();
         }
+        else{
+          eximage = "";
+        }
        
         let eimage = {
           "DealershipID": rocdata.dlrid,
@@ -556,10 +678,46 @@ export class SignaturePage implements OnInit {
           "ImagePathList": eximage,
           "DisplayOrderList": 0
         }
+        //this.CarImageList.push(signdata, imgdata,eimage);
+        var vlist = this.authservice.getvlist();
+              if(vlist){
+               vlist = vlist.join();
+              }
+              else{
+                vlist = "";
+              }
+              var vnlist = this.authservice.getvnlist();
+              if(vnlist){
+               vnlist = vnlist.join();
+              }
+              else{
+                vnlist = "";
+              }
+              var eviimage = this.authservice.getvimgbaselist();
+              if(eviimage){
+                eviimage = eviimage.join();
+              }
+              else{
+                eviimage = "";
+              }
+              var evimgname = this.authservice.getvimgnamelist();
+              if(evimgname){
+                evimgname = evimgname.join();
+              }
+              let vdata = {
+                "VideoNameList": vnlist,
+                "VideoPathList": vlist,
+                "VideoImageNameList":evimgname,
+                "VideoImagePathList":eviimage,
+                "VideoType": "0",
+              }
+              this.videolist.push(vdata);
+             
+       
         this.CarImageList.push(signdata, imgdata,eimage);
         //this.ExtraImageList.push(eimage);
         if (rocdata.rolist) {
-          this.authservice.createtabro(rocdata.cid, rocdata.vin, rocdata.min, rocdata.sano, rocdata.tagno, rocdata.pono, rocdata.contact, rocdata.cname, rocdata.add1, rocdata.city, rocdata.state, rocdata.zip, rocdata.homeno, rocdata.workno, rocdata.email, rocdata.year, rocdata.make, rocdata.model, rocdata.license, rocdata.color, rocdata.uid, rocdata.mout, rocdata.wsdate, rocdata.wedate, rocdata.dlrid, rocdata.rnotes, rocdata.rolist, this.CarImageList, rocdata.rotype, rocdata.rono, rocdata.prodate).subscribe(res => {
+          this.authservice.createtabro(rocdata.cid, rocdata.vin, rocdata.min, rocdata.sano, rocdata.tagno, rocdata.pono, rocdata.contact, rocdata.cname, rocdata.add1, rocdata.city, rocdata.state, rocdata.zip, rocdata.homeno, rocdata.workno, rocdata.email, rocdata.year, rocdata.make, rocdata.model, rocdata.license, rocdata.color, rocdata.uid, rocdata.mout, rocdata.wsdate, rocdata.wedate, rocdata.dlrid, rocdata.rnotes, rocdata.rolist, this.CarImageList, rocdata.rotype, rocdata.rono, rocdata.prodate,this.videolist).subscribe(res => {
             console.log(res);
             this.authservice.dismissLoading();
             this.rores = res;
@@ -603,8 +761,21 @@ export class SignaturePage implements OnInit {
           text: 'OK',
           handler: () => {
             if (val == "no") {
+              let object = {
+                refresh : true
+                }
                //this.presentAlertCheckbox2();
-               this.router.navigateByUrl('/home');
+               this.authservice.setvideodata("");
+               this.authservice.setvideolist("");
+               this.authservice.setvimgbaselist("");
+               this.authservice.setvimglist("");
+               this.authservice.setvlist("");
+               this.authservice.setvimgbaselist("");
+               this.authservice.setvimgnamelist("");
+               this.authservice.setvnlist("");
+               this.authservice.setimagedata("");
+               this.authservice.seimage("");
+               this.router.navigate(['/home'],{ queryParams: object});
               
             }
             else if (val == "yes") {
@@ -637,7 +808,8 @@ export class SignaturePage implements OnInit {
                     delaerid:this.delarid,
                     rono:this.rores.RONumber,
                     username: this.username,
-                    uid:this.userid
+                    uid:this.userid,
+                    isback : false
                   }
                    
                 this.router.navigate(['/pdfview'], { queryParams: object });
@@ -660,7 +832,12 @@ export class SignaturePage implements OnInit {
         {
           text: 'OK',
           handler: () => {
-            this.router.navigateByUrl('/home');
+            let object = {
+              refresh : true
+              }
+             //this.presentAlertCheckbox2();
+             this.router.navigate(['/home'],{ queryParams: object});
+            //this.router.navigateByUrl('/home');
 
           }
         }
