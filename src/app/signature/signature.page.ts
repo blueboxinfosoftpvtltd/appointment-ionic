@@ -126,7 +126,7 @@ export class SignaturePage implements OnInit {
 
     if (this.Page) {
       this.authservice.presentLoading();
-      this.authservice.CarImageInsert(this.delarid, this.AppointmentId, this.VIN, this.userid, "1", this.signature.split(',').pop(), "0", this.ronumber).subscribe(res => {
+      this.authservice.CarImageInsert(this.delarid, this.AppointmentId, this.VIN, this.userid, "1", this.signature.split(',').pop(), "0", this.ronumber,"","","","").subscribe(res => {
         this.data = res;
         console.log(this.data);
         this.authservice.dismissLoading();
@@ -330,7 +330,7 @@ export class SignaturePage implements OnInit {
         'uid': appointmentdata.CreatedBy,
         'image': "no",
         'carimage': [],
-        'videodata':this.videolist,
+        'videodata':[],
         'appid':this.appno
        // 'eimage':this.ExtraImageList
       }

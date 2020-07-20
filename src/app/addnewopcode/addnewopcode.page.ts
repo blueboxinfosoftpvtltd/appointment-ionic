@@ -39,15 +39,22 @@ export class AddnewopcodePage implements OnInit {
 
 
   Submit(){
-    this.authservice.presentLoading();
+   
     
+    if(this.opcode && this.sale && this.hours && this.desc){
+      this.authservice.presentLoading();
     this.authservice.MOPCodeInsert(this.opcode,this.sale,this.hours,this.desc,this.userid,this.dealerid).subscribe(res =>{
       this.data =  res
       this.authservice.dismissLoading();
       this.authservice.showToast(this.data.Message);
     })
- 
     this.closeModal();
+  }
+  else{
+    this.authservice.showToast("Fill details first!!");
+  }
+ 
+   
   }
 
 

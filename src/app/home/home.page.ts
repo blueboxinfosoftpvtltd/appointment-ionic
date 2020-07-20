@@ -155,6 +155,10 @@ export class HomePage {
       //this.isEnabled ="false";
       if(data.refresh){
         this.authservice.presentLoading();
+
+        setTimeout(() => {
+         this.authservice.dismissLoading();  
+        }, 5000);
         console.log("ionViewDidLoad call");
         this.storage.get('showall').then((val) => {
           if (val == undefined) {
@@ -203,7 +207,7 @@ export class HomePage {
               else {
                 this.appointmentsData = res;
               }
-              this.authservice.dismissLoading();
+             // this.authservice.dismissLoading();
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
               // }
@@ -237,6 +241,9 @@ export class HomePage {
     this.selecttxt = "My RO";
     if (this.rodata.length == 0) {
       this.authservice.presentLoading();
+      setTimeout(() => {
+       this.authservice.dismissLoading();  
+      }, 5000);
       this.storage.get('showallro').then((val) => {
         if (val == undefined) {
           this.ismyapp1 = true;
@@ -251,14 +258,14 @@ export class HomePage {
         }
         this.authservice.getrodashboard(this.dealerid, val, this.advisorid, 0, 10, "", "").subscribe(res => {
           if (res == null) {
-            this.authservice.dismissLoading();
+            //this.authservice.dismissLoading();
           } else {
             this.rod = res;
             for (let i = 0; i < this.rod.length; i++) {
               this.rodata.push(this.rod[i]);
             }
             console.log(this.rodata);
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
           }
 
         },
@@ -335,6 +342,10 @@ export class HomePage {
 
           var appointment = "1";
           this.authservice.presentLoading();
+
+          setTimeout(() => {
+           this.authservice.dismissLoading();  
+          }, 5000);
           this.authservice.getappointdata(this.advisorid, this.dealerid, appointment, this.currentDate, this.type).subscribe((res) => {
             //this.appointmentsData = "";
             //this.appointmentsData = res;
@@ -342,11 +353,11 @@ export class HomePage {
             setTimeout(() => {
               if (res == null) {
                 this.scheduler.instance.option("dataSource", []);
-                this.authservice.dismissLoading();
+               // this.authservice.dismissLoading();
               }
               else {
                 this.scheduler.instance.option("dataSource", res);
-                this.authservice.dismissLoading();
+                //this.authservice.dismissLoading();
               }
 
             }, 500);
@@ -365,6 +376,9 @@ export class HomePage {
         var appointment = "0";
         if (this.appointmentsData != undefined) {
           this.authservice.presentLoading();
+          setTimeout(() => {
+           this.authservice.dismissLoading();  
+          }, 5000);
           this.authservice.getappointdata(this.advisorid, this.dealerid, appointment, this.currentDate, this.type).subscribe((res) => {
             //this.appointmentsData = "";
             //this.appointmentsData = res;
@@ -372,11 +386,11 @@ export class HomePage {
             setTimeout(() => {
               if (res == null) {
                 this.scheduler.instance.option("dataSource", []);
-                this.authservice.dismissLoading();
+               // this.authservice.dismissLoading();
               }
               else {
                 this.scheduler.instance.option("dataSource", res);
-                this.authservice.dismissLoading();
+              //  this.authservice.dismissLoading();
               }
 
             }, 500);
@@ -403,13 +417,16 @@ export class HomePage {
         if (this.rodata.length != 0)
           this.authservice.presentLoading();
 
+          setTimeout(() => {
+           this.authservice.dismissLoading();  
+          }, 5000);
         this.authservice.getrodashboard(this.dealerid, ro, this.advisorid, 0, 10, "", "").subscribe(res => {
           if (res == null) {
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
           }
           else {
             this.rod = res;
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
             if (this.rod == null) {
 
               // e.target.complete();
@@ -426,14 +443,17 @@ export class HomePage {
         this.storage.set("showallro", "0");
         var ro = "0";
         this.authservice.presentLoading();
+        setTimeout(() => {
+         this.authservice.dismissLoading();  
+        }, 5000);
         this.rodata = [];
         this.authservice.getrodashboard(this.dealerid, ro, this.advisorid, 0, 10, "", "").subscribe(res => {
           if (res == null) {
-            this.authservice.dismissLoading();
+          //  this.authservice.dismissLoading();
           }
           else {
             this.rod = res;
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
             if (this.rod == null) {
 
               // e.target.complete();
@@ -461,6 +481,9 @@ export class HomePage {
       this.type = "0";
     }
     this.authservice.presentLoading();
+    setTimeout(() => {
+     this.authservice.dismissLoading();  
+    }, 5000);
     console.log("ionViewDidLoad call");
     this.storage.get('showall').then((val) => {
       if (val == undefined) {
@@ -509,7 +532,7 @@ export class HomePage {
           else {
             this.appointmentsData = res;
           }
-          this.authservice.dismissLoading();
+         // this.authservice.dismissLoading();
           // for(let i=0 ; i<this.resdata.length;i++){
           //   this.appointmentsData.push(this.resdata[i]);
           // }
@@ -674,6 +697,9 @@ export class HomePage {
       this.type = "0";
     }
     this.authservice.presentLoading();
+    setTimeout(() => {
+     this.authservice.dismissLoading();  
+    }, 5000);
     this.appointmentsData = "";
     this.storage.get('userid').then((val) => {
       this.advisorid = val;
@@ -690,11 +716,11 @@ export class HomePage {
           setTimeout(() => {
             if (res == null) {
               this.scheduler.instance.option("dataSource", []);
-              this.authservice.dismissLoading();
+              //this.authservice.dismissLoading();
             }
             else {
               this.scheduler.instance.option("dataSource", res);
-              this.authservice.dismissLoading();
+             // this.authservice.dismissLoading();
             }
 
           }, 500);
@@ -710,8 +736,16 @@ export class HomePage {
       this.type = "0";
     }
     this.storage.set("dealerid", event.detail.value);
+    for(let i=0;i<this.dealers.length;i++){
+       if(this.dealers[i].DealershipId == event.detail.value){
+        this.storage.set("dealername", this.dealers[i].DealershipName);
+       }
+    }
     if (this.appointmentsData != undefined) {
       this.authservice.presentLoading();
+      setTimeout(() => {
+        this.authservice.dismissLoading();
+      }, 5000);
       this.appointmentsData = "";
       var appointment;
       if (this.ismyapp == true) {
@@ -720,15 +754,16 @@ export class HomePage {
       else {
         appointment = "0";
       }
+      if(this.ActiveSegment == "app"){
       this.authservice.getappointdata(this.advisorid, event.detail.value, appointment, this.currentDate, this.type).subscribe((res) => {
         setTimeout(() => {
           if (res == null) {
             this.scheduler.instance.option("dataSource", []);
-            this.authservice.dismissLoading();
+            //this.authservice.dismissLoading();
           }
           else {
             this.scheduler.instance.option("dataSource", res);
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
           }
 
         }, 500);
@@ -736,6 +771,26 @@ export class HomePage {
         //   this.appointmentsData.push(this.resdata[i]);
         // }
       },err => this.authservice.dismissLoading())
+    }
+    else if(this.ActiveSegment == "ro"){
+      this.storage.get('showallro').then((val) => {
+      this.authservice.getrodashboard(event.detail.value, val, this.advisorid, 0, 10, "", "").subscribe(res => {
+        if (res == null) {
+          //this.authservice.dismissLoading();
+        } else {
+          this.rodata = [];
+          this.rod = res;
+          for (let i = 0; i < this.rod.length; i++) {
+            this.rodata.push(this.rod[i]);
+          }
+          console.log(this.rodata);
+         // this.authservice.dismissLoading();
+        }
+
+      },
+      err => this.authservice.dismissLoading())
+    })
+  }
     }
   }
 
@@ -883,11 +938,14 @@ export class HomePage {
   clear() {
     if (this.issearch == true) {
       this.authservice.presentLoading();
+      setTimeout(() => {
+       this.authservice.dismissLoading();  
+      }, 5000);
       this.storage.get('showallro').then((val) => {
         this.authservice.getrodashboard(this.dealerid, val, this.advisorid, 0, 10, "", "").subscribe(res => {
           this.rodata = [];
           if (res == null) {
-            this.authservice.dismissLoading();
+            //this.authservice.dismissLoading();
           }
           else {
             this.rod = res;
@@ -898,7 +956,7 @@ export class HomePage {
             this.val = "";
             console.log(this.rodata);
             this.issearch = false;
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
           }
 
         },err => this.authservice.dismissLoading())
@@ -924,11 +982,14 @@ export class HomePage {
     if (this.val && this.op) {
       this.issearch = true;
       this.authservice.presentLoading();
+      setTimeout(() => {
+        this.authservice.dismissLoading();
+      }, 5000);
       this.storage.get('showallro').then((val) => {
         this.authservice.getrodashboard(this.dealerid, val, this.advisorid, 0, 10, this.val, this.op).subscribe(res => {
           this.rodata = [];
           if (res == null) {
-            this.authservice.dismissLoading();
+            //this.authservice.dismissLoading();
 
           }
           else {
@@ -936,7 +997,7 @@ export class HomePage {
             for (let i = 0; i < this.rod.length; i++) {
               this.rodata.push(this.rod[i]);
             }
-            this.authservice.dismissLoading();
+           // this.authservice.dismissLoading();
           }
 
         },err => this.authservice.dismissLoading())
@@ -957,6 +1018,9 @@ export class HomePage {
           this.type = "0";
         }
         this.authservice.presentLoading();
+        setTimeout(() => {
+         this.authservice.dismissLoading();  
+        }, 5000);
         this.appointmentsData = "";
         this.storage.get('userid').then((val) => {
           this.advisorid = val;
@@ -973,12 +1037,12 @@ export class HomePage {
               setTimeout(() => {
                 if (res == null) {
                   this.scheduler.instance.option("dataSource", []);
-                  this.authservice.dismissLoading();
+                 // this.authservice.dismissLoading();
                   event.target.complete();
                 }
                 else {
                   this.scheduler.instance.option("dataSource", res);
-                  this.authservice.dismissLoading();
+                 // this.authservice.dismissLoading();
                   event.target.complete();
                 }
 
@@ -1011,10 +1075,13 @@ export class HomePage {
               appointment = "0";
             }
             this.authservice.presentLoading();
+            setTimeout(() => {
+             this.authservice.dismissLoading();  
+            }, 5000);
             this.rodata = [];
             this.authservice.getrodashboard(this.dealerid, appointment, this.advisorid, 0, 10, "", "").subscribe(res => {
               this.rod = res;
-              this.authservice.dismissLoading();
+             // this.authservice.dismissLoading();
               if (this.rod == null) {
 
                 // e.target.complete();

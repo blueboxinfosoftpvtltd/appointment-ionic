@@ -680,7 +680,7 @@
                     <!-- </ion-col> -->
                     <!-- </ion-row> -->
                 </ion-col>
-                <ion-col size="3">
+                <ion-col size="3" *ngIf="dealername == 'WESTSIDE KIA'">
                     <ion-row>
                         <ion-col style="align-self: center">
                             <ion-label>Quick Add Opcode</ion-label>
@@ -725,6 +725,55 @@
                         </ion-col>
                         <ion-col col-1.5>
                             <ion-button (click)="addcode('WC')" style="width: 50%;--background:#374767" size="small">WC</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+
+                <ion-col size="3" *ngIf="dealername == 'MONROEVILLE KIA'">
+                    <ion-row>
+                        <ion-col style="align-self: center">
+                            <ion-label>Quick Add Opcode</ion-label>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="text-align: center" col-1.5>
+                            <ion-button (click)="addcode('KCP2')" style="width: 50%;--background:#374767" size="small">KCP2</ion-button>
+                        </ion-col>
+                        <ion-col col-1.5>
+                            <ion-button (click)="addcode('KCP1')" style="width: 50%;--background:#374767" size="small">KCP1</ion-button>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col style="text-align: center" col-1.5>
+                            <ion-button (click)="addcode('CW')" style="width: 50%;--background:#374767" size="small">CW</ion-button>
+                        </ion-col>
+                        <ion-col col-1.5>
+                            <ion-button (click)="addcode('TRKCPI')" style="width: 50%;--background:#374767" size="small">TRKCPI</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="text-align: center" col-1.5>
+                            <ion-button (click)="addcode('BULB')" style="width: 50%;--background:#374767" size="small">BULB</ion-button>
+                        </ion-col>
+                        <ion-col col-1.5>
+                            <ion-button (click)="addcode('ETE')" style="width: 50%;--background:#374767" size="small">ETE</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="text-align: center" col-1.5>
+                            <ion-button (click)="addcode('LOF')" style="width: 50%;--background:#374767" size="small">LOF</ion-button>
+                        </ion-col>
+                        <ion-col col-1.5>
+                            <ion-button (click)="addcode('NC')" style="width: 50%;--background:#374767" size="small">NC</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="text-align: center" col-1.5>
+                            <ion-button (click)="addcode('ET')" style="width: 50%;--background:#374767" size="small">ET</ion-button>
+                        </ion-col>
+                        <ion-col col-1.5>
+                            <ion-button (click)="addcode('PI1802')" style="width: 50%;--background:#374767" size="small">PI1802</ion-button>
                         </ion-col>
                     </ion-row>
                 </ion-col>

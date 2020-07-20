@@ -57,7 +57,7 @@ ion-footer {
     text-align: center;
 }
 .rowcss{
-  background-attachment: fixed;
+//   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
 
@@ -180,8 +180,8 @@ ion-segment {
         //width: 400px;
     }
     .image{
-        background-image: url(../../assets/imgs/c.png);margin-bottom: 20%;background-position-y: 350px;
-        background-size: 300px;
+        background-image: url(../../assets/imgs/c.png);
+        background-size: 265px;
     }
     // ion-label{
     //     font-style: italic;

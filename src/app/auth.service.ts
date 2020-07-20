@@ -52,7 +52,7 @@ export class AuthService {
   vimgnamelist:any;
   constructor(private http: HttpClient, public loadingController: LoadingController, public toastController: ToastController) {
 
-    this.url = "http://appointmentapi.itsguru.com/api/Appointment";
+     this.url = "http://appointmentapi.itsguru.com/api/Appointment";
     //this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
 
 
@@ -801,7 +801,7 @@ export class AuthService {
     return this.http.post(this.url + "/SearchRO", aptdata, { headers: headers });
   }
 
-  CarImageInsert(delaershipid, AppointmentId, VIN, userid, type, CompleteImage, takeorder, ronumber) {
+  CarImageInsert(delaershipid, AppointmentId, VIN, userid, type, CompleteImage, takeorder, ronumber,vnamel,vpathl,ipathl,inamel) {
     var d = new Date().toLocaleTimeString(); // for now time
     let imgdata =
     {
@@ -813,7 +813,11 @@ export class AuthService {
       "ImageType": type,   /* 0 For Car Image 1 For Signature */
       "ImagePathList": CompleteImage,
       "DisplayOrderList": takeorder,
-      "IDSFlag": this.idsflag
+      "IDSFlag": this.idsflag,
+      "VideoNameList":vnamel,
+      "VideoPathList":vpathl,
+      "VideoImagePathList":ipathl,
+      "VideoImageNameList":inamel
     }
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');

@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { VideoEditor } from '@ionic-native/video-editor/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { isUndefined } from 'util';
 @Component({
   selector: 'app-searchappoinment',
   templateUrl: './searchappoinment.page.html',
@@ -59,6 +60,9 @@ export class SearchappoinmentPage implements OnInit {
               }
               console.log(this.currentdate1);
               if (this.selectval == "appt") {
+                if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+                  this.currentdate1 = "1900/01/01"
+                }
                 this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                   this.appointmentlist = res;
                   this.IsShow = true;
@@ -67,6 +71,9 @@ export class SearchappoinmentPage implements OnInit {
                 })
               }
               else if (this.selectval == "ro") {
+                if(this.rono == undefined){
+                  this.rono = "";
+                }
                 this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                   this.appointmentlist = res;
                   this.IsShow = true;
@@ -85,6 +92,9 @@ export class SearchappoinmentPage implements OnInit {
             }
             console.log(this.currentdate1);
             if (this.selectval == "appt") {
+              if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+                this.currentdate1 = "1900/01/01"
+              }
               this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                 this.appointmentlist = res;
                 this.IsShow = true;
@@ -93,6 +103,9 @@ export class SearchappoinmentPage implements OnInit {
               })
             }
             else if (this.selectval == "ro") {
+              if(this.rono == undefined){
+                this.rono = "";
+              }
               this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                 this.appointmentlist = res;
                 this.IsShow = true;
@@ -110,6 +123,9 @@ export class SearchappoinmentPage implements OnInit {
           }
           console.log(this.currentdate1);
           if (this.selectval == "appt") {
+            if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+              this.currentdate1 = "1900/01/01"
+            }
             this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
               this.appointmentlist = res;
               this.IsShow = true;
@@ -118,6 +134,9 @@ export class SearchappoinmentPage implements OnInit {
             })
           }
           else if (this.selectval == "ro") {
+            if(this.rono == undefined){
+              this.rono = "";
+            }
             this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
               this.appointmentlist = res;
               this.IsShow = true;
@@ -146,6 +165,9 @@ export class SearchappoinmentPage implements OnInit {
         }
         console.log(this.currentdate1);
         if (this.selectval == "appt") {
+          if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+            this.currentdate1 = "1900/01/01"
+          }
           this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
             this.appointmentlist = res;
             this.IsShow = true;
@@ -154,6 +176,9 @@ export class SearchappoinmentPage implements OnInit {
           })
         }
         else if (this.selectval == "ro") {
+          if(this.rono == undefined){
+            this.rono = "";
+          }
           this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
             this.appointmentlist = res;
             this.IsShow = true;
@@ -182,6 +207,9 @@ export class SearchappoinmentPage implements OnInit {
               }
               console.log(this.currentdate1);
               if (this.selectval == "appt") {
+                if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+                  this.currentdate1 = "1900/01/01"
+                }
                 this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                   this.appointmentlist = res;
                   this.IsShow = true;
@@ -190,6 +218,9 @@ export class SearchappoinmentPage implements OnInit {
                 })
               }
               else if (this.selectval == "ro") {
+                if(this.rono == undefined){
+                  this.rono = "";
+                }
                 this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                   this.appointmentlist = res;
                   this.IsShow = true;
@@ -208,6 +239,9 @@ export class SearchappoinmentPage implements OnInit {
             }
             console.log(this.currentdate1);
             if (this.selectval == "appt") {
+              if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+                this.currentdate1 = "1900/01/01"
+              }
               this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                 this.appointmentlist = res;
                 this.IsShow = true;
@@ -216,6 +250,9 @@ export class SearchappoinmentPage implements OnInit {
               })
             }
             else if (this.selectval == "ro") {
+              if(this.rono == undefined){
+                this.rono = "";
+              }
               this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
                 this.appointmentlist = res;
                 this.IsShow = true;
@@ -233,6 +270,9 @@ export class SearchappoinmentPage implements OnInit {
           }
           console.log(this.currentdate1);
           if (this.selectval == "appt") {
+            if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+              this.currentdate1 = "1900/01/01"
+            }
             this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
               this.appointmentlist = res;
               this.IsShow = true;
@@ -241,6 +281,9 @@ export class SearchappoinmentPage implements OnInit {
             })
           }
           else if (this.selectval == "ro") {
+            if(this.rono == undefined){
+              this.rono = "";
+            }
             this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
               this.appointmentlist = res;
               this.IsShow = true;
@@ -269,6 +312,9 @@ export class SearchappoinmentPage implements OnInit {
         }
         console.log(this.currentdate1);
         if (this.selectval == "appt") {
+          if (this.currentdate == '' || this.currentdate == undefined || this.currentdate == null) {
+            this.currentdate1 = "1900/01/01"
+          }
           this.authservice.SearchAppointment(this.currentdate1, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
             this.appointmentlist = res;
             this.IsShow = true;
@@ -277,6 +323,9 @@ export class SearchappoinmentPage implements OnInit {
           })
         }
         else if (this.selectval == "ro") {
+          if(this.rono == undefined){
+            this.rono = "";
+          }
           this.authservice.Searchro(this.rono, this.dealerid, this.fname, this.lname, this.vin).subscribe(res => {
             this.appointmentlist = res;
             this.IsShow = true;

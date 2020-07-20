@@ -73,6 +73,7 @@ export class TakeimagePage implements OnInit {
   currentDateTime: any;
   selectedRadioGroup: any;
   dataReturned: any;
+  dealername:any;
   //Get value on ionSelect on IonRadio item
   selectedRadioItem: any;
   myButton: any;
@@ -126,6 +127,10 @@ export class TakeimagePage implements OnInit {
         }
       );
     });
+
+    this.storage.get('dealername').then(val=>{
+      this.dealername = val;
+    })
 
     this.videolist=this.authservice.getvideolist();
     if(this.videolist){
@@ -213,7 +218,7 @@ export class TakeimagePage implements OnInit {
           appid = this.AppointmentId;
           rono = this.ronumber;
         }
-        this.authservice.getcarimage(this.delarid,appid,rono ).subscribe((res => {
+        this.authservice.getcarimage(this.delarid,appid,rono).subscribe((res => {
           this.getres = res;
           if (this.getres == null) {
 
@@ -239,6 +244,30 @@ export class TakeimagePage implements OnInit {
                   });
                  
                   console.log(this.captureDataUrl);
+                }
+
+                if(this.getres[i].VideoName != ""){
+                
+                  this.getBase64ImageFromURL(this.getres[i].BuketURL).subscribe(base64data => {
+                    var name,vurl,imgurl;
+                    name = this.getres[i].VideoName;
+                    vurl = this.getres[i].VideoPath;
+                     this.vlist.push(this.getres[i].VideoPath);
+                     this.vnlist.push(this.getres[i].VideoName);
+                     this.vimgnamelist.push(this.getres[i].ImageName);
+                     this.vimglist.push(this.getres[i].BuketURL);
+                    
+                       imgurl = base64data;
+                       console.log(base64data);
+                       let fdata = {
+                         VideoName : name,
+                         VideoPath : vurl,
+                         ImagePath:imgurl
+                       }
+                       this.files.push(fdata);
+                       this.vimgbaselist.push(base64data);
+                     })
+
                 }
 
                 if (this.getres[i].ImageType == 2) {
@@ -636,6 +665,18 @@ export class TakeimagePage implements OnInit {
 
   Next() {
     console.log(this.CompleteImage);
+    let uimage = [];
+    let uorder = [];
+    this.CompleteImage.forEach(element => {
+      if(!uimage.includes(element)){
+        uimage.push(element);
+      }
+    });
+    this.displayorder.forEach(element => {
+      if(!uorder.includes(element)){
+        uorder.push(element);
+      }
+    });
     // this.router.navigateByUrl('/signature');
     //   this.takeimage = this.CompleteImage.join();
     //   this.takeorder = this.displayorder.join();
@@ -652,9 +693,9 @@ export class TakeimagePage implements OnInit {
     //    })
     // }
 
-
-    this.takeimage = this.CompleteImage.join();
-    this.takeorder = this.displayorder.join();
+    
+    this.takeimage = uimage.join();
+    this.takeorder = uorder.join();
     this.authservice.setvlist(this.vlist);
     this.authservice.setvnlist(this.vnlist);
     this.authservice.setvimglist(this.vimglist);
@@ -785,15 +826,31 @@ export class TakeimagePage implements OnInit {
 
   Save() {
     console.log(this.CompleteImage);
-    this.takeimage = this.CompleteImage.join();
-    this.takeorder = this.displayorder.join();
-    if (this.CompleteImage.length == 0) {
-      this.authservice.showToast("Select Image First");
+    let uimage = [];
+    let uorder = [];
+    this.CompleteImage.forEach(element => {
+      if(!uimage.includes(element)){
+        uimage.push(element);
+      }
+    });
+    this.displayorder.forEach(element => {
+      if(!uorder.includes(element)){
+        uorder.push(element);
+      }
+    });
+    this.takeimage = uimage.join();
+    this.takeorder = uorder.join();
+    if (this.CompleteImage.length == 0 && this.vlist.length == 0) {
+      this.authservice.showToast("Pick Atleast Image Or Video");
     } else {
 
       if (this.Page) {
+        var vnamel = this.vnlist.join();
+        var vpathl = this.vlist.join();
+        var ipathl = this.vimgbaselist.join();
+        var inamel = this.vimgnamelist.join();
         this.authservice.presentLoading();
-        this.authservice.CarImageInsert(this.delarid, this.AppointmentId, this.VIN, this.userid, "0", this.takeimage, this.takeorder, "0").subscribe(res => {
+        this.authservice.CarImageInsert(this.delarid, this.AppointmentId, this.VIN, this.userid, "0", this.takeimage, this.takeorder, this.ronumber,vnamel,vpathl,ipathl,inamel).subscribe(res => {
           this.data = res;
           console.log(this.data);
           this.authservice.dismissLoading();
@@ -989,6 +1046,9 @@ export class TakeimagePage implements OnInit {
 
               var cdate = (moment(new Date).format('YYYYMMDDHHmmss'));
               var vin = this.authservice.getvin();
+              if(vin ==undefined){
+                vin = this.VIN;
+              }
               var option:CreateThumbnailOptions = {fileUri:dirpath+'/'+entries.name,width:1024, height:300, atTime:5, outputFileName: vin+'_'+cdate, quality:50 };
               this.videoEditor.createThumbnail(option).then(result=>{
                 console.log(result);
@@ -1090,6 +1150,9 @@ export class TakeimagePage implements OnInit {
   async upload(buffer,name){
     var cdate = (moment(new Date).format('YYYYMMDDHHmmss'));
     var vin = this.authservice.getvin();
+    if(vin ==undefined){
+      vin = this.VIN;
+    }
     name = vin+'_'+cdate;
      let blob = new Blob([new Uint8Array (buffer)],{type:"video/mov"});
      console.log(blob);
@@ -1105,10 +1168,17 @@ export class TakeimagePage implements OnInit {
             region: 'us-east-1'
           }
         );
+        var app;
+        if(this.AppointmentId == "0"){
+          app = "Appointment";
+        }
+        else{
+          app = "RO";
+        }
     
         const params = {
           Bucket: 'appointmentids',//testdoc0101
-          Key:  "Appointment/"+ this.delarid+"/"+vin +"/"+ cdate+"/"+name+ ".mp4",
+          Key:  app+"/"+ this.dealername+"/"+vin +"/"+ cdate+"/"+name+ ".mp4",
           Body: blob,
           ContentType: "video/mp4"
         };

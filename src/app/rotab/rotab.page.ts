@@ -237,6 +237,7 @@ export class RotabPage implements OnInit {
   contstr:any;
   appno:any;
   islabor : boolean = false;
+  dealername:any;
   //techno:any;
   public myForm: FormGroup;
   constructor(private formBuilder: FormBuilder, public events: Events, private storage: Storage, private authservice: AuthService,
@@ -260,6 +261,9 @@ export class RotabPage implements OnInit {
     this.storage.get("fullname").then(val => {
       this.saname = val;
       this.saname.replace(',','');
+    })
+    this.storage.get('dealername').then(val =>{
+      this.dealername = val;
     })
     // this.storage.get("userid").then(val =>{
     //   this.sid = val;
@@ -1395,6 +1399,7 @@ export class RotabPage implements OnInit {
         {
           text: 'OK',
           handler: () => {
+            this.authservice.setopcodero("");
             //this.presentAlertCheckbox2();
             this.router.navigateByUrl('/home');
           }
@@ -1415,6 +1420,7 @@ export class RotabPage implements OnInit {
           text: 'OK',
           handler: () => {
             //this.authservice.presentLoading();
+            this.authservice.setopcodero("");
           this.authservice.printro(this.dealerid,this.rono,this.username).subscribe(res =>{
                 console.log(res);
                 this.furl = res;
@@ -1549,6 +1555,15 @@ export class RotabPage implements OnInit {
         this.rentalres = res;
         this.addrolist = this.rentalres;
         console.log(this.addrolist);
+        for(let i=0 ; i<this.addrolist.length;i++){
+          if(this.addrolist[i].LaborType == ""){
+            this.islabor = false;
+          }
+          else{
+            this.islabor = true;
+          }
+          
+        }
       })
 
 
