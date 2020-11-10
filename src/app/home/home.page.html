@@ -7,6 +7,11 @@
       <ion-label style="color: #fff;">{{username}}</ion-label>
       <!-- <ion-icon (click)="reload()" name="md-refresh"></ion-icon> -->
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()">
+          <ion-icon slot="end" name="log-out"></ion-icon>
+      </ion-button>
+  </ion-buttons>
     <ion-title>
       <img *ngIf="dealers" src="../assets/imgs/appicon.png" style="width: 95px;">
       <!-- <span style="color: #fff;margin-left: 3px">PPOINTMENT </span> -->
@@ -21,15 +26,15 @@
 <ion-content *ngIf="dealers">
 
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+<!--   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  </ion-refresher>-->
 
   <!-- slot="fixed" -->
   <div>
     <ion-row class="row1" *ngIf="isEnabled == 'false'">
-      <ion-col size="3">
-        <p style="margin-left: 13px;    margin-top: 10px;">Dealership Name</p>
+      <ion-col size="2">
+            <p style="margin-left: 35px;    margin-top: 15px;">Dealership</p>
       </ion-col>
       <ion-col size="4">
         <ion-item *ngIf="isEnabled == 'false'" style="border: 1px solid #acadaf;margin-left: 10px;margin-right: 10px;border-radius: 10px;">
@@ -38,42 +43,110 @@
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size="5" *ngIf="ActiveSegment == 'app'">
-        <ion-item lines="none">
-          <ion-label>{{selecttxt}}</ion-label>
-          <ion-checkbox color="primary" [(ngModel)]="ismyapp" (ionChange)="myapp($event)" slot="start"></ion-checkbox>
-        </ion-item>
+     
+
+      <ion-col size="6" size-lg *ngIf="ActiveSegment == 'app'">
+          <ion-row>
+              <ion-col size="8" >
+                  <ion-item lines="none">
+                      <ion-label>{{selecttxt}}</ion-label>
+                      <ion-checkbox color="primary" [(ngModel)]="ismyapp" (ionChange)="myapp($event)" slot="start"></ion-checkbox>
+                    </ion-item>
+              </ion-col>
+              <ion-col size="4" >
+                
+                      <ion-button style="width: 100%; height:35px; --background: #374767;"  (click)="doRefresh($event)">
+                        <ion-icon slot="start" name="refresh" style="height: 18px;"></ion-icon>
+                        Refresh
+                      </ion-button>
+                      
+                      
+              </ion-col>
+          </ion-row>
+        
       </ion-col>
-      <ion-col size="5" *ngIf="ActiveSegment == 'ro'">
-        <ion-item lines="none">
-          <ion-label>{{selecttxt}}</ion-label>
-          <ion-checkbox color="primary" [(ngModel)]="ismyapp1" (ionChange)="myapp1($event)" slot="start"></ion-checkbox>
-        </ion-item>
+     
+
+      
+      <ion-col size="6" *ngIf="ActiveSegment == 'ro'">
+      
+
+        <ion-row>
+            <ion-col size="8" >
+                <ion-item lines="none">
+                    <ion-label>{{selecttxt}}</ion-label>
+                    <ion-checkbox color="primary" [(ngModel)]="ismyapp1" (ionChange)="myapp1($event)" slot="start"></ion-checkbox>
+                </ion-item>
+            </ion-col>
+            <ion-col size="4" >
+              
+                    <ion-button style="width: 100%; height:35px; --background: #374767; margin-left: -35px;"  (click)="doRefresh($event)">
+                      <ion-icon slot="start" name="refresh" style="height: 18px;"></ion-icon>
+                      Refresh
+                    </ion-button>
+                    
+                    
+            </ion-col>
+        </ion-row>
+      
       </ion-col>
     </ion-row>
 
     <ion-row class="row1" *ngIf="isEnabled == 'true'">
-      <ion-col size="3">
-        <p style="margin-left: 13px;    margin-top: 10px;">Dealership Name</p>
+      <ion-col size="2">
+        <p style="margin-left: 35px;    margin-top: 15px;">Dealership</p>
       </ion-col>
-      <ion-col size="4">
-        <ion-item *ngIf="isEnabled == 'true'" style="border: 1px solid #acadaf;margin-left: 10px;margin-right: 10px;border-radius: 10px;pointer-events: none">
+      <ion-col size="4" >
+        <ion-item lines="none" *ngIf="isEnabled == 'true'" style="border: 2px solid #acadaf;margin-left: 0px;margin-right: 10px;border-radius: 5px;pointer-events: none">
           <ion-select [selectedText]="dealer" value={{dealername}} (ionChange)="ChangeDealership($event)" style="max-width: 100% !important;width: 100%;font-size: 15px;margin-left: -10px;">
-            <ion-select-option style="white-space: normal;" *ngFor="let dealer of dealers" value="{{dealer.DealershipId}}">{{dealer.DealershipName}}</ion-select-option>
+            <ion-select-option  *ngFor="let dealer of dealers" value="{{dealer.DealershipId}}">{{dealer.DealershipName}}</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col size="5" *ngIf="ActiveSegment == 'app'">
-        <ion-item lines="none">
-          <ion-label>{{selecttxt}}</ion-label>
-          <ion-checkbox color="primary" [(ngModel)]="ismyapp" (ionChange)="myapp($event)" slot="start"></ion-checkbox>
-        </ion-item>
+
+
+
+      <ion-col size="6" size-lg *ngIf="ActiveSegment == 'app'">
+          <ion-row>
+              <ion-col size="8" >
+                  <ion-item lines="none">
+                      <ion-label>{{selecttxt}}</ion-label>
+                      <ion-checkbox color="primary" [(ngModel)]="ismyapp" (ionChange)="myapp($event)" slot="start"></ion-checkbox>
+                    </ion-item>
+              </ion-col>
+              <ion-col size="4" >
+                
+                      <ion-button style="width: 100%; height:35px; --background: #374767;"  (click)="doRefresh($event)">
+                        <ion-icon slot="start" name="refresh" style="height: 18px;"></ion-icon>
+                        Refresh
+                      </ion-button>
+                      
+                      
+              </ion-col>
+          </ion-row>
+        
       </ion-col>
-      <ion-col size="5" *ngIf="ActiveSegment == 'ro'">
-        <ion-item lines="none">
-          <ion-label>{{selecttxt}}</ion-label>
-          <ion-checkbox color="primary" [(ngModel)]="ismyapp1" (ionChange)="myapp1($event)" slot="start"></ion-checkbox>
-        </ion-item>
+     
+
+      <ion-col size="6" size-lg *ngIf="ActiveSegment == 'ro'">
+          <ion-row>
+              <ion-col size="8" >
+                  <ion-item lines="none">
+                      <ion-label>{{selecttxt}}</ion-label>
+                      <ion-checkbox color="primary" [(ngModel)]="ismyapp1" (ionChange)="myapp1($event)" slot="start"></ion-checkbox>            
+                    </ion-item>
+              </ion-col>
+              <ion-col size="4" >
+                
+                      <ion-button style="width: 100%; height:35px; --background: #374767;  margin-left: -35px;"  (click)="doRefresh($event)">
+                        <ion-icon slot="start" name="refresh" style="height: 18px;"></ion-icon>
+                        Refresh
+                      </ion-button>
+                      
+                      
+              </ion-col>
+          </ion-row>
+        
       </ion-col>
     </ion-row>
 
@@ -116,18 +189,18 @@
         </ion-grid>  -->
   <!-- (onAppointmentClick)='hidetool($event)' -->
   <dx-scheduler *ngIf="ActiveSegment == 'app'" style="height: 100%; display: block;margin-top: 15px;" [dataSource]="appointmentsData"
-    [views]='["day","week", "month"]' currentView="day" [currentDate]="currentDate" [startDayHour]=from [endDayHour]=to (onAppointmentDblClick)='bookSelectedAppointment($event)'
-    (onAppointmentFormOpening)='empty($event)' (onOptionChanged)='change($event)'>
+    [views]='["day","week", "month"]' currentView="day" [currentDate]="currentDate" [startDayHour]="6" [endDayHour]="22" (onAppointmentDblClick)='bookSelectedAppointment($event)'
+    (onAppointmentFormOpening)='empty($event)'   (onOptionChanged)='change($event)'>
   </dx-scheduler>
   <div *ngIf="ActiveSegment == 'ro'">
 
     <ion-row>
-      <ion-col size="3" style="margin-top: 10px;">
-        <ion-label>Select Search Option</ion-label>
+      <ion-col size="3" style="margin-top: 20px;">
+        <ion-label style=" margin-left: 25px">Select Search Option</ion-label>
       </ion-col>
 
       <ion-col size="3">
-        <ion-select [(ngModel)]="op" placeholder="Select Type" class="selectcss" style="margin-left: 0px;border: 1px solid #ddd">
+        <ion-select [(ngModel)]="op" placeholder="Select Type" class="selectcss" style="border: 2px solid #acadaf;margin-top: 10px; margin-left: 0px; margin-right: 10px; border-radius: 5px;">
           <ion-select-option value="ro">RO#</ion-select-option>
           <ion-select-option value="fname">First Name</ion-select-option>
           <ion-select-option value="lname">Last name</ion-select-option>
@@ -136,13 +209,17 @@
         </ion-select>
       </ion-col>
       <ion-col size="3">
-        <ion-input class="inputcss" style="height: 42px;;border: 1px solid #ddd" type="text" placeholder="Enter value" [(ngModel)]="val"
+        <ion-input class="inputcss" style="height: 42px;border: 2px solid #acadaf;margin-top: 10px; margin-left: 0px; margin-right: 10px; border-radius: 5px;" type="text" placeholder="  Enter value" [(ngModel)]="val"
           (ionChange)="valchange()">
           <ion-icon (click)="clear()" *ngIf="isval" slot="end" style="color: black" name="close"></ion-icon>
         </ion-input>
       </ion-col>
-      <ion-col size="1" (click)="search()">
-        <ion-icon name="search" style="color: black;margin-top: 5px"></ion-icon>
+      <ion-col size="3" >
+          <ion-button style="width: 75%; height:42px; --background: #374767; margin-top: 8px;"  (click)="search()">
+              <ion-icon slot="start" name="Search" style="height: 18px;color: white;margin-top: 1px"></ion-icon>
+              Search
+            </ion-button>
+        
       </ion-col>
       <!-- <ion-col size="1" (click)="vsearch()">
         <ion-icon name="mic" style="color: black;margin-top: 5px"></ion-icon>

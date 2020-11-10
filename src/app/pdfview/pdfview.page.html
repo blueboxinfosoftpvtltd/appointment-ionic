@@ -12,9 +12,17 @@
 </ion-header>
 
 <ion-content *ngIf="furl">
-  <pdf-viewer [src]="furl" 
-  
-></pdf-viewer>
+<ion-row>
+  <ion-col>
+      <ion-item style="border: 1px solid #acadaf;margin-left: 10px;margin-right: 10px;border-radius: 10px;">
+          <ion-select value={{copyname}} (ionChange)="Changecopy()" style="max-width: 100% !important;width: 100%;font-size: 15px;margin-left: -10px;">
+            <ion-select-option style="white-space: normal;" *ngFor="let copy of copies" value="{{copy}}">{{copy}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+  </ion-col>
+</ion-row>
+
+  <pdf-viewer [src]="furl" ></pdf-viewer>
 </ion-content>
 
 <ion-footer style="bottom: 20px;">

@@ -33,7 +33,9 @@ export class EventService {
     //                   }
     //                 }), catchError(this.handleError('getEvents', new Array<Event>())));
 
-    const url = "http://appointmentapi.itsguru.com/api/Appointment";
+    //const url = "http://appointmentapi.itsguru.com/api/Appointment";
+    const url = "http://appointmentapiprod.itsguru.com/api/Appointment";
+    
     let appointmentdata={
       "AdvisorId":advisorid,
       "FkDealershipId":dealerid,

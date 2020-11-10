@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-      <!-- <ion-buttons slot="start"  (click)="closeModal()">
-          <ion-icon ios="ios-close" md="md-close" style="font-size: 30px;color: #009688"></ion-icon>
-        </ion-buttons> -->
+    <ion-buttons slot="end"  (click)="closeModalnew()">
+      <ion-icon ios="ios-close" md="md-close" style="font-size: 30px;color: #009688"></ion-icon>
+    </ion-buttons>
     <ion-title>Image</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -28,7 +28,7 @@
   <div class="grid-two imageandtext" style="text-align: center;">
     <div class="imageandtext image_grid">
       <label for="selimg">
-        <canvas #layout width="325" height="200" (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+        <canvas #layout width="745" height="610" (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
       </label>
     </div>
   </div>
@@ -36,7 +36,18 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button class="footerbtn" ion-button (click)="clearCanvas()">Clear</ion-button>
-    <ion-button class = "footerbtn" ion-button (click)="savePad()">Save</ion-button>
+    
+    <ion-row >
+      <ion-col size="12" size-lg>
+          <ion-row>
+              <ion-col ion-item size="6" style="text-align: right; ">
+                <ion-button class = "footerbtn" ion-button (click)="savePad()">Save</ion-button>
+              </ion-col>
+              <ion-col ion-item size="6" style="justify-content: center">
+                <ion-button class="footerbtn" ion-button (click)="clearCanvas()">Clear</ion-button>                   </ion-col>
+          </ion-row>                
+      </ion-col>
+     
+  </ion-row>
   </ion-toolbar>
 </ion-footer>

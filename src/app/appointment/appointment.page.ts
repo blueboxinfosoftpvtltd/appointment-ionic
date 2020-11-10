@@ -24,6 +24,13 @@ export class AppointmentPage {
   loading: any;
   gres:any;
   res: any[] =[];
+
+
+  vgres:any;
+  vres: any[] =[];
+  vindex: any;
+  custid: any;
+
   index: any;
   dealerid: any;
   cname: any = "";
@@ -37,6 +44,12 @@ export class AppointmentPage {
   val: any;
   from: any = 0;
   to: any = 10;
+  username: any;
+
+  vehicleList: any = [];
+  loadingVehicles: boolean = false;
+  selectedCustomerIndex: any = null;
+
   constructor(private events: Events, private storage: Storage, public toastController: ToastController, public loadingController: LoadingController, private authservice: AuthService, public popoverCtrl: PopoverController, public modalCtrl: ModalController, private router: Router, private document: DocumentViewer, public activatedRoute: ActivatedRoute, public platform: Platform, private alertController: AlertController, private file: File, private ft: FileTransfer) {
 
     this.activatedRoute.queryParams.subscribe((data) => {
@@ -56,7 +69,39 @@ export class AppointmentPage {
       console.log('dealerid', val);
       this.dealerid = val;
     });
+    this.storage.get('username').then((val => {
+      this.username = val;
+    }))
   }
+  logout() {
+    this.showAlert();
+  }
+
+  async  showAlert() {
+    const prompt = this.alertController.create({
+      header: "Appointment",
+      message: "Are you sure you want to logout?",
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: data => {
+            this.storage.set('islogin', false);
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+            console.log('No clicked');
+          }
+        }
+      ]
+    });
+    (await prompt).present();
+  }
+
 
 
   async AddVehicle(CustomerId) {
@@ -79,18 +124,39 @@ export class AppointmentPage {
     return await modal.present();
   }
 
-  openlist(i,e) {
-    e.stopPropagation();
-    console.log(i);
-    this.IsValue = 1;
-    this.index = i;
+  openlist(index, event) {
+    event.stopPropagation();
+    this.selectedCustomerIndex = index;
+    const customer = this.res[index];
+    // remove existing records
+    this.vehicleList = [];
+    this.loadingVehicles = true;
+    const data = {
+      FkDealershipId : this.dealerid + "",
+      FkCustomerId : customer.CustomerId + "",
+      VIN : "",
+      StockNo : ""
+    };
+    // call get vehicles by customer api
+    this.authservice.getVehiclesByCustomer(data).subscribe(response => {
+      // hide loading message
+      this.loadingVehicles = false;
+      if (response != null) {
+        // assign response
+        this.vehicleList = response;
+      }
+    }, (error) => {
+      // hide loading message
+      this.loadingVehicles = false;
+    });
   }
 
   openbtn(i,e){
     e.stopPropagation();
     if(this.IsValue == 0){
       this.IsValue = 1;
-      this.openlist(i,e);
+      this.index = i;
+      this.openlist(i, e);
     }
     else{
        this.hidelist(e);
@@ -100,7 +166,8 @@ export class AppointmentPage {
 
   hidelist(e) {
     e.stopPropagation();
-    this.IsValue = 0;
+    this.selectedCustomerIndex = null;
+    this.vehicleList = [];
   }
 
   Createro(CustomerId, vin) {
@@ -157,9 +224,6 @@ export class AppointmentPage {
   setFilteredItems(event) {
     console.log(event);
   }
-
-
-
   Search() {
     // if(this.fname == null || this.fname == '' || this.fname == undefined ){
     //   if(this.lname == null || this.lname == '' || this.lname == undefined){
@@ -174,6 +238,7 @@ export class AppointmentPage {
       if(this.Page == "appt"){
       this.authservice.GetSearchCustomer(this.fname, this.lname, this.vin, this.cname, this.phno, this.stockno, this.dealerid,0, 10).subscribe(res => {
         this.res = [];
+        this.vehicleList = [];
         this.gres = res;
         if(this.gres != null){
           for(let i=0;i<this.gres.length;i++){
@@ -193,13 +258,21 @@ export class AppointmentPage {
     else{
       this.authservice.GetSearchroCustomer(this.fname, this.lname, this.vin, this.cname, this.phno, this.stockno, this.dealerid,0, 10).subscribe(res => {
         this.res = [];
+        this.vehicleList = [];
         this.gres = res;
+
+        if(this.gres != null){
+
         for(let i=0;i<this.gres.length;i++){
           this.res.push(this.gres[i]);
         }
         
         console.log(this.res);
         this.authservice.dismissLoading();
+      }
+      else{
+        this.authservice.dismissLoading();
+      }
 
       })
     }
@@ -210,7 +283,7 @@ export class AppointmentPage {
 
     }
     else {
-      this.authservice.showToast("Enter atleast one value");
+      this.authservice.alertshow("Enter atleast one value");
     }
 
     //  }
@@ -221,12 +294,72 @@ export class AppointmentPage {
     //   }
 
     // }
-
-
-
-
   }
+ 
+  newgethistory(CustomerId, vin) {
+    let data = {
+      'CustomerId': CustomerId,
+      "VIN": vin
+    }
+
+    this.authservice.secustidvin(data);
+    this.router.navigateByUrl('/rohistorypdf').then(() => {
+      // this.events.publish('GetCustomerId', data);
+      this.gethistory(vin);
+      console.log('Published');
+    });
+    // this.router.navigateByUrl('/createappointment');
+  }
+
   gethistory(vin) {
+   
+    let object = {
+      Page: this.Page
+    }
+    const options: DocumentViewerOptions = {
+      title: 'My PDF',
+      email: {
+        enabled: true
+      },
+      print: {
+        enabled: true
+      },
+    }
+    this.authservice.getrohistory(vin, this.dealerid).subscribe((res => {
+      console.log(res);
+      this.furl = res;
+      if (this.furl.URL) {
+        // let object = {
+        //   fileurl: this.furl.URL
+        // }
+        let path = this.file.documentsDirectory
+
+        const transfer = this.ft.create();
+    
+        transfer.download(this.furl.URL, path + 'myfile.pdf').then(entry => {
+    
+          let url = entry.toURL();
+    
+          this.document.viewDocument(url, 'application/pdf', options);
+      
+        });
+        this.router.navigate(['/appointment'], { queryParams: object });
+        this.authservice.dismissLoading();
+      }
+      else {
+        this.presentAlert3(this.furl.Message);
+      }
+
+      //this.router.navigateByUrl('/pdfview',{queryParams: object});
+      //   this.previewAnyFile.preview(this.furl)
+      // .then((res: any) => console.log(res))
+      // .catch((error: any) => console.error(error));
+      // PreviewAnyFile.preview(this.furl);
+      //  this.document.viewDocument(this.furl,'application/pdf',options)
+    }))
+  }
+
+ /* gethistory(vin) {
    
     const options: DocumentViewerOptions = {
       title: 'My PDF',
@@ -268,7 +401,7 @@ export class AppointmentPage {
       // PreviewAnyFile.preview(this.furl);
       //  this.document.viewDocument(this.furl,'application/pdf',options)
     }))
-  }
+  }*/
   async presentAlert3(msg) {
     const alert = await this.alertController.create({
       header: 'ION APPT',
@@ -331,6 +464,51 @@ export class AppointmentPage {
       })
     }
     }, 2000)
+  }
+
+vehicleDetail(i) 
+{
+    this.custid = i;
+    console.log(this.dealerid);
+    console.log(this.custid);
+   
+    if(this.Page == "appt"){
+      console.log(this.dealerid);
+    console.log(this.custid);
+      this.authservice.GetVehicleCustomer(this.dealerid,this.custid).subscribe(vres => {
+        this.vres = [];
+        this.vgres = vres;
+        if(this.vgres != null){
+          for(let i=0;i<this.vgres.length;i++){
+            this.vres.push(this.vgres[i]);
+          }
+          
+          console.log(this.vres);
+          this.authservice.dismissLoading();
+        }
+        else{
+          this.authservice.dismissLoading();
+        }
+        
+
+      })
+    }
+    else{
+      this.authservice.GetVehicleCustomer(this.dealerid,this.custid).subscribe(vres => {
+        this.vres = [];
+        this.vgres = vres;
+        for(let i=0;i<this.vgres.length;i++){
+          this.vres.push(this.vgres[i]);
+        }
+        
+        console.log(this.vres);
+        console.log(this.dealerid);
+        console.log(this.custid);
+        this.authservice.dismissLoading();
+
+      })
+    }
+    
   }
 
 }

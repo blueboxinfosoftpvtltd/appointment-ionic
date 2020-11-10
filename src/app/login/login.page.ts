@@ -22,6 +22,7 @@ export class LoginPage  {
   username:any;
   password:any;
   res : any;
+  employeeMapList: any;
   dealers:any;
   dealername:any;
   loading:any;
@@ -105,19 +106,26 @@ export class LoginPage  {
       this.authservice.presentLoading();
       this.authservice.doLogin(this.username,this.password).subscribe(res =>{
         this.res = res;
+        console.log(this.res);
+        this.employeeMapList = this.res.employeeMapList;
+        console.log(this.employeeMapList);
+
       if(this.res.Code == 200){
         if(this.res.IDSFlag == "0"){
           this.authservice.setids(this.res.IDSFlag);
         this.storage.set("idsflag",this.res.IDSFlag);
         this.storage.set("userid",this.res.pkemployeeid);
+      //  this.storage.set("Employee_id",this.employeeMapList);
         this.storage.set("dealerid",this.res.DealershipId);
         this.storage.set("username",this.res.UserName);
         this.storage.set("fullname",this.res.UserFullName);
+
         }
         else if(this.res.IDSFlag == "1"){
           this.authservice.setids(this.res.IDSFlag);
           this.storage.set("idsflag",this.res.IDSFlag);
           this.storage.set("userid",this.res.pkemployeeid);
+        //  this.storage.set("Employee_id",this.employeeMapList);
           this.storage.set("dealerid",this.res.IDSDealershipId);
           this.storage.set("username",this.res.UserName);
           this.storage.set("fullname",this.res.UserFullName);
@@ -143,6 +151,7 @@ export class LoginPage  {
         }
         this.authservice.dismissLoading();
         this.storage.set('islogin',true);
+     //   this.storage.set("Employee_id",this.employeeMapList);
         this.storage.set('isenable',this.ISEnable);
         this.router.navigate(['/home'],{ queryParams: object,replaceUrl: true });
       }else if(this.res.Code == 400){

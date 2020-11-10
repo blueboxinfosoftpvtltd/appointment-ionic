@@ -14,6 +14,7 @@ export class AddnewopcodePage implements OnInit {
   desc: any;
   hours: any;
   dealerid: any;
+  empdealerid: any;
   userid: any;
   data: any;
   constructor(private storage: Storage,public modalCtrl : ModalController,public events: Events,private authservice:AuthService) {
@@ -22,9 +23,26 @@ export class AddnewopcodePage implements OnInit {
       this.dealerid = val;  
     });
 
-    this.storage.get('userid').then((val) => {
+   this.storage.get('userid').then((val) => {
         console.log('userid', val);
         this.userid = val;  
+
+       /* this.storage.get('Employee_id').then((val) => {
+          console.log(val);
+          console.log(this.dealerid);
+    
+          this.empdealerid = val.filter((item) => {
+            console.log(item);
+            return item.DealershipId == this.dealerid;
+    
+          });
+          console.log(this.empdealerid);
+          if(this.empdealerid.length > 0)
+          {
+            this.userid = this.empdealerid[0].PKEmployeeID;
+          }
+          console.log(this.userid);*/
+          
       });
      
    }

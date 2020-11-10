@@ -17,16 +17,17 @@ export class MoreimagePage implements OnInit {
   eimage : any;
   dataReturned:any;
   curl:any;
+
   constructor(public camera: Camera, public actionSheetCtrl: ActionSheetController,private auth : AuthService, private loc: Location,public modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.eimage=this.auth.geimage();
+    this.eimage=this.auth.getCarExtraImagesList();
     if(this.eimage){
       for(let i=0;i<this.eimage.length;i++){
-        this.images.push('data:image/jpeg;base64,' + this.eimage[i]);
-        this.simages.push(this.eimage[i]);
+        this.images.push(this.eimage[i]);
+        // this.simages.push(this.eimage[i]);
       }
-      this.auth.seimage(this.simages);
+      // this.auth.setCarExtraImages(this.simages);
     }
   }
 
@@ -128,9 +129,9 @@ export class MoreimagePage implements OnInit {
          if(this.dataReturned.ID == -1){
           this.images.push(this.dataReturned.Image);
           this.dataReturned.Image  = this.dataReturned.Image.split(',');
-         this.simages.push(this.dataReturned.Image[1]);
+          this.simages.push(this.dataReturned.Image[1]);
          }
-         else{
+         else {
           this.images.splice(this.dataReturned.ID,1);
            this.images.splice(this.dataReturned.ID,0,this.dataReturned.Image);
            this.simages.splice(this.dataReturned.ID,1);
@@ -291,7 +292,8 @@ export class MoreimagePage implements OnInit {
     //   str = str.split(',');
     //   this.simages.push(str[1]);
     // }
-    this.auth.seimage(this.simages);
+    this.auth.setCarExtraImagesList(this.images);
+    this.auth.setCarExtraImages(this.simages);
     this.loc.back();
   }
 

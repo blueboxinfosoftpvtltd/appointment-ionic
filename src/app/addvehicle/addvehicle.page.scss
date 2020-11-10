@@ -4,6 +4,12 @@
     width: 60%;
     height: 45px;
 }
+.clearbtn{
+    // --background: #009688;
+    --background: #374767;
+    width: 60%;
+    height: 45px;
+}
 .rawcss{
     border-bottom: 1px solid #d4d4d4;
 }
@@ -11,15 +17,41 @@
     padding-top: 14px;
     font-size: 15px;
 }
-.inputcss{
-    font-size: 15px;
+
+
+fieldset 
+{
+    border-radius: 6px;
+    border-color: #ccc;
+    margin: 20px 15px;
+    padding: 15px;
 }
+
+legend 
+{
+    width: auto !important;
+    border: none;
+    font-size: 20px;
+    color: #000;
+}
+
+ion-input {
+    &.inputcss {
+        --placeholder-color: #000000;
+        font-size:16px;
+        margin-left: -8px;
+        
+
+      //  --placeholder-opacity: 1;
+    }
+}
+
 .colcss{
     padding: 14px;
 }
 .selectcss{
     font-size: 15px;
-    margin-left: -14px;
+    margin-left: -23px;
 }
 .btn {
     position: fixed;
@@ -45,3 +77,152 @@
     // ion-label{
     //     font-style: italic;
     // }
+
+    
+@media only screen and (max-width: 767px) {
+    /* For mobile phones: */
+   
+  }
+  /* ----------- iPad  ----------- */
+/* Portrait and Landscape */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+   
+.rawcss{
+    border-bottom: 1px solid #d4d4d4;
+}
+.labelcss{
+    padding-top: 14px;
+    font-size: 15px;
+}
+
+
+fieldset 
+{
+    border-radius: 6px;
+    border-color: #ccc;
+    margin: 20px 15px;
+    padding: 15px;
+}
+
+legend 
+{
+    width: auto !important;
+    border: none;
+    font-size: 20px;
+    color: #000;
+}
+
+ion-input {
+    &.inputcss {
+        --placeholder-color: #000000;
+        font-size:16px;
+        margin-left: -8px;
+        
+
+      //  --placeholder-opacity: 1;
+    }
+}
+
+.colcss{
+    padding: 14px;
+}
+.selectcss{
+    font-size: 15px;
+    margin-left: -15px;
+}
+.btn {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+}
+// .btnstyle{
+//     height: 40px;
+//     border-radius: 6px;
+//     --background-activated:none;
+//     --color-activated:none;
+//     --color-focused: none;
+// }
+.icons{
+    font-size: 25px;color: #000;
+}
+
+.footer-ios ion-toolbar:first-child {
+    --border-width: 0.55px 0 0;
+    height: 75px;
+    }
+}
+
+  /* ----------- iPad Pro ----------- */
+/* Portrait and Landscape */
+@media only screen and (min-width: 1024px) and (max-width: 1366px) {
+ 
+  
+.rawcss{
+    border-bottom: 1px solid #d4d4d4;
+}
+.labelcss{
+    padding-top: 14px;
+    font-size: 15px;
+}
+
+
+fieldset 
+{
+    border-radius: 6px;
+    border-color: #ccc;
+    margin: 20px 15px;
+    padding: 15px;
+}
+
+legend 
+{
+    width: auto !important;
+    border: none;
+    font-size: 20px;
+    color: #000;
+}
+
+ion-input {
+    &.inputcss {
+        --placeholder-color: #000000;
+        font-size:16px;
+        margin-left: -8px;
+        
+
+      //  --placeholder-opacity: 1;
+    }
+}
+
+.colcss{
+    padding: 14px;
+}
+.selectcss{
+    font-size: 15px;
+    margin-left: -15px;
+}
+.btn {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+}
+// .btnstyle{
+//     height: 40px;
+//     border-radius: 6px;
+//     --background-activated:none;
+//     --color-activated:none;
+//     --color-focused: none;
+// }
+.icons{
+    font-size: 25px;color: #000;
+}
+
+.footer-ios ion-toolbar:first-child {
+    --border-width: 0.55px 0 0;
+    height: 75px;
+    }
+   
+}
+

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Events, ModalController, AlertController } from '@ionic/angular';
+import { Events, ModalController,PopoverController, AlertController } from '@ionic/angular';
 import { AddnewopcodePage } from '../addnewopcode/addnewopcode.page';
 import { AuthService } from '../../app/auth.service';
 import { Storage } from '@ionic/storage';
@@ -14,6 +14,7 @@ import { IonContent } from '@ionic/angular';
 import { zip } from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
 import { runInThisContext } from 'vm';
+import { SearchopcodePage } from '../searchopcode/searchopcode.page';
 
 @Component({
   selector: 'app-rotab',
@@ -99,6 +100,8 @@ export class RotabPage implements OnInit {
   cityid: any;
   stno: any;
   dealerid: any;
+  empdealerid: any;
+  
   userid: any;
   res: any;
   CustomerId: any;
@@ -141,6 +144,7 @@ export class RotabPage implements OnInit {
   advisordata: any;
   advisorid: any;
   sno: any;
+  eno: any;
   currentdate: any;
   intervaldata: any;
   sdate: any;
@@ -237,11 +241,15 @@ export class RotabPage implements OnInit {
   contstr:any;
   appno:any;
   islabor : boolean = false;
+  
   dealername:any;
+
+  bolrest:boolean = false;
+  isFromEdit:boolean = false;
   //techno:any;
   public myForm: FormGroup;
   constructor(private formBuilder: FormBuilder, public events: Events, private storage: Storage, private authservice: AuthService,
-    public modalCtrl: ModalController, public datepipe: DatePipe, private router: Router, private alertController: AlertController, public platform: Platform, public screenOrientation: ScreenOrientation, public ngzone: NgZone) {
+    public popoverCtrl: PopoverController, public modalCtrl: ModalController, public datepipe: DatePipe, private router: Router, private alertController: AlertController, public platform: Platform, public screenOrientation: ScreenOrientation, public ngzone: NgZone) {
     this.alphaarr = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
     console.log(this.alphaarr);
     this.pdate = (moment(new Date).format('MM/DD/YYYY'));
@@ -261,14 +269,16 @@ export class RotabPage implements OnInit {
     this.storage.get("fullname").then(val => {
       this.saname = val;
       this.saname.replace(',','');
+      console.log(this.saname);
     })
     this.storage.get('dealername').then(val =>{
       this.dealername = val;
     })
-    // this.storage.get("userid").then(val =>{
-    //   this.sid = val;
-    //   console.log(this.sid);
-    // })
+     /*this.storage.get("userid").then(val =>{
+       this.sid = val;
+       console.log(this.sid);
+     })*/
+    this.isFromEdit =  false;
     this.rline = "A";
     this.shours = "0.00"
     this.linees = "0.00"
@@ -346,8 +356,8 @@ export class RotabPage implements OnInit {
       this.advisorid = advisorid;
 
     })
-
-    this.storage.get("userid").then((val => {
+   
+   this.storage.get("userid").then((val => {
       this.sno = val;
       this.getrono();
     }))
@@ -355,7 +365,13 @@ export class RotabPage implements OnInit {
   }
 
   //for Customer Info
-
+  back(){
+    let object = {
+      refresh : true,
+       }
+      
+      this.router.navigate(['/appointment'],{ queryParams: {  Page: "ro" } });
+  }
   getCountry() {
     this.authservice.GetCountry(this.dealerid).subscribe(res => {
       this.country = res;
@@ -364,6 +380,7 @@ export class RotabPage implements OnInit {
       console.log(this.country);
     })
   }
+  
 
   GetCustomer() {
     this.authservice.presentLoading();
@@ -878,6 +895,37 @@ export class RotabPage implements OnInit {
     })
   }
 
+
+  /*newGetAdvisorList() {
+    var getadvisor;
+    
+    this.authservice.getsa(this.dealerid).subscribe(res => {
+      this.advisordata = res;
+
+       this.storage.get("Employee_id").then((val => {
+        console.log(val);
+        console.log(this.dealerid);
+
+        this.empdealerid = val.filter((item) => {
+          console.log(item);
+          return item.DealershipId == this.dealerid;
+
+        });
+        console.log(this.empdealerid);
+        if(this.empdealerid.length > 0){
+          this.sid = this.empdealerid[0].PKEmployeeID;
+        }
+        
+        console.log(this.sid);
+
+        this.sno = this.sid;
+        console.log(this.sno);
+        this.getrono();
+    }))
+     
+    })
+  }*/
+
   AdvisorSelection(id, e) {
     console.log(id);
     console.log(e.detail.value);
@@ -1031,6 +1079,7 @@ export class RotabPage implements OnInit {
 
   Changesa(event) {
     this.sno = event.detail.value;
+    console.log(this.sno);
     for (let i = 0; i < this.advisordata.length; i++) {
       if (this.advisordata[i].pkEmployeeId == event.detail.value) {
         this.saname = this.advisordata[i].SAName;
@@ -1040,7 +1089,14 @@ export class RotabPage implements OnInit {
 
   addro() {
 
-    if (this.rcode == null || this.rcode == undefined || this.rcode == "" && this.isrc == false) {
+     if (this.min == null || this.min == undefined || this.min == "") {
+      this.presentAlert3("Enter Mileage In");
+      }
+     else if (this.tagno == null || this.tagno == undefined || this.tagno == "") {
+        this.presentAlert3("Enter Tag Number");
+    }
+    
+    else if (this.rcode == null || this.rcode == undefined || this.rcode == "" && this.isrc == false) {
       this.presentAlert3("Enter Repair Code");
     }
 
@@ -1103,10 +1159,12 @@ export class RotabPage implements OnInit {
           this.rline = this.alphaarr[i + 1];
         }
       }
-
-      this.authservice.inserttech(this.sno, this.rono, line, this.opdesc, this.tagno, this.cc, this.rcode, this.labourname, this.techno, this.shours, this.rline, this.dealerid).subscribe(res => {
+      
+  console.log(this.dealerid);
+      this.authservice.inserttech(this.sno, this.rono, line, this.cc, this.tagno, this.opdesc, this.rcode, this.labourname, this.techno, this.shours, this.rline, this.dealerid).subscribe(res => {
         var rres;
         rres = res;
+        console.log(rres);
         this.addrolist = rres;
         this.totalesti = 0.00;
         for (let i = 0; i < this.addrolist.length; i++) {
@@ -1154,6 +1212,8 @@ export class RotabPage implements OnInit {
         this.roedit = false;
         this.istech = false;
         this.isrc = false;
+        this.bolrest = true;
+        console.log(this.bolrest);
       })
     }
   }
@@ -1206,6 +1266,29 @@ export class RotabPage implements OnInit {
     await alert.present();
   }
 
+  async searchopdesccode() {
+    const modal = await this.modalCtrl.create({
+      component: SearchopcodePage,
+      cssClass: 'my-custom-modal-css',
+      componentProps: {
+        "paramID": 456,
+        "paramTitle": "Search Op Code"
+      }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      const op = data.data;
+      console.log("OP", op);
+      
+      if (op !== null) {
+        this.rcode = op.OpCode;
+        this.opdesc = op.Description;
+        this.cc = op.Description;
+      }
+    });
+
+    return await modal.present();
+  }
 
 
   getop() {
@@ -1214,6 +1297,8 @@ export class RotabPage implements OnInit {
       this.tecname = "";
       this.itech = false;
     }
+    console.log('Rcode: ' + this.rcode);
+   
     this.authservice.GetMOPCode(this.dealerid, 0, 10, this.rcode).subscribe((res => {
       console.log(res);
       this.opcoderes = res;
@@ -1295,6 +1380,7 @@ export class RotabPage implements OnInit {
         'rono': this.rono,
         'prodate': this.pdate
       }
+      console.log(data);
       if (this.opcodes) {
         if (this.opcodes.image == "no") {
          this.presentAlertCheckbox2();
@@ -1319,7 +1405,7 @@ export class RotabPage implements OnInit {
     this.authservice.setvimgnamelist("");
     this.authservice.setvnlist("");
     this.authservice.setimagedata("");
-    this.authservice.seimage("");
+    this.authservice.setCarExtraImages([]);
     var email, text;
     const alert = await this.alertController.create({
       header: 'Do you want to print RO?',
@@ -1355,7 +1441,7 @@ export class RotabPage implements OnInit {
             if (data == "yes") {
               //this.presentAlertCheckbox("yes");
               this.authservice.presentLoading();
-              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
+              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.makeid, this.modelid, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
                 console.log(res);
                 this.authservice.dismissLoading();
                 this.rores = res;
@@ -1370,7 +1456,7 @@ export class RotabPage implements OnInit {
             else if (data == "no") {
               //this.router.navigateByUrl('/home');
               this.authservice.presentLoading();
-              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.opcodes.make, this.opcodes.model, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
+              this.authservice.createtabro(this.opcodes.cid, this.opcodes.vin, this.min, this.sno, this.tagno, this.pono, this.contstr, this.cname, this.opcodes.add1, this.opcodes.city, this.opcodes.state, this.opcodes.zip, this.opcodes.homeno, this.opcodes.workno, this.opcodes.email, this.opcodes.year, this.makeid, this.modelid, this.opcodes.license, this.opcodes.color, this.opcodes.uid, this.mout, this.wsdate, this.wedate, this.opcodes.dlrid, this.rnotes, this.addrolist, this.opcodes.carimage, this.selectval, this.rono, this.pdate,this.opcodes.videodata).subscribe(res => {
                 console.log(res);
                 this.authservice.dismissLoading();
                 this.rores = res;
@@ -1421,7 +1507,7 @@ export class RotabPage implements OnInit {
           handler: () => {
             //this.authservice.presentLoading();
             this.authservice.setopcodero("");
-          this.authservice.printro(this.dealerid,this.rono,this.username).subscribe(res =>{
+          this.authservice.printro(this.dealerid,"WorkOrderCopy",this.rono,this.username).subscribe(res =>{
                 console.log(res);
                 this.furl = res;
                 if (this.furl.URL) {
@@ -1580,6 +1666,50 @@ export class RotabPage implements OnInit {
     this.laname = "";
     this.shours = "";
     this.itech = false;
+    this.tecname="";
+   
+    var line;
+    var l = this.rline;
+    if(this.bolrest == false && this.isFromEdit == true){
+      if (this.addrolist == undefined) {
+        line = "A";
+        for (let i = 0; i < this.alphaarr.length; i++) {
+          if (this.alphaarr[i] == l) {
+           
+            this.rline = this.alphaarr[i + 1];
+          }
+        }
+        
+      }
+      else {
+      /* var temparrrolist = this.addrolist;
+       temparrrolist.sort( function( a, b ) {
+        a = a.Line.toLowerCase();
+        b = b.Line.toLowerCase();
+    
+        return a < b ? -1 : a > b ? 1 : 0;
+       });
+       l = temparrrolist[0].Line
+       console.log(temparrrolist);
+       console.log(l);*/
+       this.rline = this.alphaarr[this.addrolist.length];
+
+       /* for (let i = 0; i < this.alphaarr.length; i++) {
+          if (this.alphaarr[i] == l) {
+            this.rline = this.alphaarr[i + 1];
+            
+          }
+          
+        }*/
+        line = this.rline;
+      }
+      this.bolrest = true;
+      
+    }
+ 
+    console.log(this.bolrest);
+    
+    this.roedit = false;
   }
 
   edit(data) {
@@ -1592,15 +1722,20 @@ export class RotabPage implements OnInit {
       if (lineres.OpCode == "WC" || lineres.OpCode == "RC") {
         this.istech = true;
       }
-
+      
       //this.index = i;
+      
       this.rline = lineres.Line;
       this.rcode = lineres.OpCode;
-      this.opdesc = lineres.LineDesc;
+     // this.opdesc = lineres.LineDesc;
+      this.opdesc = lineres.StoryDesc;
+
       this.laname = lineres.LaborType;
       this.shours = lineres.SoldHours;
       this.tecname = lineres.TechNo;
-      this.cc = lineres.StoryDesc;
+      //this.cc = lineres.StoryDesc;
+     this.cc = lineres.LineDesc;
+     
       this.linees = lineres.LineEstimate;
       this.techid = lineres.TechId;
       this.authservice.dismissLoading();
@@ -1611,6 +1746,8 @@ export class RotabPage implements OnInit {
     //  }
     this.roedit = true;
     this.itech = true;
+    this.bolrest = false;
+    this.isFromEdit =  true;
     // this.index = i;
     // this.rline = this.addrolist[i].Line;
     // this.rcode = this.addrolist[i].OpCode;
@@ -1672,7 +1809,7 @@ export class RotabPage implements OnInit {
     // }
 
     this.authservice.presentLoading();
-    this.authservice.updatetech(this.sno, this.rono, this.rline, this.opdesc, this.tagno, this.cc, this.rcode, this.labourname, this.techno, this.shours, nline, this.dealerid, this.sid, this.techid).subscribe(res => {
+    this.authservice.updatetech(this.sno, this.rono, this.rline, this.cc, this.tagno, this.opdesc, this.rcode, this.labourname, this.techno, this.shours, nline, this.dealerid, this.sid, this.techid).subscribe(res => {
       var rres;
       rres = res;
       this.addrolist = rres;
@@ -1723,6 +1860,7 @@ export class RotabPage implements OnInit {
   }
 
   addsublet() {
+   
     this.authservice.AddSublet(this.dealerid).subscribe(res => {
       console.log(res);
       this.itech = false;

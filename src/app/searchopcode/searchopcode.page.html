@@ -1,0 +1,35 @@
+
+<ion-header>
+  <ion-toolbar text-center>
+      <ion-buttons slot="end"  (click)="closeModal()">
+          <ion-icon ios="ios-close" md="md-close" style="font-size: 30px;color: #009688"></ion-icon>
+        </ion-buttons>
+    <ion-title style="color: #009688">{{modalTitle}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar (ionChange)="SearchOp()" (ionClear)="cancelsearch()" [(ngModel)]='searchword'></ion-searchbar>
+  <ion-list style="margin-left: -30px;margin-right: 0px;" *ngFor="let op of codelist;">
+    <ion-row class="rawcss" style="margin-left: 0px;margin-right: 5px;">
+        <ion-col>
+            <ion-item (click)="OnOPCodeselected(op)">
+                <ion-label style="margin-left: 30px;white-space: inherit;">
+                    <h3>
+                        <b>Repair Code:</b> {{op.OpCode}}</h3>
+                    <h4>
+                        <b>Description:</b>{{op.Description}}</h4>
+                    <p *ngIf="op.Hours"> Duration: {{op.Hours}}</p>
+                    <p *ngIf="op.Duration"> Duration: {{op.Duration}}</p>
+                    <p *ngIf="op.Sale"> Price: ${{op.Sale}}</p>
+                    <p *ngIf="op.Price"> Price: ${{op.Price}}</p>
+
+                </ion-label>
+                <!--<ion-checkbox style="margin: -16px;" slot="start" (ionChange)="SelectOP($event,op)" [(ngModel)]="op.isChecked"></ion-checkbox>-->
+          
+            </ion-item>
+        </ion-col>
+    </ion-row>
+</ion-list>
+
+</ion-content>

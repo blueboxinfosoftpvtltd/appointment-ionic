@@ -39,10 +39,8 @@ export class HighlightimagePage implements OnInit {
    }
 
   ngOnInit() {  
-    console.table(this.navParams);
     this.modelId = this.navParams.data.paramID;
     this.captureDataUrl = this.navParams.data.paramImage;
-    console.log(this.captureDataUrl);
     setTimeout(() => {
       this.imageLoad();
     }, 1000);
@@ -55,14 +53,27 @@ export class HighlightimagePage implements OnInit {
     if(this.canvasImage == undefined){
       this.canvasImage = this.captureDataUrl;
     }
-    // if(this.canvasImage == undefined || this.canvasImage == null || this.canvasImage == "" || this.canvasImage == "null"){
-    //   this.canvasImage = null;
-    // }
-    // else{
-    //   this.canvasImage = this.captureDataUrl;
-    // }
-    console.log(this.canvasImage);
+    
+    /*if(this.canvasImage == undefined || this.canvasImage == null || this.canvasImage == "" || this.canvasImage == "null"){
+       this.canvasImage = null;
+     }
+     else{
+       this.canvasImage = this.captureDataUrl;
+     }*/
     await this.modalCtrl.dismiss({ 'ID':this.modelId,'Image':this.canvasImage});
+  }
+  async closeModalnew() {  
+   // if(this.canvasImage == undefined || this.canvasImage == null || this.canvasImage == "" || this.canvasImage == "null"){
+   /* if(this.canvasImage == undefined ){
+    
+      this.canvasImage = null;
+     }
+     else{
+      
+      this.canvasImage = this.captureDataUrl;
+     }
+    await this.modalCtrl.dismiss({ 'ID':this.modelId,'Image':this.canvasImage});*/
+    await this.modalCtrl.dismiss();
   }
 
   imageLoad() {
@@ -79,16 +90,15 @@ export class HighlightimagePage implements OnInit {
     let source = new Image();
     source.crossOrigin = 'Anonymous';
     source.onload = () => {
-      source.height = 500;
-      source.width = 300;
+      source.height = 610;
+      source.width = 745;
       canvas.height = source.height;
       canvas.width = source.width;
-      context.drawImage(source, 10, 10);
+     // context.drawImage(source, 10, 10);
+      context.drawImage(source, 0, 0,canvas.width,canvas.height);
       this.image = canvas.toDataURL();
     };
     source.src = this.image;
-
-    console.log(this.image);
   }
 
   clearCanvas() {
@@ -162,7 +172,6 @@ export class HighlightimagePage implements OnInit {
 
 
   savePad() {
-    console.log(this.canvasElement);
     if(this.canvasElement == undefined){
       this.canvasImage = this.captureDataUrl;
     }else{
@@ -170,8 +179,7 @@ export class HighlightimagePage implements OnInit {
     }
     
     //this.CompleteImage.push(this.canvasImage);
-    console.log(this.canvasImage);
-    console.log(this.CompleteImage);
+  
     this.closeModal();
    
   }

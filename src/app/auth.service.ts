@@ -1,6 +1,6 @@
 import { Injectable, AbstractType, RootRenderer } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Event } from '../app/event';
 import { WebDriver } from 'protractor';
@@ -36,37 +36,60 @@ export class AuthService {
   opcodes: any;
   appdata: any;
   rodata: any;
-  imgdata: any;
-  signdata: any;
-  eimage:any;
+  imgdata: any = [];
+  signdata: any = [];
+  selectedCarExtraImages:any;
   city: any;
   cityname: any;
   cityid: any;
   videodata:any;
   vin:any;
   vlist:any;
+  vidlist:any;
   vnlist:any;
   vimglist:any;
   vimgbase:any;
   videolist:any;
+  videolist2:any;
+  
   vimgnamelist:any;
-  constructor(private http: HttpClient, public loadingController: LoadingController, public toastController: ToastController) {
+  selectedCarImageIndex: any;
+  selectedCarImageData: any;
+  carImagesExtraList: any[] = [];
 
-     this.url = "http://appointmentapi.itsguru.com/api/Appointment";
-    //this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
+  constructor(private http: HttpClient, public loadingController: LoadingController, public toastController: ToastController,public alertController: AlertController) {
+
+  //this.url = "http://appointmentapi.itsguru.com/api/Appointment";
+   this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
 
 
   }
 
   async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Please wait'
-    });
-    await this.loading.present();
+    if (!this.loading) {
+      console.log('loader present')
+      this.loading = await this.loadingController.create({
+        message: 'Please wait'
+      });
+      await this.loading.present();
+    }
   }
 
   async dismissLoading() {
+    console.log("loader dismiss");
     this.loading.dismiss();
+    this.loading = null;
+  }
+  async alertshow(msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert',
+      message:'<img src="../../assets/alert.png">',
+      subHeader: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   showToast(msg) {
@@ -96,6 +119,17 @@ export class AuthService {
     // headers.append('Content-Type', 'application/json');
     // return this.http.get("http://appointmentapi.itsguru.com/api/Appointment/GetloginData?Username="+username+"&Password="+Password, { headers: headers });
     /* get api  http://192.168.1.200:138/api/Appointment/GetloginData?Username=admin&Password=India@2141  for login data   */
+  }
+
+  // Ger vehicles by customer id.
+  getVehiclesByCustomer(data) {
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    if (this.idsflag == 1) {
+      return this.http.post(`${this.url}/IDSGetVehicleDetailByCustomer`, data, { headers });
+    } else {
+      return this.http.post(`${this.url}/GetVehicleDetailByCustomer`, data, { headers });
+    }    
   }
 
   GetSearchCustomer(fname, lname, vin, cname, phno, stockno, dealerid, from, to) {
@@ -135,6 +169,30 @@ export class AuthService {
     header.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/GetSearchCustomer", searchdata, { headers: header });
   }
+
+  GetVehicleCustomer(FkDealershipId, FkCustomerId) {
+
+    let vehciledata = {
+      "FkDealershipId": FkDealershipId,
+      "FkCustomerId": FkCustomerId,
+      "IDSFlag": this.idsflag,
+    }
+    let header = new HttpHeaders();
+    header.append('Content-Type', 'application/json');
+    
+    if (this.idsflag == 0)
+    {
+      return this.http.post(this.url + "/GetVehicleDetailByCustomer", vehciledata, { headers: header });
+    }
+    else
+    {
+      return this.http.post(this.url + "/IDSGetVehicleDetailByCustomer", vehciledata, { headers: header });
+   
+    } 
+
+    
+  }
+
 
   GetSearchroCustomer(fname, lname, vin, cname, phno, stockno, dealerid, from, to) {
 
@@ -494,6 +552,7 @@ export class AuthService {
       "CreatedFor": advisorid,
       "CurrentDate": date,
       "CurrentTime": d,
+      "IDSFlag": "1",
       "AppointmentID": appid
     }
     let headers = new HttpHeaders();
@@ -507,7 +566,10 @@ export class AuthService {
 
 
   InsertAppointment(dealerid, CustomerId, fname, lname, cname, userid, status, notes, sdate, time, AppointmentTime, tvalue, colorid, licenseplate
-    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist,vlist) {
+    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, 
+    advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, 
+    workphone, cellno, zip, country, state, city, add1, add2, sub, carlist, carExtraImages, 
+    vlist, signatureImages) {
 
     var CustomerName;
     if (fname == "" || fname == undefined || fname == null) {
@@ -588,20 +650,27 @@ export class AuthService {
       "IDSFlag": this.idsflag,
       "Notes": sub,
       "CarImageList": carlist,
-      "VideoList":vlist
-      //"ExtraImageList":[]
+      "VideoList":vlist,
+      "ExtraImageList": carExtraImages,
+      "SignatureImageList" : signatureImages,
     }
-    console.log(appointmentdata);
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/InsertAppointment", appointmentdata, { headers: headers });
   }
 
   UpdateAppointment(dealerid, CustomerId, fname, lname, cname, userid, status, notes, sdate, time, AppointmentTime, tvalue, colorid, licenseplate
-    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, state, city, add1, add2, sub, carlist,vlist) {
+    , avgmileage, mileage, VIN, makeid, yearid, modelid, trimid, opArray, lfw, lft, lrw, lrt, rfw, 
+    rft, rrw, rrt, WipersAndLightsList, appointmentid, advisorid, makename, modelname, 
+    custemail, yname, aname, semail, stext, homeno, workphone, cellno, zip, country, 
+    state, city, add1, add2, sub, carlist, carExtraImages, vlist, signatureImages) {
     // UpdateAppointment(dealerid,CustomerId,fname,lname,userid,status,notes,sdate,time,AppointmentTime,tvalue,colorid,licenseplate
     //   ,avgmileage,mileage,VIN,makeid,yearid,modelid,trimid,opArray,lfw,lft,lrw,lrt,rfw,rft,rrw,rrt,WipersAndLightsList,appointmentid,advisorid,homeno,workphone,cellno,zip,country,state,city,add1,add2){
     var CustomerName;
+
+    console.log('carlist');
+    console.log(carlist);    
+
     if (fname == "" || fname == undefined || fname == null) {
       if (lname == "" || lname == undefined || lname == null) {
         CustomerName = cname;
@@ -679,8 +748,9 @@ export class AuthService {
       "IDSFlag": this.idsflag,
       "Notes": sub,
       "CarImageList": carlist,
-      "VideoList":vlist
-      //"ExtraImageList":[]
+      "VideoList":vlist,
+      "ExtraImageList": carExtraImages,
+      "SignatureImageList": signatureImages,
 
 
       // "DealershipId":dealerid,
@@ -803,6 +873,8 @@ export class AuthService {
 
   CarImageInsert(delaershipid, AppointmentId, VIN, userid, type, CompleteImage, takeorder, ronumber,vnamel,vpathl,ipathl,inamel) {
     var d = new Date().toLocaleTimeString(); // for now time
+    console.log(CompleteImage);
+    
     let imgdata =
     {
       "DealershipID": delaershipid,
@@ -823,6 +895,22 @@ export class AuthService {
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/CarImageInsert", imgdata, { headers: headers });
   }
+
+  DeleteCarVideo(videomasteid, delaershipid, AppointmentId, ronumber,userid) {
+     let videodata =
+    {
+      "VideoMasterID": videomasteid,
+      "FkDealershipId": delaershipid,
+      "AppointmentID": AppointmentId,
+      "RONumber": ronumber,
+      "CreatedBy": userid,
+
+    }
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url + "/DeleteCarVideo", videodata, { headers: headers });
+  }
+
 
   GetWheelsTiresDetails(dealerid) {
     let wdata = {
@@ -927,6 +1015,32 @@ export class AuthService {
     return this.http.post(this.url + "/GetCarImage", cardata, { headers: headers })
   }
 
+  GetCarImageList(delaerid, appointmentid,rono,type) {
+    let cardatalist = {
+      "DealershipID": delaerid,
+      "AppointmentID": appointmentid,
+      "RONumber": "0",
+      "ImageType": type  
+      
+    }
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url + "/GetCarImageList", cardatalist, { headers: headers })
+  }
+
+  GetCarVideoList(delaerid, appointmentid,rono) {
+    let videodatalist = {
+      "DealershipID": delaerid,
+      "AppointmentID": appointmentid,
+      "RONumber": rono
+      
+    }
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url + "/GetCarVideoList", videodatalist, { headers: headers })
+  }
+
+
   gettechnician(delaerid) {
     let techdata = {
       "DealershipID": delaerid,
@@ -952,6 +1066,19 @@ export class AuthService {
 
   getopcodero() {
     return this.opcodes;
+  }
+
+  setSelectedCarImages(indexes: any[], images: any[]) {
+    this.selectedCarImageIndex = indexes;
+    this.selectedCarImageData = images;
+  }
+
+  getSelectedCarImageIndex() {
+    return this.selectedCarImageIndex;
+  }
+
+  getSelectedCarImageData() {
+    return this.selectedCarImageData;
   }
 
   createro(custid, vin, mileagein, tagno, contact, cname, cadd1, cadd2, city, state, zip, homeno, workno, email, year, make, model, license, color, userid, dlrid, techlist, carlist) {
@@ -991,6 +1118,9 @@ export class AuthService {
       "CarImageList": carlist,
       "AppointmentID": "0",
     }
+
+    console.log(rodata);
+    console.log('Appoitment Time Ro Json: ', JSON.stringify(rodata));
 
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
@@ -1205,7 +1335,8 @@ export class AuthService {
       "VIN":vin
       //"ExtraImageList":[]
     }
-
+    console.log(roparm);
+    console.log('Ro Json: ', JSON.stringify(roparm));
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/UpdateTabRO", roparm, { headers: headers })
@@ -1519,19 +1650,27 @@ export class AuthService {
     return this.http.post(this.url + "/GetSearchROCustomer", searchdata, { headers: header });
   }
 
-  seimage(data){
-   this.eimage = data;
+  setCarExtraImagesList(images: any[]) {
+    this.carImagesExtraList = images;
   }
 
-  geimage(){
-    return this.eimage;
+  getCarExtraImagesList() {
+    return this.carImagesExtraList;
   }
 
-  printro(dealerid,rono,loname){
+  setCarExtraImages(data){
+   this.selectedCarExtraImages = data;
+  }
+
+  getCarExtraImages(){
+    return this.selectedCarExtraImages;
+  }
+
+  printro(dealerid,cname,rono,loname){
     let print = {
     "DealershipId": dealerid,
       "RONumber": rono,
-      "PrintCopy": "CustomerCopy",
+      "PrintCopy": cname,
       "PrintBy": loname,
       "IDSFlag": this.idsflag
     }
@@ -1584,12 +1723,20 @@ export class AuthService {
   getvin(){
     return this.vin;
   }
+
   setvlist(data){
    this.vlist = data;
   }
   getvlist(){
    return this.vlist;
   }
+  setvidlist(data){
+    this.vidlist = data;
+   }
+   getvidlist(){
+   return this.vidlist;
+   }
+
   setvnlist(data){
    this.vnlist = data;
   }
@@ -1616,6 +1763,12 @@ export class AuthService {
   return this.videolist;
   }
 
+  /*setvideolist(data){
+    this.videolist2 = data;
+   }
+   getvideolist(){
+   return this.videolist2;
+   }*/
   setvimgnamelist(data){
     this.vimgnamelist = data;
   }

@@ -5,6 +5,12 @@
     background: #fff;
 }
 
+.my-custom-modal-css .modal-wrapper {
+    height: 100%;
+ }
+.custom-popover .popover-content {
+ position: static;
+  }
 .header-ios ion-toolbar:last-child {
     --border-width: 0 0 0.55px;
     --background: #374767;
@@ -66,12 +72,19 @@
 .icons{
     font-size: 20px;color: #000;
 }
+.newicons{
+    color: #000;
+    width:100%;
+    height: 50px;
+}
 .rawcss{
     border-bottom: 1px solid #d4d4d4;
 }
 .labelcss{
     white-space: normal;
     font-size: 12px;
+    margin-left: 3px;
+    margin-bottom: 10px;
 }
 .inputcss{
     font-size: 12px;
@@ -166,7 +179,22 @@
 //  .item-inner{
 //     border-style: unset !important;
 //     }
- 
+fieldset 
+{
+    border-radius: 6px;
+    border-color: #ccc;
+    margin: 20px 15px;
+    padding: 15px;
+}
+
+legend
+{
+    width: auto !important;
+    border: none;
+    font-size: small;
+    color: #000;
+}
+
 @media only screen and (max-width: 767px) {
     /* For mobile phones: */
     img {

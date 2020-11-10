@@ -1,9 +1,25 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons mode="md" slot="start">
+        <!--<ion-buttons mode="md" slot="start" >
             <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
-        </ion-buttons>
-        <ion-title style="color: #ffffff">RO Create</ion-title>
+        </ion-buttons>-->
+        <ion-buttons mode="md" slot="start">           
+          <ion-button (click)="back()">
+              <ion-icon text="" icon="ios-arrow-back" style="color: #ffffff"></ion-icon>
+          </ion-button>
+          </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-label style="color: #fff;">{{username}}</ion-label>
+            <!-- <ion-icon (click)="reload()" name="md-refresh"></ion-icon> -->
+          </ion-buttons>
+          
+          <ion-buttons slot="end">
+              <ion-button color="light" (click)="logout()">
+                  <ion-icon slot="end" name="log-out"></ion-icon>
+              </ion-button>
+          </ion-buttons>
+      
+        <ion-title style="color: #ffffff">Create RO </ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content style="margin-bottom: 25px;">
@@ -12,15 +28,12 @@
             <ion-label style="color: white">Repair Order Infomation</ion-label>
         </ion-col>
     </ion-row>
-
     <ion-row style="margin-top: 10px;padding: 2px;">
-        <ion-col size="4" style="border: 1px solid #000;padding: 0px;">
-            <ion-row>
-                <ion-col style="align-self: center">
-                    <ion-label style="font-weight: 700">Customer Detail</ion-label>
-                </ion-col>
-            </ion-row>
-
+        <ion-col size="6">
+            
+            <fieldset style="height:320px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700">Customer Detail :</legend>
+               
             <ion-row class="rawcss">
                 <ion-col style="align-self: center;padding: 0px;" size="1">
                     <ion-icon name="person" class="icons"></ion-icon>
@@ -122,10 +135,10 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="mail" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col style="align-self: center;padding: 0px;margin-bottom: 3px;" ion-item size="5" class="colcss">
+                <ion-col style="align-self: center;padding: 0px;margin-bottom: 3px;" ion-item size="2" class="colcss">
                     <ion-label class="labelcss">Email</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="padding: 0px;">
+                <ion-col ion-item size="9" style="padding: 0px; margin-left: -15px;">
                     <!-- [(ngModel)]='email' -->
                     <ion-input type='text' readonly placeholder='Email' [(ngModel)]='email' class="inputcss"></ion-input>
                 </ion-col>
@@ -167,14 +180,14 @@
 </ion-row> -->
 
 
-            <ion-row class="rawcss">
+            <ion-row>
                 <!-- <ion-col size="1" style="align-self: center;padding: 0px;">
             <ion-icon name="mail" class="icons"></ion-icon>
          </ion-col> -->
                 <ion-col style="align-self: center;padding: 0px;margin-bottom: 3px;" ion-item size="5" class="colcss">
                     <ion-label class="labelcss">Business No</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="padding: 0px;">
+                <ion-col ion-item size="6" style="padding: 0px;" lines="none">
                     <!-- [(ngModel)]='email' -->
                     <ion-input type='tel' placeholder='Business No' [(ngModel)]='workphone' class="inputcss"></ion-input>
                 </ion-col>
@@ -182,28 +195,31 @@
 
 
 
-
+</fieldset>
 
 
             <!-- </ion-col>
     <ion-col size="0.2"> -->
 
         </ion-col>
-        <ion-col size="4" style="border: 1px solid #000;">
-            <ion-row>
+        <ion-col size="3" >
+            <!--<ion-row>
                 <ion-col style="align-self: center;padding: 0px;">
                     <ion-label style="font-weight: 700">Vehicle Detail</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
+            <fieldset style="height:320px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700">Vehicle Detail :</legend>
+          
 
             <ion-row class="rawcss">
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="car" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
                     <ion-label class="labelcss">VIN</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px; margin-left: 0px;">
                     <ion-input type='text' readonly placeholder='VIN' [(ngModel)]='vin' class="inputcss" [readonly]="true"></ion-input>
                 </ion-col>
             </ion-row>
@@ -212,11 +228,11 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="car" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
                     <ion-label class="labelcss">License Plate</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
-                    <ion-input style="margin-left: 2px" type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;">
+                    <ion-input style="margin-left: 0px" type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
                 </ion-col>
             </ion-row>
 
@@ -224,10 +240,10 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="calendar" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
                     <ion-label class="labelcss">Year</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;">
                     <ion-select placeholder="Year" class="selectcss" value="{{yearid}}" (ionChange)="ChangeYear($event)">
                         <ion-select-option value="{{y.YearId}}" *ngFor="let y of years">{{y.Year}}</ion-select-option>
                     </ion-select>
@@ -238,10 +254,10 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="car" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
                     <ion-label class="labelcss">Make</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;">
                     <ion-select placeholder="Make" class="selectcss" value="{{makeid}}" (ionChange)="ChangeMake($event)">
                         <ion-select-option value="{{m.MakeId}}" *ngFor="let m of make">{{m.Make}}</ion-select-option>
                     </ion-select>
@@ -252,10 +268,10 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="car" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
                     <ion-label class="labelcss">Model </ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;" *ngIf="model">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;" *ngIf="model">
                     <ion-select placeholder="Model" class="selectcss" (ionChange)="ChangeModel($event)" value="{{modelid}}">
                         <ion-select-option value="{{modeldetail.ModelId}}" *ngFor="let modeldetail of model">{{modeldetail.Modal}}</ion-select-option>
                     </ion-select>
@@ -266,10 +282,10 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="color-filter" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 6px;" class="colcss">
                     <ion-label class="labelcss">Color</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;">
                     <ion-select placeholder="Color" class="selectcss" (ionChange)="ChangeColor($event)" value="{{colorid}}">
                         <ion-select-option value="{{color.ColorId}}" *ngFor="let color of colors">{{color.ColorName}}</ion-select-option>
                     </ion-select>
@@ -279,25 +295,30 @@
                 <ion-col size="1" style="align-self: center;padding: 0px;">
                     <ion-icon name="car" class="icons"></ion-icon>
                 </ion-col>
-                <ion-col ion-item size="5" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
+                <ion-col ion-item size="4" style="align-self: center;padding: 0px;margin-bottom: 3px;" class="colcss">
                     <ion-label class="labelcss">Stock No</ion-label>
                 </ion-col>
-                <ion-col ion-item size="6" style="align-self: center;padding: 0px;">
+                <ion-col ion-item size="7" style="align-self: center;padding: 0px;">
                     <ion-input type='text' readonly placeholder='Stock No' [(ngModel)]='stno' class="inputcss" [readonly]="true"></ion-input>
                 </ion-col>
             </ion-row>
 
-
+            </fieldset>
 
         </ion-col>
 
 
-        <ion-col size="4" style="border: 1px solid #000;">
-            <ion-row>
+        <ion-col size="3">
+           <!-- <ion-row>
                 <ion-col style="align-self: center;padding: 0px;">
                     <ion-label style="font-weight: 700">Detail</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
+
+            <fieldset style="height:320px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700"> Detail :</legend>
+          
+
             <ion-row class="rawcss">
                 <ion-col style="align-self: center;padding: 0px;" size="1">
                     <ion-icon name="person" class="icons"></ion-icon>
@@ -329,8 +350,8 @@
                 <ion-col ion-item style="align-self: center;padding: 0px;margin-bottom: 6px;" size="5" class="colcss">
                     <ion-label class="labelcss">SA Name</ion-label>
                 </ion-col>
-                <ion-col *ngIf="sid" style="align-self: center;padding: 0px" class="rawcss" size="6">
-                    <ion-select class="selectcss" placeholder="Select SA" (ionChange)="Changesa($event)" style="max-width: 100%;font-weight: 100;font-weight: 400;"
+                <ion-col ion-item  *ngIf="sid" style="align-self: center;padding: 0px"  size="6" lines="none">
+                    <ion-select class="selectcss" placeholder="Select SA" (ionChange)="Changesa($event)" style="max-width: 100%;font-weight: 100;font-weight: 400; margin-left: -15px;"
                         value="{{sid}}">
                         <ion-select-option style="white-space: normal;" *ngFor="let data of advisordata" value="{{data.pkEmployeeId}}">{{data.SAName}}</ion-select-option>
                     </ion-select>
@@ -340,6 +361,7 @@
                 <ion-input type='text'  placeholder='SA Name' [(ngModel)]='saname'  class="inputcss"></ion-input>
             </ion-col> -->
             </ion-row>
+
             <ion-row class="rawcss">
                 <ion-col style="align-self: center;padding: 0px;" size="1">
                     <ion-icon name="person" class="icons"></ion-icon>
@@ -414,6 +436,7 @@
                     <ion-input type='tel' placeholder='PO Number' [(ngModel)]='pono' class="inputcss"></ion-input>
                 </ion-col>
             </ion-row>
+            </fieldset>
         </ion-col>
     </ion-row>
 
@@ -424,21 +447,25 @@
     </ion-row>
 
     <ion-row style="margin-top: 10px;padding: 2px;">
-        <ion-col size="4" style="border: 1px solid #000;padding: 0px;">
-            <ion-row>
+        <ion-col size="4" >
+            <fieldset style="height:205px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700"> RO Type :</legend>
+           
+
+           <!-- <ion-row>
                 <ion-col style="align-self: center">
                     <ion-label style="font-weight: 700">RO Type</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
             <ion-radio-group [(ngModel)]="roselect" (ionChange)="radioGroupChange($event)">
                 <ion-row>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:43px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">High Priority</ion-label>
                             <ion-radio mode="md" slot="start" value="hp"></ion-radio>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:43px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">Waiter</ion-label>
                             <ion-radio mode="md" slot="start" value="p"></ion-radio>
@@ -447,13 +474,13 @@
                 </ion-row>
 
                 <ion-row>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:43px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">Come Back</ion-label>
                             <ion-radio mode="md" slot="start" value="cb"></ion-radio>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:40px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">Appointment With Non-Waiter</ion-label>
                             <ion-radio mode="md" slot="start" value="awnw"></ion-radio>
@@ -462,13 +489,13 @@
                 </ion-row>
 
                 <ion-row>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:43px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">Appointment With Waiter</ion-label>
                             <ion-radio mode="md" slot="start" value="aww"></ion-radio>
                         </ion-item>
                     </ion-col>
-                    <ion-col size="6" style="align-self: center;padding: 0px;">
+                    <ion-col size="6" style="align-self: center;padding: 0px; height:43px;">
                         <ion-item lines="none">
                             <ion-label class="labelcss">Non Waiter</ion-label>
                             <ion-radio mode="md" slot="start" value="nw"></ion-radio>
@@ -478,7 +505,7 @@
             </ion-radio-group>
 
             <ion-row>
-                <ion-col size="5" style="align-self: center;padding: 0px;">
+                <ion-col size="5" style="align-self: center;padding: 0px; height:43px;">
                     <ion-item lines="none">
                         <ion-label class="labelcss">Rental</ion-label>
                         <ion-checkbox [(ngModel)]="rent" [ngClass]="{chkdisable : (isrental)}" (ionChange)="rentalchange($event)" mode="md" slot="start"></ion-checkbox>
@@ -490,48 +517,59 @@
       <ion-col size="3.5" style="align-self: center;padding: 0px;">
       </ion-col> -->
             </ion-row>
+        </fieldset>
         </ion-col>
-        <ion-col size="4" style="border: 1px solid #000;">
-            <ion-row>
+        <ion-col size="4" >
+            
+            <fieldset style="height:205px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700"> Warranty Details :</legend>
+          
+
+           <!-- <ion-row>
                 <ion-col style="align-self: center;padding: 0px;">
                     <ion-label style="font-weight: 700">Warranty Details</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
 
             <ion-row style="margin-top: 10px;">
-                <ion-col size="6" style="align-self: center;padding: 0px;">
+                <ion-col size="4" style="align-self: center;padding: 10px;">
                     <ion-label class="labelcss">Start Date</ion-label>
                 </ion-col>
-                <ion-col class="rawcss" size="6" style="align-self: center;padding: 0px;">
+                <ion-col class="rawcss" size="7" style="align-self: center;padding: 0px;">
                     <ion-datetime style="font-size: 12px" max="2025-12-31" placeholder='Start Date' [(ngModel)]="wsdate" displayFormat="MM/DD/YYYY"
                         pickerFormat="MMMM DD YYYY" [min]="currentdate" (ionChange)="ChangeDate($event)"></ion-datetime>
                 </ion-col>
             </ion-row>
 
             <ion-row>
-                <ion-col size="6" style="align-self: center;padding: 0px;">
+                <ion-col size="4" style="align-self: center;padding: 10px;">
                     <ion-label class="labelcss">End Date</ion-label>
                 </ion-col>
-                <ion-col class="rawcss" size="6" style="align-self: center;padding: 0px;">
+                <ion-col class="rawcss" size="7" style="align-self: center;padding: 0px;">
                     <ion-datetime style="font-size: 12px" max="2025-12-31" placeholder='End Date' [(ngModel)]="wedate" displayFormat="MM/DD/YYYY"
                         pickerFormat="MMMM DD YYYY" [min]="currentdate" (ionChange)="ChangeDate1($event)"></ion-datetime>
                 </ion-col>
             </ion-row>
+            </fieldset>
         </ion-col>
 
 
-        <ion-col size="4" style="border: 1px solid #000;">
-            <ion-row>
+        <ion-col size="4" >
+            <fieldset style="height:205px; margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+                <legend style="font-weight: 700"> RO Notes :</legend>
+          
+          <!--  <ion-row>
                 <ion-col style="align-self: center;padding: 0px;">
                     <ion-label style="font-weight: 700">RO Notes</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
 
-            <ion-row style="margin-top: 10px;padding: 10px;border: 1px solid #000;height:200px">
+            <ion-row style="margin-top: 10px;padding: 0px; margin-left: 10px; margin-right: 10px;border: 1px solid #acadaf;height:165px">
                 <ion-item lines="none">
-                    <ion-textarea style="font-size: 12px" [(ngModel)]="rnotes" placeholder="Enter Notes here..."></ion-textarea>
+                    <ion-textarea style="font-size: 12px; width:180px;" [(ngModel)]="rnotes" placeholder="Enter Notes here..."></ion-textarea>
                 </ion-item>
             </ion-row>
+            </fieldset>
         </ion-col>
     </ion-row>
 
@@ -544,31 +582,37 @@
     </ion-row>
 
     <ion-row style="margin-top: 10px;padding: 2px;">
-        <ion-col style="border: 1px solid #000;padding: 0px;">
-            <ion-row>
+        <ion-col>
+           
+          <!--  <ion-row>
                 <ion-col style="align-self: center">
                     <ion-label style="font-weight: 700">Labor Details</ion-label>
                 </ion-col>
-            </ion-row>
+            </ion-row>-->
 
-            <ion-row style="margin-top: 10px;">
-                <ion-col size="9">
+            <ion-row style="margin-top: 0px;" >
+            
+                <ion-col size="8">
+                    <fieldset style="height:340px; margin: 0px 0px;margin-right: 0px; padding: 0px 10px;font-size: 20px">
+                        <legend style="font-weight: 700"> Labor Details :</legend>
+                 
                     <ion-row>
                         <ion-col style="align-self: center;padding: 0px" size="1.5">
                             <ion-label class="labelcss">Repair Line</ion-label>
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 0px;border: 1px solid #000" class="rawcss" size="1.5">
-                            <ion-item>
+                        <ion-col style="height:45px; border: 2px solid #acadaf;margin-left: 0px;border-radius: 5px;pointer-events: none; margin-top: 20px;"  size="1.5">
+                            <ion-item lines="none" style="height:35px; margin-top:-5px;">
                                 <ion-label class="labelcss" style="pointer-events: none;">{{rline}}</ion-label>
                                 <ion-icon name="arrow-down" slot="end" style="color: #ddd;font-size: 18px;"></ion-icon>
                             </ion-item>
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 10px;" size="1.5">
+                        
+                        <ion-col style="align-self: center;padding: 10px;" size="2">
                             <ion-label class="labelcss">Customer Complaint</ion-label>
                         </ion-col>
-                        <ion-col size="6" style="border: 1px solid #000;align-self: center;padding: 0px;">
+                        <ion-col size="7" style="border: 2px solid #acadaf;border-radius: 5px;align-self: center;padding: 0px; margin-left: -22px;">
                             <ion-item lines="none">
-                                <ion-textarea style="font-size: 12px;height: 75px" [(ngModel)]="cc" placeholder=""></ion-textarea>
+                                <ion-textarea style="font-size: 12px;height: 75px; --padding-top: 10px; --padding-bottom: 40px;" [(ngModel)]="cc" placeholder=""></ion-textarea>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -577,13 +621,21 @@
                             <ion-label class="labelcss">Repair Code</ion-label>
                         </ion-col>
                         <ion-col style="align-self: center;padding: 0px" class="rawcss" size="1.5">
-                            <ion-input [ngClass]="{rcdisable : (isrc)}" type='text' [(ngModel)]="rcode" placeholder='Repair Code' (ionBlur)="getop()"
+                            <!--<ion-input [ngClass]="{rcdisable : (isrc)}" type='text' [(ngModel)]="rcode" placeholder='Repair Code' (ionBlur)="getop()"
+                                class="inputcss"></ion-input>-->
+                                <ion-input [ngClass]="{rcdisable : (isrc)}" type='text' [(ngModel)]="rcode" placeholder='Repair Code' 
                                 class="inputcss"></ion-input>
+                                
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 10px;" size="1.5">
+
+                        <ion-col size="0.5" style="text-align: center; margin-top: 10px;">
+                                    <ion-icon name="search" (click)="searchopdesccode()"></ion-icon>
+                        </ion-col>
+                      
+                        <ion-col style="align-self: center;padding: 10px;" size="2">
                             <ion-label class="labelcss">Description</ion-label>
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 0px;pointer-events: none" class="rawcss" size="6">
+                        <ion-col style="align-self: center;padding: 0px; margin-left: -20px;" class="rawcss" size="5">
                             <ion-input type='text' [(ngModel)]="opdesc" placeholder='Description' class="inputcss"></ion-input>
                         </ion-col>
                     </ion-row>
@@ -599,9 +651,8 @@
                         <ion-col style="align-self: center;padding: 10px;" size="1.5">
                             <ion-label class="labelcss">Tech No</ion-label>
                         </ion-col>
-                        <ion-col [ngClass]="{techdisable : (istech)}" style="align-self: center;padding: 0px" class="rawcss" size="1.5">
-                            <ion-select class="selectcss" [(ngModel)]="tecname" placeholder="Select One" (ionChange)="Changetech($event)" style="max-width: 100%;font-weight: 100;font-weight: 400;"
-                                value="{{techno}}">
+                        <ion-col [ngClass]="{techdisable : (istech)}" style="align-self: center;padding: 0px; margin-left: 5px;" class="rawcss" size="2.5">
+                            <ion-select class="selectcss" [(ngModel)]="tecname" placeholder="Select One" (ionChange)="Changetech($event)" style="max-width: 100%;font-weight: 100;font-weight: 400;" value="{{techno}}">
                                 <ion-select-option style="white-space: normal;" *ngFor="let tech of techdata" value="{{tech.Number}}">{{tech.TechnicianName}}</ion-select-option>
                             </ion-select>
                         </ion-col>
@@ -610,14 +661,14 @@
                         <ion-col style="align-self: center;padding: 0px" size="1.5">
                             <ion-label class="labelcss">Hours</ion-label>
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 0px" class="rawcss" size="1.5">
-                            <ion-input style="margin-left: 0px" maxlength="5" inputmode="decimal" placeholder='Sold Hours' [(ngModel)]="shours" class="inputcss"
+                        <ion-col style="align-self: center;padding: 0px; margin-left: 0px;" class="rawcss" size="1.5">
+                            <ion-input style="margin-left: 0px;" maxlength="5" inputmode="decimal" placeholder='Sold Hours' [(ngModel)]="shours" class="inputcss"
                                 (ionBlur)="changehour($event)"></ion-input>
                         </ion-col>
                         <ion-col style="align-self: center;padding: 10px;" size="1.5">
                             <ion-label class="labelcss">Line Estimate</ion-label>
                         </ion-col>
-                        <ion-col style="align-self: center;padding: 0px" class="rawcss" size="1.5">
+                        <ion-col style="align-self: center;padding: 0px; margin-left: 5px;" class="rawcss" size="2.5">
                             <ion-input readonly style="margin-left:0px" [(ngModel)]="linees" inputmode="decimal" placeholder='Line Estimate' class="inputcss"></ion-input>
                         </ion-col>
                     </ion-row>
@@ -679,13 +730,20 @@
                     <!-- <ion-label>Compaign No</ion-label> -->
                     <!-- </ion-col> -->
                     <!-- </ion-row> -->
+                </fieldset>
                 </ion-col>
-                <ion-col size="3" *ngIf="dealername == 'WESTSIDE KIA'">
-                    <ion-row>
+                
+
+                <ion-col size="4" *ngIf="dealername == 'WESTSIDE KIA'" style="margin-top:6px;">
+                    <fieldset style="height:333px; margin: 0px 0px;margin-right: 0px; padding: 0px;font-size: 20px">
+                         <!--  <legend style="font-weight: 700"> Quick Add Opcode :</legend>  -->
+                         <br/>
+                   <ion-row>
                         <ion-col style="align-self: center">
-                            <ion-label>Quick Add Opcode</ion-label>
+                            <ion-label style="align-self: center; margin-left: 55px;">Quick Add Opcode</ion-label>
                         </ion-col>
                     </ion-row>
+                    <br/>
                     <ion-row>
                         <ion-col style="text-align: center" col-1.5>
                             <ion-button (click)="addcode('QL')" style="width: 50%;--background:#374767" size="small">QL</ion-button>
@@ -727,14 +785,20 @@
                             <ion-button (click)="addcode('WC')" style="width: 50%;--background:#374767" size="small">WC</ion-button>
                         </ion-col>
                     </ion-row>
+                </fieldset>
                 </ion-col>
 
-                <ion-col size="3" *ngIf="dealername == 'MONROEVILLE KIA'">
-                    <ion-row>
-                        <ion-col style="align-self: center">
-                            <ion-label>Quick Add Opcode</ion-label>
-                        </ion-col>
-                    </ion-row>
+                <ion-col size="3" *ngIf="dealername == 'MONROEVILLE KIA'" style="margin-top:6px;">
+                    <fieldset style="height:333px; margin: 0px 0px;margin-right: 0px; padding: 0px;font-size: 20px">
+                       <!-- <legend style="font-weight: 700"> Quick Add Opcode :</legend>  -->
+                 
+                       <br/>
+                       <ion-row>
+                            <ion-col style="align-self: center">
+                                <ion-label style="align-self: center; margin-left: 55px;">Quick Add Opcode</ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <br/>
                     <ion-row>
                         <ion-col style="text-align: center" col-1.5>
                             <ion-button (click)="addcode('KCP2')" style="width: 50%;--background:#374767" size="small">KCP2</ion-button>
@@ -776,31 +840,37 @@
                             <ion-button (click)="addcode('PI1802')" style="width: 50%;--background:#374767" size="small">PI1802</ion-button>
                         </ion-col>
                     </ion-row>
+                </fieldset>
                 </ion-col>
             </ion-row>
+          
         </ion-col>
     </ion-row>
-
-    <ion-row style="margin-top: 10px;padding: 2px;">
+    <fieldset style="margin-right: 5px; margin-left: 5px; padding: 0px;">
+       
+ 
+    <ion-row style="margin-top:10px;padding: 2px;">
         <ion-col size="1.5">
             <ion-label class="labelcss">Total Estimate</ion-label>
         </ion-col>
-        <ion-col size="2" style="border: 1px solid #000;height: 30px">
+        <ion-col size="2" style="border: 2px solid rgb(172, 173, 175); border-radius: 5px; height: 30px ; margin-left: -30px;">
             <ion-label class="labelcss">$ {{totalesti}}</ion-label>
         </ion-col>
         <ion-col size="2">
-            <ion-label class="labelcss">Promise date and time</ion-label>
+            <ion-label class="labelcss" style="margin-left: 30px;">Promise date and time</ion-label>
         </ion-col>
-        <ion-col size="2" style="border: 1px solid #000;height:30px">
+        <ion-col size="2" style="border: 2px solid rgb(172, 173, 175); border-radius: 5px; height:30px">
             <ion-datetime style="font-size: 12px;margin:-10px;" max="2025-12-31" placeholder='End Date' [(ngModel)]="pdate" displayFormat="MM/DD/YYYY"
                 pickerFormat="MMMM DD YYYY" [min]="currentdate" (ionChange)="ChangeDatep($event)"></ion-datetime>
         </ion-col>
         <ion-col style="margin-top: -8px">
-            <ion-button (click)="continue()" style="width: 50%;--background:#374767" size="small">Create RO</ion-button>
+            <!--<ion-button (click)="continue()" style="width: 50%;--background:#374767" size="small">Create RO</ion-button> -->
+
+            <ion-button size="small" style="margin-top: 2px;  --background: #374767;  height:30px;" (click)="continue()">Create RO</ion-button>
         </ion-col>
-        <ion-col style="margin-top: -8px">
-            <ion-button (click)="voidro()" style="width: 50%;--background:#374767" size="small">Void RO</ion-button>
-        </ion-col>
+        <!--<ion-col style="margin-top: -8px">
+            <ion-button size="small" style="margin-top: 2px; --background: #009688; width: 50%; height:30px; margin-bottom: 10px;" (click)="voidro()">Void RO</ion-button>
+        </ion-col>-->
 
         <!-- <ion-row style="margin-top: 10px;">
             <ion-button style="width: 100%" size="small" (click)="continue()">Continue</ion-button>
@@ -893,5 +963,5 @@
 
        
     </div>
-
+</fieldset>
 </ion-content>

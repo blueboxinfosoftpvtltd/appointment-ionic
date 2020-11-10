@@ -1,8 +1,19 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
+            <ion-back-button [disabled]="backdisabled"  text="" icon="ios-arrow-back" style="color: #ffffff"></ion-back-button>
         </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-label style="color: #fff;">{{newusername}}</ion-label>
+            <!-- <ion-icon (click)="reload()" name="md-refresh"></ion-icon> -->
+          </ion-buttons>
+          
+          <ion-buttons slot="end">
+              <ion-button color="light" (click)="logout()">
+                  <ion-icon slot="end" name="log-out"></ion-icon>
+              </ion-button>
+          </ion-buttons>
+      
         <ion-title style="color: #ffffff">{{title}}</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -54,293 +65,348 @@
 
 
     <div *ngIf="step == 1" class="scroll">
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="person" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">First Name</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='First Name' [(ngModel)]='fname' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="person" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Last Name</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='Last Name' [(ngModel)]='lname' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="home" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Company Name</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='Company Name' [(ngModel)]='cname' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="pin" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Street Address </ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' placeholder='Street Address' [(ngModel)]='saddress' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="pin" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Street Address 1</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' placeholder='Street Address 1' [(ngModel)]='saddress1' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="globe" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Country</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="Country" class="selectcss" (ionChange)="ChangeCountry($event)" value="{{countryid}}">
-                    <ion-select-option value="{{c.CountryId}}" *ngFor="let c of country">{{c.CountryName}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="globe" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">State</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="State" class="selectcss" (ionChange)="ChangeState($event)" value="{{stateid}}">
-                    <ion-select-option value="{{s.StateId}}" *ngFor="let s of state">{{s.StateName}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="globe" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">City</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="City" class="selectcss" (ionChange)="ChangeCity($event)" value="{{cityid}}">
-                    <ion-select-option value="{{cities.CityId}}" *ngFor="let cities of city">{{cities.CityName}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="pin" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Zipcode</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='tel' maxlength="9" placeholder='Zipcode' [(ngModel)]='zipcode' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="call" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Mobile No. </ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='Mobile No.' [(ngModel)]='mobile' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="call" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Work Phone</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='tel' maxlength="10" placeholder='Work Phone' [(ngModel)]='workphone' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="call" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Home Phone</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='tel' maxlength="10" placeholder='Home Phone' [(ngModel)]='homephone' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="mail" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Email</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='Email' [(ngModel)]='email' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="create" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Subject</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' placeholder='Subject' [(ngModel)]='sub' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-
+        <fieldset>
+            <legend>Personal Information :</legend>
+          
+             <ion-row >
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="person" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' readonly placeholder='First Name' [(ngModel)]='fname' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="person" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' readonly placeholder='Last Name' [(ngModel)]='lname' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>
+                 </ion-col>
+                 <ion-col size="12" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="home" class="icons"></ion-icon>  
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' readonly placeholder='Company Name' [(ngModel)]='cname' class="cinputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+         </fieldset>
+        
+         <fieldset>
+             <legend>Location Area :</legend>
+        
+             <ion-row >
+              
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="pin" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' placeholder='Street Address' [(ngModel)]='saddress' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>
+                 </ion-col>
+            
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="pin" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' placeholder='Street Address 1' [(ngModel)]='saddress1' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+     
+             <ion-row >
+                     <ion-col size="6" size-lg>
+                             <ion-row class="rawcss">
+                                 <ion-col size="2" style="align-self: center">
+                                     <ion-icon name="globe" class="icons"></ion-icon>
+                                 </ion-col>
+                                 <ion-col ion-item size="10">
+                                     <ion-select placeholder="Country" class="selectcss" (ionChange)="ChangeCountry($event)" value="{{countryid}}">
+                                         <ion-select-option value="{{c.CountryId}}" *ngFor="let c of country">{{c.CountryName}}</ion-select-option>
+                                     </ion-select>
+                                 </ion-col>
+                             </ion-row>
+                         </ion-col>
+                  
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="globe" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-select placeholder="State" class="selectcss" (ionChange)="ChangeState($event)" value="{{stateid}}">
+                                 <ion-select-option value="{{s.StateId}}" *ngFor="let s of state">{{s.StateName}}</ion-select-option>
+                             </ion-select>
+                       </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+     
+             <ion-row >
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="globe" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-select placeholder="City" class="selectcss" (ionChange)="ChangeCity($event)" value="{{cityid}}">
+                                 <ion-select-option value="{{cities.CityId}}" *ngFor="let cities of city">{{cities.CityName}}</ion-select-option>
+                             </ion-select>     
+                         </ion-col>
+                     </ion-row>
+                 </ion-col>
+            
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="pin" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='tel' maxlength="9" placeholder='Zipcode' [(ngModel)]='zipcode' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+     
+             </fieldset>
+     
+             <fieldset>
+                     <legend>Contact Information :</legend>
+                
+             <ion-row >
+                     <ion-col size="6" size-lg>
+                             <ion-row class="rawcss">
+                                 <ion-col size="2" style="align-self: center">
+                                     <ion-icon name="call" class="icons"></ion-icon>
+                                 </ion-col>
+                                 <ion-col ion-item size="10">
+                                     <ion-input type='text' readonly placeholder='Mobile No.' [(ngModel)]='mobile' class="inputcss"></ion-input>
+                                 </ion-col>
+                             </ion-row>
+                         </ion-col>
+     
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="call" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='tel' maxlength="10" placeholder='Work Phone' [(ngModel)]='workphone' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+      
+             <ion-row >
+      
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="call" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='tel' maxlength="10" placeholder='Home Phone' [(ngModel)]='homephone' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>
+                 </ion-col>
+                 <ion-col size="6" size-lg>
+                     <ion-row class="rawcss">
+                         <ion-col size="2" style="align-self: center">
+                             <ion-icon name="mail" class="icons"></ion-icon>
+                         </ion-col>
+                         <ion-col ion-item size="10">
+                             <ion-input type='text' readonly placeholder='Email' [(ngModel)]='email' class="inputcss"></ion-input>
+                         </ion-col>
+                     </ion-row>                
+                 </ion-col>
+             </ion-row>
+     
+         </fieldset>
+     
     </div>
 
     <div *ngIf="step == 2" class="scroll">
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="car" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">VIN</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' readonly placeholder='VIN' [(ngModel)]='vin' class="inputcss" [readonly]="true"></ion-input>
-            </ion-col>
-        </ion-row>
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="calendar" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Year</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="Year" class="selectcss" value="{{yearid}}" (ionChange)="ChangeYear($event)">
-                    <ion-select-option value="{{y.YearId}}" *ngFor="let y of years">{{y.Year}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="car" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Make</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="Make" class="selectcss" value="{{makeid}}" (ionChange)="ChangeMake($event)">
-                    <ion-select-option value="{{m.MakeId}}" *ngFor="let m of make">{{m.Make}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="car" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Model </ion-label>
-            </ion-col>
-            <ion-col ion-item size="6" *ngIf="model">
-                <ion-select placeholder="Model" class="selectcss" (ionChange)="ChangeModel($event)" value="{{modelid}}">
-                    <ion-select-option value="{{modeldetail.ModelId}}" *ngFor="let modeldetail of model">{{modeldetail.Modal}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-
-        <!-- <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="car" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Trim </ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="Trim" class="selectcss" (ionChange)="ChangeTrim($event)" value="{{trimid}}">
-                    <ion-select-option value="{{trimdetail.TrimId}}" *ngFor="let trimdetail of trim">{{trimdetail.Trim}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row> -->
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="color-filter" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Color</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-select placeholder="Color" class="selectcss" (ionChange)="ChangeColor($event)" value="{{colorid}}">
-                    <ion-select-option value="{{color.ColorId}}" *ngFor="let color of colors">{{color.ColorName}}</ion-select-option>
-                </ion-select>
-            </ion-col>
-        </ion-row>
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="speedometer" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Mileage</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='tel' placeholder='Mileage' [(ngModel)]='mileage' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-
-        <!-- <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="speedometer" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">Average Miles/Month</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='tel' placeholder='Average Miles/Month' [(ngModel)]='avgmileage' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row> -->
-
-        <ion-row class="rawcss">
-            <ion-col size="1" style="align-self: center">
-                <ion-icon name="car" class="icons"></ion-icon>
-            </ion-col>
-            <ion-col ion-item size="5" class="colcss">
-                <ion-label class="labelcss">License Plate</ion-label>
-            </ion-col>
-            <ion-col ion-item size="6">
-                <ion-input type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
-            </ion-col>
-        </ion-row>
-
+          
+    <fieldset>
+        <legend>VIN Information :</legend>
+           
+          
+          <ion-row >
+              <ion-col size="12" size-lg>
+                  <ion-row class="rawcss">
+                      <ion-col size="1" style="align-self: center">
+                          <ion-icon name="car" class="icons"></ion-icon>
+                      </ion-col>
+                      <ion-col ion-item size="11">
+                          <ion-input type='text' readonly placeholder='VIN' [(ngModel)]='vin' class="inputcss" [readonly]="true"></ion-input>
+                      </ion-col>
+                  </ion-row>                
+              </ion-col>
+          </ion-row>
+          </fieldset>
+  
+          
+      <fieldset>
+              <legend>Car Information :</legend>
+                    
+  
+   
+          <ion-row >
+                  <ion-col size="6" size-lg>
+                          <ion-row class="rawcss">
+                              <ion-col size="2" style="align-self: center">
+                                  <ion-icon name="calendar" class="icons"></ion-icon>
+                              </ion-col>
+                              <ion-col ion-item size="10">
+                                  <ion-select placeholder="Year" class="selectcss" value="{{yearid}}" (ionChange)="ChangeYear($event)">
+                                      <ion-select-option value="{{y.YearId}}" *ngFor="let y of years">{{y.Year}}</ion-select-option>
+                                  </ion-select>
+                              </ion-col>
+                          </ion-row>
+                      </ion-col>
+                <ion-col size="6" size-lg>
+                  <ion-row class="rawcss">
+                      <ion-col size="2" style="align-self: center">
+                          <ion-icon name="car" class="icons"></ion-icon>
+                      </ion-col>
+                      <ion-col ion-item size="10">
+                          <ion-select placeholder="Make" class="selectcss" value="{{makeid}}" (ionChange)="ChangeMake($event)">
+                              <ion-select-option value="{{m.MakeId}}" *ngFor="let m of make">{{m.Make}}</ion-select-option>
+                          </ion-select>
+                      </ion-col>
+                  </ion-row>                
+              </ion-col>
+          </ion-row>
+      
+      <ion-row>
+              <ion-col size="6" size-lg>
+                  <ion-row class="rawcss">
+                      <ion-col size="2" style="align-self: center">
+                          <ion-icon name="car" class="icons"></ion-icon>
+                      </ion-col>
+                      <ion-col ion-item size="10" *ngIf="model">
+                          <ion-select placeholder="Model" class="selectcss" (ionChange)="ChangeModel($event)" value="{{modelid}}">
+                              <ion-select-option value="{{modeldetail.ModelId}}" *ngFor="let modeldetail of model">{{modeldetail.Modal}}</ion-select-option>
+                          </ion-select>
+                      </ion-col>
+                  </ion-row>
+              </ion-col>
+              
+              <ion-col size="6" size-lg>
+                      <ion-row class="rawcss">
+                          <ion-col size="2" style="align-self: center">
+                              <ion-icon name="color-filter" class="icons"></ion-icon>
+                          </ion-col>
+                          <ion-col ion-item size="10" >
+                              <ion-select placeholder="Color" class="selectcss" (ionChange)="ChangeColor($event)" value="{{colorid}}">
+                                  <ion-select-option value="{{color.ColorId}}" *ngFor="let color of colors">{{color.ColorName}}</ion-select-option>
+                              </ion-select>
+                           </ion-col>
+                      </ion-row>                
+                  </ion-col>
+          </ion-row>
+   
+  
+          <!-- <ion-row class="rawcss">
+              <ion-col size="1" style="align-self: center">
+                  <ion-icon name="car" class="icons"></ion-icon>
+              </ion-col>
+              <ion-col ion-item size="5" class="colcss">
+                  <ion-label class="labelcss">Trim </ion-label>
+              </ion-col>
+              <ion-col ion-item size="6">
+                  <ion-select placeholder="Trim" class="selectcss" (ionChange)="ChangeTrim($event)" value="{{trimid}}">
+                      <ion-select-option value="{{trimdetail.TrimId}}" *ngFor="let trimdetail of trim">{{trimdetail.Trim}}</ion-select-option>
+                  </ion-select>
+              </ion-col>
+          </ion-row> -->
+  
+  
+          </fieldset>
+              
+      <fieldset>
+              <legend>Other Information :</legend>
+                    
+  
+          <ion-row >
+        
+          <ion-col size="6" size-lg>
+                  <ion-row class="rawcss">
+                      <ion-col size="2" style="align-self: center">
+                          <ion-icon name="speedometer" class="icons"></ion-icon>
+                      </ion-col>
+                      <ion-col ion-item size="10">
+                          <ion-input type='tel' placeholder='Mileage' [(ngModel)]='mileage' class="inputcss"></ion-input>
+                      </ion-col>
+                  </ion-row>
+              </ion-col>
+         
+   
+  
+  
+          <!-- <ion-row class="rawcss">
+              <ion-col size="1" style="align-self: center">
+                  <ion-icon name="speedometer" class="icons"></ion-icon>
+              </ion-col>
+              <ion-col ion-item size="5" class="colcss">
+                  <ion-label class="labelcss">Average Miles/Month</ion-label>
+              </ion-col>
+              <ion-col ion-item size="6">
+                  <ion-input type='tel' placeholder='Average Miles/Month' [(ngModel)]='avgmileage' class="inputcss"></ion-input>
+              </ion-col>
+          </ion-row> -->
+  
+           <!--    <ion-col size="6" size-lg>
+                  <ion-row class="rawcss">
+                      <ion-col size="2" style="align-self: center">
+                          <ion-icon name="car" class="icons"></ion-icon>
+                      </ion-col>
+                      <ion-col ion-item size="10">
+                          <ion-input type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
+                      </ion-col>
+                  </ion-row>                
+              </ion-col>-->
+              
+          </ion-row>
+   
+      </fieldset>
 
     </div>
 
     <div *ngIf="step == 3" class="scroll">
+        <fieldset>
+            <legend>Subject Information :</legend>    
+                <ion-row>
+                    <ion-col size="12" size-lg>
+                                <ion-row class="rawcss">
+                                    <ion-col size="1" style="align-self: center">
+                                        <ion-icon name="create" class="icons"></ion-icon>
+                                    </ion-col>
+                                    <ion-col ion-item size="11">
+                                        <ion-input (input)='showkeyboard()' type='text' placeholder='Subject' [(ngModel)]='sub' class="inputcss" autocomplete="on" autocorrect=“on” spellcheck=“true”></ion-input>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-col>
+                </ion-row>
+             
+            </fieldset>
+        
         <ion-searchbar (ionChange)="SearchOp()" (ionClear)="cancelsearch()" [(ngModel)]='searchword'></ion-searchbar>
         <!-- <div *ngIf="!isSearch"> -->
         <ion-list style="margin-left: 5px;margin-right: 5px;" *ngFor="let op of codelist;">
@@ -394,7 +460,7 @@
     <div *ngIf="step == 4" class="scroll">
         <ion-list>
             <ion-radio-group>
-                <ion-item *ngFor="let trasnaport of transportdata;let i = index;" (ionSelect)="Selection(trasnaport.TransportationName,$event);">
+                <ion-item class="transaltion" *ngFor="let trasnaport of transportdata;let i = index;" (ionSelect)="Selection(trasnaport.TransportationName,$event);">
                     <!-- checked="{{trasnaport.TransportationName}}" -->
                     <ion-label style="font-size: 15px">{{trasnaport.TransportationName}}</ion-label>
                     <ion-radio slot="start" color="primary" value={{trasnaport.TransportationName}} [checked]="trasnaport.checked"></ion-radio>
@@ -427,7 +493,7 @@
     <div *ngIf="step == 5" class="scroll">
         <ion-list>
             <ion-radio-group>
-                <ion-item *ngFor="let advisor of advisordata;let i = index;">
+                <ion-item class="transaltion" *ngFor="let advisor of advisordata;let i = index;">
                     <ion-label style="font-size: 15px">{{advisor.AdvisorName}}</ion-label>
                     <ion-radio slot="start" color="primary" value={{advisor.AdvisorId}} (ionSelect)="AdvisorSelection(advisor.AdvisorId,$event);"
                         [checked]="advisor.checked"></ion-radio>
@@ -440,30 +506,94 @@
     <div *ngIf="step == 6" class="scroll">
         <ion-row class="rawcss">
             <ion-col size="6" style="margin-top: 10px;">
-                <ion-label>Select Date</ion-label>
+                <ion-label class="labelcss">Select Date</ion-label>
             </ion-col>
 
             <ion-col size="6">
-                <ion-datetime max="2025-12-31" placeholder='Start Date' [(ngModel)]="sdate" displayFormat="MM/DD/YYYY" pickerFormat="MMMM DD YYYY"
-                    [min]="currentdate" (ionChange)="ChangeDate($event)"></ion-datetime>
+               <!--  <ion-datetime max="2025-12-31" placeholder='Start Date' [(ngModel)]="sdate" displayFormat="MM/DD/YYYY" pickerFormat="MMMM DD YYYY" [min]="currentdate" (ionChange)="ChangeDate($event)"></ion-datetime>
+            <ion-input type='date' max="2025-12-31" placeholder='Start Date' [(ngModel)]="sdate"  data-date-format="MMMM DD YYYY"
+             [min]="currentdate" (ionChange)="ChangeDate($event)" class="inputcss"></ion-input>
+             <ion-input type='text' max="2025-12-31" placeholder='Start Date' [(ngModel)]="sdate"  data-date-format="MMMM DD YYYY"
+             [min]="currentdate" (ionFocus)="ChangeDate($event)" class="inputcss"></ion-input>-->
+             <ion-input max="2025-12-31" maxlength="10"  readonly [liIonic4Datepicker]="datePickerObj" type="text" dateFormat="MM/DD/YYYY" placeholder='Start Date'  [(ngModel)]="sdate"  (ionChange)="ChangeDate($event)" ></ion-input>
+              
+                
+
             </ion-col>
         </ion-row>
-
         <ion-row class="rawcss" *ngIf="sdate != null && intervaldata[0].TimeInerrvals != 'null'">
             <ion-col ion-item size="6" style="margin-top: 10px;">
-                <ion-label class="labelcss">Time Slots</ion-label>
+                <ion-label class="labelcss">Time Slots  {{ Temptime }}</ion-label>
             </ion-col>
             <!-- <ion-col ion-item size="6">
                 <ion-select [(ngModel)]="interval" placeholder="Select Time Slots" class="selectcss" (ionChange)="ChangeTime($event)" style="margin-left: 0px;">
                     <ion-select-option [value]="interval" *ngFor="let interval of intervaldata">{{interval.TimeInerrvals}}</ion-select-option>
                 </ion-select>
             </ion-col> -->
-            <ion-col ion-item size="6">
-                <ion-select [(ngModel)]="interval" placeholder="Select Time Slots" class="selectcss" (ionChange)="ChangeTime($event)" [selectedText]="interval"
+            <ion-col ion-item size="6" lines="none">
+             <!--   <ion-select [(ngModel)]="interval" placeholder="Select Time Slots" class="selectcss" (ionChange)="ChangeTime($event)" [selectedText]="interval"
                     style="margin-left: 0px;">
                     <ion-select-option [value]="interval.TimeInerrvals" *ngFor="let interval of intervaldata">{{interval.TimeInerrvals}}</ion-select-option>
-                </ion-select>
+                </ion-select>-->
+                <ion-input type='text' [(ngModel)]="interval" [value]="interval" placeholder="Select Time Slots" class="selectcss"  
+                [readonly]="true" style="margin-left: 0px; --padding-start: 15px; font-size: 16px; color:maroon; font-weight: bold; "></ion-input>
+                      
+           
             </ion-col>
+            
+            <ion-col>
+             
+                <ion-grid > 
+                    <ion-row>
+                      <ion-col size="12" >
+                            <ion-radio-group [(ngModel)]="interval" [value]="interval"  (ionChange)="ChangeTime($event)"  >
+                                <ion-item  class="bgcolors" size="6" lines="none" style =" width: calc(100% / 5 - 10px); margin: 5px; border-radius:4px;  display: inline-block; border:2px solid #f1ff01 !important; " *ngFor="let interval of intervaldata;let i = index;"  >
+                                    <ion-label> {{interval.TimeInerrvals}}</ion-label>
+                                    <!--<ion-label>   {{ Temptime }}</ion-label>
+                                    <ion-label>   {{ interval.TimeInerrvals < Temptime }}</ion-label>-->
+                                   <!--   <ion-radio mode="ios" slot="start"   [checked]="interval.checked" [disabled]="isDisabled ? 'Booked' : null" [value]="interval.TimeInerrvals" (ionSelect)="TimeSelection(interval.TimeInerrvals,$event);"></ion-radio>-->
+                                     <!--  <ion-radio mode="ios" slot="start"   id="TimeInerrvals" name="TimeInerrvals" [checked]="interval.checked" [disabled]="interval.Status == 'Booked'"  [value]="interval.TimeInerrvals" > </ion-radio>-->
+                                   
+                                  <ion-radio mode="ios" slot="start"   id="TimeInerrvals" name="TimeInerrvals" [checked]="interval.Status == 'Booked' && interval.AppointmentTimeId == Tempinterval " [disabled]="interval.Status == 'Over' || interval.Status == 'Booked' && interval.AppointmentTimeId != Tempinterval "    [value]="interval.TimeInerrvals" > </ion-radio>
+                                   <!-- <ion-radio mode="ios" slot="start"   id="TimeInerrvals" name="TimeInerrvals" [checked]="interval.Status == 'Booked' && interval.AppointmentTimeId == Tempinterval " [disabled]="interval.Status == 'Booked'  || (Temptime != null && interval.TimeInerrvals < Temptime)"    [value]="interval.TimeInerrvals" > </ion-radio>-->
+                               
+                                </ion-item>
+                               
+                              
+                            </ion-radio-group>
+                      </ion-col>
+                      
+                    </ion-row>
+                    
+                </ion-grid>
+
+                <br/><br/>
+                <ion-row *ngIf="intervaldata != null && intervaldata[0].TimeInerrvals != 'null'">
+                    <br/><br/>
+                    <ion-col size="12" >
+                        <div style="display: flex; margin-left: 10px; ">
+                              
+                            <ion-button expand="full" mode="ios" style="width:40px; --background:#4cae4c; " > </ion-button> <br/>Already Reserved 
+                           
+                          
+                        </div>
+                    </ion-col>
+                    <ion-col size="12" >
+                        <div style="display: flex; margin-left: 10px; ">
+                              
+                            <br/><br/><ion-button expand="full" mode="ios" style="width:40px; --background:rgb(241, 255, 1) !important; " > </ion-button> <br/>Current Time Slot
+    
+                          
+                        </div>
+                    </ion-col>
+                    
+                   
+                    
+                    </ion-row>
+                <br/><br/>
+          </ion-col>
+    
+        
         </ion-row>
     </div>
 
@@ -476,129 +606,204 @@
             <! <div class="tag">Featured</div> -->
         <!-- <img src="../assets/imgs/images.png">
      </div>      -->
-        <ion-row style="justify-content: center">
-            <ion-col size="2" style="align-items: center">
-                <!-- <div> -->
-                <label style="font-size: 15px">Left Front</label>
-                <br>
-                <label style="font-size: 15px">
-                    W
-                </label>
-                <label style="font-size: 15px">
-                    :
-                </label>
-                <ion-input [(ngModel)]="lfw" [readonly]="true" style="    --padding-start: 0px;
-                        font-size: 11px;"></ion-input>
-
-                <label style="font-size: 15px">
-                    T
-                </label>
-                <label style="font-size: 15px">
-                    :
-                </label>
-                <ion-input [(ngModel)]="lft" [readonly]="true" style="    --padding-start: 0px;
-                        font-size: 11px;"></ion-input>
-                <!-- </div> -->
-                <br>
-                <!-- <div> -->
-                <label style="font-size: 15px">Left Rear</label>
-                <br>
-                <label style="font-size: 15px">
-                    W :
-                </label>
-                <ion-input [(ngModel)]="lrw" [readonly]="true" style="    --padding-start: 0px;
-                        font-size: 11px;"></ion-input>
-
-                <label style="font-size: 15px">
-                    T :
-                </label>
-                <ion-input [(ngModel)]="lrt" [readonly]="true" style="    --padding-start: 0px;
-                        font-size: 11px;">
-                </ion-input>
-                <!-- </div> -->
-            </ion-col>
-            <ion-col size="8" style="align-items: center">
-                <!-- style="width: 365px;margin-left: -75px;" -->
-                <!-- <div style="width: 270px;"> -->
-                <a (click)="edittw('t1')" [ngClass]="{btncircleselected : (s1),
-                 btncircle:(b1)}" class="st1">
-
-                    <ion-icon name="checkmark" *ngIf="c1" style="font-size: 30px;
-                margin: -6px;
-                color: rgb(0, 167, 0);"></ion-icon>
-                </a>
-                <a (click)="edittw('t2')" [ngClass]="{btncircleselected : (s2),
-                btncircle:(b2)}" class="st2">
-
-                    <ion-icon name="checkmark" style="font-size: 30px;
-                margin: -6px;
-                color: rgb(0, 167, 0);" *ngIf="c2"></ion-icon>
-                </a>
-                <a (click)="edittw('t3')" [ngClass]="{btncircleselected : (s3),
-                btncircle:(b3)}" class="st3">
-
-                    <ion-icon name="checkmark" style="font-size: 30px;
-                margin: -6px;
-                color: rgb(0, 167, 0);" *ngIf="c3"></ion-icon>
-                </a>
-                <a (click)="edittw('t4')" [ngClass]="{btncircleselected : (s4),
-                btncircle:(b4)}" class="st4">
-
-                    <ion-icon name="checkmark" style="font-size: 30px;
-                margin: -6px;
-                color: rgb(0, 167, 0);" *ngIf="c4"></ion-icon>
-                </a>
-                <img id="ContentPlaceHolder1_Image2" style="margin: auto;display: block;" src="../assets/imgs/sidecar.png">
-                <!-- </div> -->
-            </ion-col>
-            <ion-col size="2" style="align-items: center">
-                <!-- <div> -->
-                <label style="font-size: 15px">Right Front</label>
-                <br>
-                <label style="font-size: 15px">
-                    W :
-                </label>
-                <ion-input [(ngModel)]="rfw" [readonly]="true" style="    --padding-start: 0px;
-        font-size: 11px;">
-                </ion-input>
-
-                <label style="font-size: 15px">
-                    T :
-                </label>
-                <ion-input [(ngModel)]="rft" [readonly]="true" style="    --padding-start: 0px;
-        font-size: 11px;">
-                </ion-input>
-                <!-- </div> -->
-                <br>
-                <!-- <div> -->
-                <label style="font-size: 15px">Right Rear</label>
-                <br>
-                <label style="font-size: 15px">
-                    W :
-                </label>
-                <ion-input [(ngModel)]="rrw" [readonly]="true" style="    --padding-start: 0px;
-        font-size: 11px;">
-                </ion-input>
-
-                <label style="font-size: 15px">
-                    T :
-                </label>
-                <ion-input [(ngModel)]="rrt" [readonly]="true" style="    --padding-start: 0px;
-        font-size: 11px;">
-                </ion-input>
-                <!-- </div> -->
-            </ion-col>
-        </ion-row>
-        <label style="font-size: 15px">WHEEL</label>
-        <ion-select [(ngModel)]="wheel" style="border: 1px solid #000;margin-right: 12px;margin-left: 1px;border-radius: 5px;" placeholder="Select Wheel"
-            class="selectcss" (ionChange)="ChangeWheel($event)">
-            <ion-select-option [value]="wheel" *ngFor="let wheel of WheelsTypeList">{{wheel.WheelType}}</ion-select-option>
-        </ion-select>
+     <br>
+     <ion-row style="justify-content: center">
+         <ion-col size="3" style="align-items: center">
+             <!-- <div> -->
+                
+    <fieldset style=" margin: 0px 0px;margin-left: 5px; padding: 0px;font-size: 20px">
+        <legend style="font-size: 20px;">Left Front :</legend>
         <br>
-        <label style="font-size: 15px">TIRE TREAD DEPTH (MM)</label>
-        <ion-select [(ngModel)]="tire" placeholder="Select Tire Tread Depth" class="selectcss" (ionChange)="ChangeTire($event)" style="border: 1px solid #000;margin-right: 12px;margin-left: 1px;border-radius: 5px;">
-            <ion-select-option [value]="tire" *ngFor="let tire of wheelsDepthList">{{tire.WheelDepth}}</ion-select-option>
-        </ion-select>
+            
+             <label style="font-size: 18px">
+                <ion-row >
+                    <ion-col size="3" class="ion-align-self-center">
+                         W  :
+                    </ion-col>
+                    
+                    <ion-col size="9">
+                         <ion-input [(ngModel)]="lfw" [readonly]="true" style="    --padding-start: 0px;
+                         font-size: 18px; color:maroon; font-weight: bold; " ></ion-input>
+                     </ion-col>
+                </ion-row>
+                     
+             </label>
+
+            
+             <label style="font-size: 18px">
+
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  T  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="lft" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:blue; font-weight: bold; "></ion-input>
+                                </ion-col>
+                         </ion-row>
+             </label>
+  </fieldset>
+             <!-- </div> -->
+             <br>
+             <!-- <div> -->
+                <fieldset style=" margin: 0px 0px;margin-left: 5px; padding: 0px;font-size: 20px">
+                    <legend style="font-size: 20px;">Left Rear :</legend>
+             
+             <br>
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  W  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="lrw" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:maroon; font-weight: bold; "></ion-input>
+                               </ion-col>
+                     </ion-row>
+             </label>
+            
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  T  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="lrt" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:blue; font-weight: bold; ">    </ion-input>
+                             </ion-col>
+                     </ion-row>
+             </label>
+                </fieldset>
+             <!-- </div> -->
+         </ion-col>
+         <ion-col size="6" style="align-items: center">
+             <!-- style="width: 365px;margin-left: -75px;" -->
+             <!-- <div style="width: 270px;"> -->
+             <a (click)="edittw('t1')" [ngClass]="{btncircleselected : (s1),
+              btncircle:(b1)}" class="st1">
+
+                 <ion-icon name="checkmark" *ngIf="c1" style="font-size: 30px;
+             margin: -6px;
+             color: rgb(0, 167, 0);"></ion-icon>
+             </a>
+             <a (click)="edittw('t2')" [ngClass]="{btncircleselected : (s2),
+             btncircle:(b2)}" class="st2">
+
+                 <ion-icon name="checkmark" style="font-size: 30px;
+             margin: -6px;
+             color: rgb(0, 167, 0);" *ngIf="c2"></ion-icon>
+             </a>
+             <a (click)="edittw('t3')" [ngClass]="{btncircleselected : (s3),
+             btncircle:(b3)}" class="st3">
+
+                 <ion-icon name="checkmark" style="font-size: 30px;
+             margin: -6px;
+             color: rgb(0, 167, 0);" *ngIf="c3"></ion-icon>
+             </a>
+             <a (click)="edittw('t4')" [ngClass]="{btncircleselected : (s4),
+             btncircle:(b4)}" class="st4">
+
+                 <ion-icon name="checkmark" style="font-size: 30px;
+             margin: -6px;
+             color: rgb(0, 167, 0);" *ngIf="c4"></ion-icon>
+             </a>
+             <img id="ContentPlaceHolder1_Image2" style="margin: auto;display: block;" src="../assets/imgs/sidecar.png">
+             <!-- </div> -->
+         </ion-col>
+         <ion-col size="3" style="align-items: center">
+             <!-- <div> -->
+             
+                    
+    <fieldset style=" margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+        <legend style="font-size: 20px;">Right Front :</legend>
+             <br>
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  W  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="rfw" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:maroon; font-weight: bold; ">  </ion-input>     
+                             </ion-col>
+                     </ion-row>
+             </label>
+          
+
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  T  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="rft" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:blue; font-weight: bold; ">      </ion-input>
+                             </ion-col>
+                     </ion-row>
+             </label>
+    </fieldset>
+             <!-- </div> -->
+             <br>
+             <!-- <div> -->
+                                 
+    <fieldset style=" margin: 0px 0px;margin-right: 10px; padding: 0px;font-size: 20px">
+        <legend style="font-size: 20px;">Right Rear :</legend>
+           
+             <br>
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  W  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="rrw" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:maroon; font-weight: bold; "></ion-input>
+                                
+                             </ion-col>
+                     </ion-row>
+             </label>
+           
+             <label style="font-size: 18px">
+                     <ion-row >
+                             <ion-col size="3" class="ion-align-self-center">
+                                  T  :
+                             </ion-col>
+                             
+                             <ion-col size="9">
+                                     <ion-input [(ngModel)]="rrt" [readonly]="true" style="    --padding-start: 0px;
+                                     font-size: 18px; color:blue; font-weight: bold; ">     </ion-input>
+                             </ion-col>
+                     </ion-row>
+             </label>
+             </fieldset>
+             <!-- </div> -->
+         </ion-col>
+     </ion-row>
+     <br>
+     <ion-row>
+         <ion-col size="6">
+                 <label style="font-size: 15px">WHEEL</label><br><br>
+                 <ion-select [(ngModel)]="wheel" style="border: 1px solid #000;margin-right: 12px;margin-left: 1px;border-radius: 5px;" placeholder="Select Wheel"
+                     class="selectcss" (ionChange)="ChangeWheel($event)">
+                     <ion-select-option [value]="wheel" *ngFor="let wheel of WheelsTypeList">{{wheel.WheelType}}</ion-select-option>
+                 </ion-select>
+         </ion-col>
+         <ion-col size="6">
+                 <label style="font-size: 15px">TIRE TREAD DEPTH (MM)</label><br><br>
+                 <ion-select [(ngModel)]="tire" placeholder="Select Tire Tread Depth" class="selectcss" (ionChange)="ChangeTire($event)" style="border: 1px solid #000;margin-right: 12px;margin-left: 1px;border-radius: 5px;">
+                     <ion-select-option [value]="tire" *ngFor="let tire of wheelsDepthList">{{tire.WheelDepth}}</ion-select-option>
+                 </ion-select>
+         </ion-col>
+     </ion-row>
+    
+     <br>
+  
     </div>
 
     <!-- <div *ngIf="step == 8" class="scroll">
@@ -712,9 +917,9 @@
        
     </div> -->
     <div *ngIf="step == 8" class="scroll">
-        <ion-label style="font-size: 15px;margin-left: 6px;">
-            <b>FRONT</b>
-        </ion-label>
+        <fieldset>
+            <legend>Front Information :</legend>
+        
         <ion-row class="rawcss">
             <ion-col size="1" style="align-self: center">
                 <img src="assets/fog.png" style="width: 25px" />
@@ -789,12 +994,14 @@
                 </ion-select>
             </ion-col>
         </ion-row>
-
+    </fieldset>
+   
         <br>
 
-        <ion-label style="font-size: 15px;margin-left: 6px;">
-            <b>REAR</b>
-        </ion-label>
+
+        <fieldset>
+            <legend>Rear Information :</legend>
+       
         <ion-row class="rawcss">
             <ion-col size="1" style="align-self: center">
                 <img src="../../assets/wipe.png" style="width: 25px" />
@@ -851,6 +1058,7 @@
                 </ion-select>
             </ion-col>
         </ion-row>
+    </fieldset>
 
     </div>
     <div *ngIf="step == 9" class="scroll">
@@ -874,15 +1082,15 @@
         </form>
 
     </div>
-
     <!-- <div *ngIf="step == 8" class="scroll">
             <app-notes></app-notes>
       </div> -->
 </ion-content>
 
+
 <ion-footer style="bottom: 20px;">
     <ion-toolbar>
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 9">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 9">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('nine')">Prev</ion-button>
             </ion-col>
@@ -898,7 +1106,7 @@
             </ion-col>
 
         </ion-row>
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 8">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 8">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('eight')">Prev</ion-button>
             </ion-col>
@@ -907,7 +1115,7 @@
             </ion-col>
 
         </ion-row>
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 7">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 7">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('seven')">Prev</ion-button>
             </ion-col>
@@ -917,7 +1125,7 @@
 
         </ion-row>
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 6">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 6">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('six')">Prev</ion-button>
             </ion-col>
@@ -927,7 +1135,7 @@
 
         </ion-row>
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 5">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 5">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('five')">Prev</ion-button>
             </ion-col>
@@ -937,7 +1145,7 @@
 
         </ion-row>
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 4">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 4">
             <ion-col size="6" style="text-align: center">
                 <ion-button style="width: 100%;" class="footerbtn" (click)="prev('four')">Prev</ion-button>
             </ion-col>
@@ -947,7 +1155,7 @@
 
         </ion-row>
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 3">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 3">
 
             <ion-col size="4" style="text-align: center">
                 <ion-button class="footerbtn" (click)="prev('three')" style="width: 100%;">Prev</ion-button>
@@ -964,7 +1172,7 @@
 
         </ion-row>
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 2">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 2">
             <ion-col size="6" style="text-align: center">
                 <ion-button class="footerbtn" (click)="prev('two')" style="width: 100%;">Prev</ion-button>
             </ion-col>
@@ -978,7 +1186,7 @@
         </ion-row>
 
 
-        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;" class="btn" *ngIf="step == 1">
+        <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 10px;" class="btn" *ngIf="step == 1">
             <!-- <ion-col size="6" style="text-align: center">
             <ion-button style="width: 100%;" class="footerbtn" (click)="UpdateCustomerInfo()">Update</ion-button>
         </ion-col> -->

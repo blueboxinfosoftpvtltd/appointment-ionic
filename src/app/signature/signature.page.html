@@ -8,11 +8,17 @@
 </ion-header>
 
 <ion-content padding *ngIf="userid">
-  <div class="title">
+  <div class="title" *ngIf="!showedit">
     <h4 style="font-size: 16px;">
       <b>Draw your Signature</b>
     </h4>
   </div>
+  <div class="title"  *ngIf="showedit">
+    <h4 style="font-size: 16px; color:red; font-style:italic;">
+      <b>No signature required,already signed</b>
+    </h4>
+  </div>
+  
   <ion-row [ngClass]="{'drawing-active': isDrawing}">
 
     <ion-col id="sign_canvas" style="border: 1px solid #b7b7b7;background: #f6fbff;">

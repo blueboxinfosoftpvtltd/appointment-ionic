@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
 import { CreateappointmentPage } from './createappointment.page';
 import { ComponentsModule } from '../component/components.module';
 // import { CustomeinfoComponent } from '../component/customeinfo/customeinfo.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    Ionic4DatepickerModule,
     ComponentsModule,
     RouterModule.forChild(routes)
   ],

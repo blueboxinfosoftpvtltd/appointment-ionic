@@ -20,8 +20,17 @@ export class PdfviewPage implements OnInit {
   pres:any;
   previousUrl : any;
   isback:any;
+  copies:any[]=[];
+  copyname:any;
+  ccopy:any;
+  cres:any;
   constructor(public activatedRoute: ActivatedRoute, private document: DocumentViewer, private file: File, private ft: FileTransfer,public auth : AuthService,private alertController: AlertController,private router: Router) {
 
+    
+    this.copies.push("Customer Copy");
+    this.copies.push("Workorder Copy");
+    this.copyname = "Workorder Copy";
+    this.ccopy = "Workorder Copy";
     this.activatedRoute.queryParams.subscribe((data) => {
       console.log(data);
       this.furl = data.fileurl;
@@ -37,6 +46,30 @@ export class PdfviewPage implements OnInit {
 
       //this.document.viewDocument(this.furl, 'application/pdf', options)
     })
+  }
+  Changecopy(){
+    if(this.ccopy == "Workorder Copy"){
+      this.auth.printro(this.did,"CustomerCopy",this.rono,this.username).subscribe(res =>{
+        console.log(res);
+        this.cres = res;
+        if (this.cres.URL) {
+          this.furl = "";
+          this.furl = this.cres.URL;
+          this.ccopy = "Customer Copy";
+        }
+      })
+    }
+    else{
+      this.auth.printro(this.did,"WorkOrderCopy",this.rono,this.username).subscribe(res =>{
+        console.log(res);
+        this.cres = res;
+        if (this.cres.URL) {
+          this.furl = "";
+          this.furl = this.cres.URL;
+          this.ccopy = "Workorder Copy";
+        }
+      })
+    }
   }
 
   print(){

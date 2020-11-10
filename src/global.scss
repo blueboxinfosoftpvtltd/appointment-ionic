@@ -43,6 +43,14 @@
     position: absolute; 
     display: block;  
  }
+ .modal-fullscreennew .modal-wrapper {
+   height: 75%;
+   top: 12%;
+   left: 2.5%;
+   width: 95.5%;
+   position: absolute; 
+   display: block;  
+ }
  @media only screen and (max-width: 767px) {
    .modal-fullscreen2 .modal-wrapper {
       height: 45%;
@@ -53,6 +61,20 @@
       display: block;  
       border-radius: 6px;
    }
+
+  .li-ionic4-datePicker {
+   .modal-wrapper {
+       //  height: 470px;
+     height: 550px;
+     max-height: 100%;
+      // width: 312px;
+     width: 500px;
+       border-radius: 0px;
+       --ion-color-primary: ##; // This Variable used for the change of colour ion-datepicker only.
+       --ion-color-primary-tint: rgb(214, 153, 153); // This Variable changes the tint colour of background when click button.
+   }
+ }
+
  }
  
  @media only screen and (min-width: 768px) and (max-width: 1366px) {
@@ -68,6 +90,20 @@
       display: block;  
       // border-radius: 6px;
    }
+
+
+  .li-ionic4-datePicker {
+   .modal-wrapper {
+     //  height: 470px;
+     height: 550px;
+     max-height: 100%;
+      // width: 312px;
+     width: 500px;
+       border-radius: 0px;
+       --ion-color-primary: #374767; // This Variable used for the change of colour ion-datepicker only.
+       --ion-color-primary-tint: rgb(214, 153, 153); // This Variable changes the tint colour of background when click button.
+   }
+ }
 
  }
  

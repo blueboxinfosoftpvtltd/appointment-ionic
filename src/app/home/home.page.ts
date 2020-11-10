@@ -22,6 +22,8 @@ export class HomePage {
   //resdata:any;
   currentDate: any;
   advisorid: any;
+  empdealerid: any;
+  tempdealerid: any;
   ActiveSegment: any;
   username: any;
   from: any;
@@ -186,8 +188,32 @@ export class HomePage {
             }
           }
         })
+
         this.storage.get('userid').then((val) => {
-          this.advisorid = val;
+        this.advisorid = val;
+      /* this.storage.get('dealerid').then((val) => {
+        this.tempdealerid = val;
+      });
+
+      this.storage.get('Employee_id').then((val) => {
+          console.log(val);
+          console.log(this.tempdealerid);
+
+          this.empdealerid = val.filter((item) => {
+            console.log(item);
+            return item.DealershipId == this.tempdealerid;
+
+          });
+          console.log(this.empdealerid);
+          if(this.empdealerid.length > 0)
+          {
+            this.advisorid = this.empdealerid[0].PKEmployeeID;
+          }
+          
+          console.log(this.advisorid);
+        */
+      
+         
           this.storage.get('dealerid').then((val) => {
             this.dealerid = val;
             var appointment;
@@ -225,7 +251,34 @@ export class HomePage {
     this.grid = Array(Math.ceil(this.items.length / 3));
 
   }
+  logout() {
+    this.showAlert();
+  }
 
+  async  showAlert() {
+    const prompt = this.alertCtrl.create({
+      header: "Appointment",
+      message: "Are you sure you want to logout?",
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: data => {
+            this.storage.set('islogin', false);
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+            console.log('No clicked');
+          }
+        }
+      ]
+    });
+    (await prompt).present();
+  }
   Isapp() {
 
     this.ActiveSegment = "app";
@@ -237,6 +290,11 @@ export class HomePage {
     this.to = 10;
     this.fromd = 0;
     this.tod = 10;
+
+  /*  this.from = 6;
+    this.to = 22;
+    this.fromd = 6;
+    this.tod = 22;*/
     this.ActiveSegment = "ro";
     this.selecttxt = "My RO";
     if (this.rodata.length == 0) {
@@ -511,8 +569,29 @@ export class HomePage {
         }
       }
     })
+    this.storage.get('dealerid').then((val) => {
+      this.tempdealerid = val;
+    });
     this.storage.get('userid').then((val) => {
       this.advisorid = val;
+    /* this.storage.get('Employee_id').then((val) => {
+      console.log(val);
+      console.log(this.tempdealerid);
+
+      this.empdealerid = val.filter((item) => {
+        console.log(item);
+        return item.DealershipId == this.tempdealerid;
+
+      });
+      console.log(this.empdealerid);
+
+      if(this.empdealerid.length > 0)
+      {
+        this.advisorid = this.empdealerid[0].PKEmployeeID;
+      }
+      
+      console.log(this.advisorid);*/
+    
       this.storage.get('dealerid').then((val) => {
         this.dealerid = val;
         var appointment;
@@ -532,6 +611,7 @@ export class HomePage {
           else {
             this.appointmentsData = res;
           }
+          console.log(this.appointmentsData);
          // this.authservice.dismissLoading();
           // for(let i=0 ; i<this.resdata.length;i++){
           //   this.appointmentsData.push(this.resdata[i]);
@@ -563,7 +643,7 @@ export class HomePage {
 
   change(e) {
     console.log(e);
-
+    e.cancel = true;
     if (e.name === "currentView" || e.name === "currentDate") {
       // 
       if (e.value == "week" || e.value == "day" || e.value == "month") {
@@ -576,8 +656,11 @@ export class HomePage {
         if (e.value == "month") {
           this.type = "2";
         }
+        this.appointmentsData = "";
         this.storage.get('userid').then((val) => {
           this.advisorid = val;
+
+      
           this.storage.get('dealerid').then((val) => {
             this.dealerid = val;
             var appointment;
@@ -587,12 +670,13 @@ export class HomePage {
             else {
               appointment = "0";
             }
-            this.appointmentsData = "";
-
+           
+           // this.appointmentsData = "";
             this.authservice.getappointdata(this.advisorid, this.dealerid, appointment, this.currentDate, this.type).subscribe((res) => {
-              this.appointmentsData = res;
+             this.appointmentsData = res;
               console.log(res);
-
+              
+             
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
               // }
@@ -600,17 +684,21 @@ export class HomePage {
           })
         })
       }
-      else {
-        if (this.type == undefined) {
+      else 
+      {
+        if (this.type == undefined) 
+        {
           this.type = "0";
         }
-        this.appointmentsData = "";
+        //  this.appointmentsData = "";
+        
         console.log(e.value);
         console.log(e.component.getStartViewDate());
         console.log(e.component.getEndViewDate());
         this.currentDate = (moment(e.value).format('YYYY-MM-DD'));
         this.storage.get('userid').then((val) => {
           this.advisorid = val;
+
           this.storage.get('dealerid').then((val) => {
             this.dealerid = val;
             var appointment;
@@ -620,10 +708,12 @@ export class HomePage {
             else {
               appointment = "0";
             }
+        
 
             this.authservice.getappointdata(this.advisorid, this.dealerid, appointment, this.currentDate, this.type).subscribe((res) => {
               this.appointmentsData = res;
               console.log(res);
+              
 
               // for(let i=0 ; i<this.resdata.length;i++){
               //   this.appointmentsData.push(this.resdata[i]);
@@ -703,6 +793,26 @@ export class HomePage {
     this.appointmentsData = "";
     this.storage.get('userid').then((val) => {
       this.advisorid = val;
+    /* this.storage.get('dealerid').then((val) => {
+      this.tempdealerid = val;
+    });
+    this.storage.get('Employee_id').then((val) => {
+      console.log(val);
+      console.log(this.tempdealerid);
+
+      this.empdealerid = val.filter((item) => {
+        console.log(item);
+        return item.DealershipId == this.tempdealerid;
+
+      });
+      console.log(this.empdealerid);
+      if(this.empdealerid.length > 0)
+      {
+        this.advisorid = this.empdealerid[0].PKEmployeeID;
+      }
+      
+      console.log(this.advisorid);*/
+    
       this.storage.get('dealerid').then((val) => {
         this.dealerid = val;
         var appointment;
@@ -735,7 +845,30 @@ export class HomePage {
     if (this.type == undefined) {
       this.type = "0";
     }
-    this.storage.set("dealerid", event.detail.value);
+   // Add For advisorid Id Start
+  /*  this.storage.get('dealerid').then((val) => {
+      this.tempdealerid = val;
+    });
+    this.storage.get('Employee_id').then((val) => {
+      console.log(val);
+      console.log(this.tempdealerid);
+
+      this.empdealerid = val.filter((item) => {
+        console.log(item);
+        return item.DealershipId == this.tempdealerid;
+
+      });
+      console.log(this.empdealerid);
+      if(this.empdealerid.length > 0)
+      {
+        this.advisorid = this.empdealerid[0].PKEmployeeID;
+      }
+      
+      console.log(this.advisorid);
+    })*/
+ // End For advisorid Id 
+
+  this.storage.set("dealerid", event.detail.value);
     for(let i=0;i<this.dealers.length;i++){
        if(this.dealers[i].DealershipId == event.detail.value){
         this.storage.set("dealername", this.dealers[i].DealershipName);
@@ -746,7 +879,7 @@ export class HomePage {
       setTimeout(() => {
         this.authservice.dismissLoading();
       }, 5000);
-      this.appointmentsData = "";
+     // this.appointmentsData = "";
       var appointment;
       if (this.ismyapp == true) {
         appointment = "1";
@@ -819,7 +952,8 @@ export class HomePage {
     this.appointmenttime = moment(e.appointmentData.StartDate).format('HH:mm');
     console.log(this.appointmenttime);
     if (this.appointmentdate == this.currentDateor) {
-      if (this.currenttime < "18:00") {
+    // if (this.currenttime < "18:00") {
+       if (this.currenttime < "20:00") {
         if (this.appointmenttime > this.currenttime) {
           this.authservice.secustidvin(data);
           this.router.navigateByUrl('/createappointment');
@@ -833,6 +967,7 @@ export class HomePage {
   }
 
   empty(e) {
+    e.cancel = true;
     setTimeout(() => {
       //var scheduler = new Scheduler(e);
       // Scheduler.hideAppointmentTooltip();
@@ -856,7 +991,8 @@ export class HomePage {
     this.appointmenttime = moment(e.appointmentData.StartDate).format('HH:mm');
     console.log(this.appointmenttime);
     if (this.appointmentdate == this.currentDateor) {
-      if (this.currenttime < "18:00") {
+    // if (this.currenttime < "18:00") {
+       if (this.currenttime < "20:00") {
         if (this.appointmenttime > this.currenttime) {
           this.authservice.secustidvin(data);
           this.router.navigateByUrl('/createappointment');
@@ -869,9 +1005,9 @@ export class HomePage {
     }
     e.cancel = true;
   }
-  // hidetool(e){
-  //   e.cancel = true;
-  // }
+   hidetool(e){
+     e.cancel = true;
+   }
 
   loadData(e) {
     setTimeout(() => {
@@ -978,6 +1114,30 @@ export class HomePage {
 
 
   search() {
+    this.storage.get('dealerid').then((val) =>{
+      console.log(val);
+      this.dealerid = val;
+    });
+  /*
+    this.storage.get('dealerid').then((val) => {
+      console.log(val);
+      console.log(this.dealerid);
+
+      this.empdealerid = val.filter((item) => {
+        console.log(item);
+        return item.DealershipId == this.dealerid;
+
+      });
+      console.log(this.empdealerid);
+      if(this.empdealerid.length > 0)
+      {
+        this.dealerid = this.empdealerid[0].IDSDealershipId;
+      }
+      
+      console.log(this.dealerid);
+    })*/
+
+   
 
     if (this.val && this.op) {
       this.issearch = true;
@@ -1022,8 +1182,28 @@ export class HomePage {
          this.authservice.dismissLoading();  
         }, 5000);
         this.appointmentsData = "";
-        this.storage.get('userid').then((val) => {
-          this.advisorid = val;
+      this.storage.get('userid').then((val) => {
+      this.advisorid = val;
+     /* this.storage.get('dealerid').then((val) => {
+        this.tempdealerid = val;
+      });
+          this.storage.get('Employee_id').then((val) => {
+            console.log(val);
+            console.log(this.tempdealerid);
+  
+            this.empdealerid = val.filter((item) => {
+              console.log(item);
+              return item.DealershipId == this.tempdealerid;
+  
+            });
+            console.log(this.empdealerid);
+            if(this.empdealerid.length > 0)
+            {
+              this.advisorid = this.empdealerid[0].PKEmployeeID;
+            }
+            
+            console.log(this.advisorid);*/
+          
           this.storage.get('dealerid').then((val) => {
             this.dealerid = val;
             var appointment;
@@ -1038,12 +1218,12 @@ export class HomePage {
                 if (res == null) {
                   this.scheduler.instance.option("dataSource", []);
                  // this.authservice.dismissLoading();
-                  event.target.complete();
+                 event.target.complete();
                 }
                 else {
                   this.scheduler.instance.option("dataSource", res);
                  // this.authservice.dismissLoading();
-                  event.target.complete();
+                 // event.target.complete();
                 }
 
               }, 500);
@@ -1059,12 +1239,37 @@ export class HomePage {
       else if (this.ActiveSegment == "ro") {
         // this.rodata = [];
         this.infiniteScroll.disabled = false;
-        this.from = 0;
+       this.from = 0;
         this.to = 10;
         this.fromd = 0;
         this.tod = 10;
+
+       /* this.from = 6;
+        this.to = 22;
+        this.fromd = 6;
+        this.tod = 22;*/
         this.storage.get('userid').then((val) => {
-          this.advisorid = val;
+        this.advisorid = val;
+       /* this.storage.get('dealerid').then((val) => {
+          this.tempdealerid = val;
+        });
+          this.storage.get('Employee_id').then((val) => {
+            console.log(val);
+            console.log(this.tempdealerid);
+  
+            this.empdealerid = val.filter((item) => {
+              console.log(item);
+              return item.DealershipId == this.tempdealerid;
+  
+            });
+            console.log(this.empdealerid);
+            if(this.empdealerid.length > 0)
+            {
+              this.advisorid = this.empdealerid[0].PKEmployeeID;
+            }
+            
+            console.log(this.advisorid);*/
+          
           this.storage.get('dealerid').then((val) => {
             this.dealerid = val;
             var appointment;
@@ -1089,7 +1294,7 @@ export class HomePage {
               }
               for (let i = 0; i < this.rod.length; i++) {
                 this.rodata.push(this.rod[i]);
-                event.target.complete();
+               //event.target.complete();
               }
             },err => this.authservice.dismissLoading())
           })
@@ -1135,7 +1340,7 @@ export class HomePage {
   // }
 
   print(rono){
-    this.authservice.printro(this.dealerid,rono,this.uname).subscribe(res =>{
+    this.authservice.printro(this.dealerid,"WorkOrderCopy",rono,this.uname).subscribe(res =>{
       console.log(res);
       this.furl = res;
       if (this.furl.URL) {

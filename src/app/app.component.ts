@@ -28,7 +28,7 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Book Appointment',
-      icon: 'ios-add-circle'
+      icon: 'ios-book'
     },
     {
       title: 'Create RO',
@@ -59,6 +59,7 @@ export class AppComponent {
   islogin: boolean = false;
   furl: any;
   navLinksArray = [];
+ // username: any;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -102,7 +103,9 @@ export class AppComponent {
       })
 
     })
-
+   /* this.storage.get('username').then((val => {
+      this.username = val;
+    }))*/
   }
 
   //hardwareBackButton(){
@@ -237,7 +240,7 @@ export class AppComponent {
         this.router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
           setTimeout(() => {
             this.splashScreen.hide();
-          }, 5000);
+          }, 1000);
 
           // setTimeout(() => {
           //   splashScreen.hide();

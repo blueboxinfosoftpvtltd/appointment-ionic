@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { IonInput } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { ModalController } from '@ionic/angular';
+import { ModalController,AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CitylistPage } from '../citylist/citylist.page';
 @Component({
@@ -45,11 +45,13 @@ export class CreatecustPage implements OnInit {
   res: any;
   userid: any;
   dealerid: any;
+  empdealerid: any;
   companyname: any;
   username: any;
   password: any;
-  Page; any;
-  constructor(private authservice: AuthService, private storage: Storage, private router: Router, public activatedRoute: ActivatedRoute, public modalCtrl: ModalController) { }
+  Page: any;
+  newusername: any;
+  constructor(private authservice: AuthService, private storage: Storage, private router: Router, public activatedRoute: ActivatedRoute, public modalCtrl: ModalController,public alertCtrl: AlertController) { }
 
   ngOnInit() {
 
@@ -64,16 +66,66 @@ export class CreatecustPage implements OnInit {
       this.getCountry();
       this.getYears();
     });
-    this.storage.get('userid').then((val) => {
+    /*this.storage.get('userid').then((val) => {
       console.log('userid', val);
-      this.userid = val;
+      this.userid = val;*/
+
+      this.storage.get('Employee_id').then((val) => {
+        console.log(val);
+        console.log(this.dealerid);
+  
+        this.empdealerid = val.filter((item) => {
+          console.log(item);
+          return item.DealershipId == this.dealerid;
+  
+        });
+        console.log(this.empdealerid);
+        if(this.empdealerid.length > 0)
+        {
+          this.userid = this.empdealerid[0].PKEmployeeID;
+        }
+        console.log(this.userid);
+        
     });
+
+    this.storage.get('username').then((val => {
+      this.newusername = val;
+    }))
   }
   //   ngAfterViewInit() {
   //     setTimeout(() => {
   //        this.inputElement.setFocus();
   //   }, 400);
   // }
+  logout() {
+    this.showAlert();
+  }
+
+  async  showAlert() {
+    const prompt = this.alertCtrl.create({
+      header: "Appointment",
+      message: "Are you sure you want to logout?",
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: data => {
+            this.storage.set('islogin', false);
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+            console.log('No clicked');
+          }
+        }
+      ]
+    });
+    (await prompt).present();
+  }
+
 
   compchange() {
     if (this.companyname.length >= 1) {
@@ -214,30 +266,31 @@ export class CreatecustPage implements OnInit {
       this.username = this.fname.charAt(0) + this.lname;
     }
   }
+  
   InsertCustomerInfo() {
     // if(this.fname== null || this.fname=="" || this.fname==undefined || this.lname== null || this.lname=="" || this.lname==undefined || this.companyname== null || this.companyname=="" || this.companyname==undefined){
-    //   this.authservice.showToast("Please enter Customer name");
+    //   this.authservice.alertshow("Please enter Customer name");
     // }
     // else
     if (this.saddress == null || this.saddress == '' || this.saddress == undefined) {
-      this.authservice.showToast("Please enter Street Address");
+      this.authservice.alertshow("Please enter Street Address");
     } else if (this.countryid == null || this.countryid == '' || this.countryid == undefined) {
-      this.authservice.showToast("Please select country");
+      this.authservice.alertshow("Please select country");
     } else if (this.stateid == null || this.stateid == '' || this.stateid == undefined) {
-      this.authservice.showToast("Please select state");
+      this.authservice.alertshow("Please select state");
     } else if (this.cityid == null || this.cityid == '' || this.cityid == undefined) {
-      this.authservice.showToast("Please select city");
+      this.authservice.alertshow("Please select city");
     } else if (this.mobile == null || this.mobile == '' || this.mobile == undefined) {
-      this.authservice.showToast("Please enter mobile no.");
+      this.authservice.alertshow("Please enter mobile no.");
     } else if (this.email == null || this.email == '' || this.email == undefined) {
-      this.authservice.showToast("Please enter email");
+      this.authservice.alertshow("Please enter email");
     } else if (this.vin == null || this.vin == '' || this.vin == undefined) {
-      this.authservice.showToast("Please enter VIN");
+      this.authservice.alertshow("Please enter VIN");
     } else if (this.username == null || this.username == '' || this.username == undefined) {
-      this.authservice.showToast("Username is mandatory !!");
+      this.authservice.alertshow("Username is mandatory !!");
     }
     // }else if(this.password== null || this.password=='' || this.password==undefined){
-    //   this.authservice.showToast("Please enter password");
+    //   this.authservice.alertshow("Please enter password");
     // }
     else {
       if (this.fname == null || this.fname == '' || this.fname == undefined) {
@@ -318,4 +371,34 @@ export class CreatecustPage implements OnInit {
     })
     return await modal.present();
   }
+
+
+
+  ClearCustomerInfo(){
+    this.fname = "";
+    this.lname = "";
+    this.companyname = "";
+    this.saddress="";
+    this.saddress1="";
+    this.getCountry();
+    this.getState();
+    this.cityid="0";
+    this.mobile=""; 
+    this.email=""; 
+    this.vin="";
+    this.zipcode=""; 
+    this.homephone=""; 
+    this.workphone="";
+    this.makeid="0";
+    this.yearid = "0";
+    this.modelid="0";
+    this.mileage = "";
+    this.avgmileage = "0";
+    this.trimid="";
+    this.colorid="0";
+    this.licenseplate = "";
+    this.password = "";
+    this.authservice.presentLoading();
+  }
+
 }

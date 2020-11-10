@@ -1,4 +1,190 @@
-.colcss {
+ion-content{
+    --padding-start:0px;
+    --padding-end:0px;
+    --padding-top:0px;
+    --padding-bottom:0px;
+	// --background: linear-gradient(-100deg,#374767 528px,#ffffff 0%);
+	// --background-repeat: no-repeat;
+	// --background-size: cover;
+	// --background-position: center center;
+}
+.inputtext{
+    border-radius: 4px; 
+    width:70%;
+    margin:20px auto;
+    
+}  
+@media only screen and (max-width: 767px) {
+    /* For mobile phones: */
+    .auth-page{
+        .login-block {
+            position: relative;
+            bottom: 0px;
+            display: block;
+            top: auto;
+            left: 0;
+            right: 0;
+            margin: 0px 20px 20px 20px;
+            border-radius: 8px;
+            .sc-ion-input-md-h,
+            .sc-ion-input-ios-h {
+                --padding-end: 20px;
+                --padding-start: 20px;
+                padding-inline-start:20px;
+            }
+            
+            ion-input{
+                text-align: left;
+                border-radius: 30px;
+                margin-bottom: 15px;
+                background: #fff;
+                border: 1px solid #374767;
+                padding-left: 20px;
+                padding-right: 20px;
+                
+            }
+        }
+        .btnsubmit{
+            margin:auto;
+            display:block;
+            height: 45px;
+            margin-bottom: 7px;
+            width: 60%;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 4px;
+            background: #374767;
+        }
+        
+    }
+    button[disabled], html input[disabled] {
+        cursor: default;
+        opacity: 0.5;
+    }
+    .ion-color-newcolor {
+        --ion-color-base: #ffffff;
+        --ion-color-contrast: #ffffff;
+      }
+    
+    .icons{
+        font-size: 25px;color: #000;
+    }  
+  }
+  /* ----------- iPad Pro ----------- */
+/* Portrait and Landscape */
+@media only screen and (min-width: 768px) and (max-width: 1366px) {
+    .auth-page{
+        .login-block {
+            position: absolute;
+            bottom: 120px;
+            display: block;
+            top: auto;
+            left: 0;
+            right: 0;
+            margin: 0px 20px 20px 20px;
+            border-radius: 8px;
+            .sc-ion-input-md-h,
+            .sc-ion-input-ios-h {
+                --padding-end: 20px;
+                --padding-start: 20px;
+                padding-inline-start:20px;
+            }
+            
+            ion-input{
+                text-align: left;
+                border-radius: 30px;
+                margin-bottom: 15px;
+                background: #fff;
+                border: 1px solid #374767;
+                padding-left: 20px;
+                padding-right: 20px;
+                
+            }
+        }
+        .btnsubmit{
+            margin:auto;
+            display:block;
+            height: 45px;
+            margin-bottom: 7px;
+            width: 60%;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 4px;
+            background: #374767;
+        }
+        
+    }
+    button[disabled], html input[disabled] {
+        cursor: default;
+        opacity: 0.5;
+    }
+    .ion-color-newcolor {
+        --ion-color-base: #ffffff;
+        --ion-color-contrast: #ffffff;
+      }
+      .icons{
+        font-size: 25px;color: #000;
+     } 
+       
+}
+
+@media only screen and (min-width:1366px ) and (max-width:768px) {
+    .auth-page{
+        .login-block {
+            position: absolute;
+            bottom: 120px;
+            display: block;
+            top: auto;
+            left: 0;
+            right: 0;
+            margin: 0px 20px 20px 20px;
+            border-radius: 8px;
+            .sc-ion-input-md-h,
+            .sc-ion-input-ios-h {
+                --padding-end: 20px;
+                --padding-start: 20px;
+                padding-inline-start:20px;
+            }
+            
+            ion-input{
+                text-align: left;
+                border-radius: 30px;
+                margin-bottom: 15px;
+                background: #fff;
+                border: 1px solid #374767;
+                padding-left: 20px;
+                padding-right: 20px;
+                
+            }
+        }
+        .btnsubmit{
+            margin:auto;
+            display:block;
+            height: 45px;
+            margin-bottom: 7px;
+            width: 60%;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 4px;
+            background: #374767;
+        }
+        
+    }
+    button[disabled], html input[disabled] {
+        cursor: default;
+        opacity: 0.5;
+    }
+    .ion-color-newcolor {
+        --ion-color-base: #ffffff;
+        --ion-color-contrast: #ffffff;
+      }
+ 
+.icons{
+    font-size: 25px;color: #000;
+ }      
+}
+
+/*.colcss {
     border-bottom: 1px solid #c8c7cc;
     margin-left: 10px;
     margin-right: 10px;
@@ -96,4 +282,4 @@ button[disabled], html input[disabled] {
              --highlight-background: transparent !important;
            }
          }
-      
+*/      

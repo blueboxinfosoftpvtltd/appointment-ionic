@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { IonContent } from '@ionic/angular';
 import { zip } from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-createappointment',
@@ -50,6 +51,8 @@ export class CreateappointmentPage implements OnInit {
   Promisetime: any;
   AppointmentTime: any;
   interval: any;
+  Tempinterval: any;
+  Temptime: any;
   dealershipdata: any;
   weekdata: any;
   title: any;
@@ -108,6 +111,7 @@ export class CreateappointmentPage implements OnInit {
   cres:any;
   cityid: any;
   dealerid: any;
+  empdealerid: any;
   userid: any;
   res: any;
   CustomerId: any;
@@ -145,6 +149,7 @@ export class CreateappointmentPage implements OnInit {
   checkedIdx=0;
   yearname:any;
   modelname:any;
+  colorname:any;
   makename:any;
   advisordata: any;
   advisorid: any;
@@ -193,20 +198,36 @@ export class CreateappointmentPage implements OnInit {
   sub:any;
   pagename:any;
   public myForm: FormGroup;
+  date: string;
+  type: 'string';
+  username: any;
+  newusername: any;
+
+  public backdisabled = false;
+  
+
+  datePickerObj: any = {};
+
+  monthsList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  weeksList = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
   constructor(private formBuilder: FormBuilder,public events: Events,private storage: Storage,private authservice:AuthService,
-    public modalCtrl : ModalController,public datepipe: DatePipe,private router: Router,private alertController :AlertController) {  
+    private keyboard: Keyboard, public modalCtrl : ModalController,public datepipe: DatePipe,private router: Router,private alertController :AlertController) {  
     console.log(this.lfw);
     console.log(this.lft);  
     this.myForm = formBuilder.group({
       player0: ['', Validators.required]
     });
 
+  //  this.lfw="";
+   // this.lft="";    
     this.lrw = "";
     this.lrt = "";
     this.rfw ="";
     this.rft = "";
     this.rrw = "";
     this.rrt = "";
+
     this.title = 'Customer Info';
     this.step = '1';
     this.step1 = '1';
@@ -233,7 +254,6 @@ export class CreateappointmentPage implements OnInit {
     this.txt9color = '#000';  
     
     
-    
   }  
 
   ngOnInit() {
@@ -244,6 +264,7 @@ export class CreateappointmentPage implements OnInit {
     this.b3 = true;
     this.b4 = true;
     this.s1 = true;
+   // this.selectedtire = "t1";
     this.authservice.getcustidvin().subscribe((data)=>{
       console.log(data);
       this.rescustvin = data;
@@ -254,31 +275,34 @@ export class CreateappointmentPage implements OnInit {
          this.isupdate = true;
         
           this.cname = this.rescustvin.data.OtherName;
-         if(this.rescustvin.data.Notes != null || this.rescustvin.data.Notes != ""){
+         if(this.rescustvin.data.Notes != null || this.rescustvin.data.Notes != "" || this.rescustvin.data.Notes != undefined ){
            this.sub = this.rescustvin.data.Notes;
          }
-        if(this.rescustvin.data.NotesList != null){
+        if(this.rescustvin.data.NotesList != null || this.rescustvin.data.NotesList != "" || this.rescustvin.data.NotesList != undefined ){
           var note = [];
           var index;
           // this.myForm.controls = this.rescustvin.data.NotesList.Notes;
           for(let i=0;i<this.rescustvin.data.NotesList.length;i++){
-            if(this.rescustvin.data.NotesList[i] != null){
-            if(this.rescustvin.data.NotesList[i].Notes != null){
-              var text = 'player';
-              this.notearray.push(this.rescustvin.data.NotesList[i].Notes);
-              text = text+i;
-              console.log(text);
-              if(i >= 1){
-                this.myForm.addControl(text, new FormControl('', Validators.required));
+            if(this.rescustvin.data.NotesList[i] != null)
+            {
+              if(this.rescustvin.data.NotesList[i].Notes != null)
+              {
+                var text = 'player';
+                this.notearray.push(this.rescustvin.data.NotesList[i].Notes);
+                text = text+i;
+                console.log(text);
+                if(i >= 1){
+                  this.myForm.addControl(text, new FormControl('', Validators.required));
+                }
+                
+                this.myForm.controls[text].setValue(this.rescustvin.data.NotesList[i].Notes);
+                index = i;
+              // note.push(this.rescustvin.data.NotesList[i].Notes);
               }
-              
-              this.myForm.controls[text].setValue(this.rescustvin.data.NotesList[i].Notes);
-              index = i;
-            // note.push(this.rescustvin.data.NotesList[i].Notes);
-            }
           }
           }
           this.curr = index;
+          console.log(this.curr);
           //this.unaddvalue = "";
          // this.myForm.controls['player1'].setValue(this.notearray);
           console.log(this.notearray);
@@ -294,6 +318,17 @@ export class CreateappointmentPage implements OnInit {
         this.GetTimeIntervals();
        
         this.interval = this.rescustvin.data.AppointmentTime;
+        this.Tempinterval = this.rescustvin.data.AppointmentTimeId;
+        console.log(this.Tempinterval);
+    
+      
+       /* this.rescustvin.data.forEach(el =>{
+          el.checked = false;
+          if(this.Tempinterval == el.timeid){
+            el.checked = true;
+          }
+        })*/
+
         console.log(this.interval);
         }, 2000); 
         if(this.rescustvin.data.WheelTireList){
@@ -308,10 +343,12 @@ export class CreateappointmentPage implements OnInit {
         if(this.lfw !== "" && this.lft !== ""){
           this.b1 = true;
           this.c1 = true;
+         // this.selectedtire = "t1";
         }
         else{
           this.b1 = true;
         this.s1 = false;
+       // this.selectedtire = null;
         }
       
        
@@ -410,12 +447,37 @@ export class CreateappointmentPage implements OnInit {
 
     this.GetWipersAndLightsType();
     });
+
+   /* this.storage.get("Employee_id").then((val) => {
+      console.log(val);
+      console.log(this.dealerid);
+
+      this.empdealerid = val.filter((item) => {
+        console.log(item);
+        return item.DealershipId == this.dealerid;
+
+      });
+      console.log(this.empdealerid);
+      if(this.empdealerid.length > 0){
+        this.userid = this.empdealerid[0].PKEmployeeID;
+      }
+      
+      console.log(this.userid);
+    
+      this.GetCustomer();
+     
+    });*/
+
+     
     this.storage.get('userid').then((val) => {
       console.log('userid', val);
       this.userid = val;
       this.GetCustomer();
      
     });
+    this.storage.get('username').then((val => {
+      this.newusername = val;
+    }))
 
     this.authservice.getadvisor().subscribe((advisorid)=>{
       // user and time are the same arguments passed in `events.publish(user, time)`
@@ -430,8 +492,116 @@ export class CreateappointmentPage implements OnInit {
         // this.rft=undefined;
         // this.rrw=undefined;
         // this.rrt=undefined;
+        this.datecalender();
         
   }
+  datecalender()
+  {
+    const disabledDates: Date[] = [
+      new Date(1545911005644),
+      new Date(),
+      new Date(2020, 12, 12), // Months are 0-based, this is August, 10th.
+      new Date('Monday, August 31, 2020'), // Works with any valid Date formats like long format
+      new Date('12-14-2020'), // Short format
+    ];
+
+    this.datePickerObj = {
+      // inputDate: new Date('12'), // If you want to set month in dateObject of date-picker
+      // inputDate: new Date('2018'), // If you want to set year in dateObject of date-picker
+      // inputDate: new Date('2018-12'), // If you want to set year & month in dateObject of date-picker
+      // inputDate: new Date('2018-12-01'), // If you want to set date in dateObject of date-picker
+      // inputDate: '1', // If you want to set date as a string in date-picker
+      // inputDate: '2018', // If you want to set date as a string in date-picker
+      // inputDate: '2018-12', // If you want to set date as a string in date-picker
+      // inputDate: '2018-12-12', // If you want to set date as a string in date-picker
+      // inputDate: moment(new Date('12')), // If you want to set date as a moment object in date-picker
+      // inputDate: moment(new Date('2018')), // If you want to set date as a moment object in date-picker
+      // inputDate: moment(new Date('2018-12')), // If you want to set date as a moment object in date-picker
+      // inputDate: moment(new Date('2018-12-12')), // If you want to set date as a moment object in date-picker
+    //  inputDate: moment(new Date('12-01-2020')),
+       fromDate: new Date(), // need this in order to have toDate
+       toDate: new Date('2030-12-31'),
+       showTodayButton: false,
+      closeOnSelect: true,
+      disableWeekDays: [0],
+      mondayFirst: true,
+      // setLabel: 'Select a Date',
+      // todayLabel: 'Today',
+      // closeLabel: 'Close',
+      // disabledDates: [],
+      // titleLabel: 'Select a Date',
+      // monthsList: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+      // weeksList: ['S', 'S', 'M', 'T', 'W', 'T', 'F'],
+     // dateFormat: 'YYYY-MM-DD',
+         dateFormat: 'MM/DD/YYYY',
+     
+       clearButton: false,
+      // momentLocale: 'pt-BR',
+      // yearInAscending: true,
+      btnCloseSetInReverse: true,
+
+      btnProperties: {
+        expand: 'block', // "block" | "full"
+        fill: '', // "clear" | "default" | "outline" | "solid"
+        size: '', // "default" | "large" | "small"
+        disabled: '', // boolean (default false)
+        strong: '', // boolean (default false)
+        color: ''
+        // "primary", "secondary", "tertiary", "success", "warning", "danger", "light", "medium", "dark" , and give color in string
+      },
+
+      arrowNextPrev: {
+        nextArrowSrc: '../assets/arrow_right.svg',
+        prevArrowSrc: '../assets/arrow_left.svg'
+      }, // This object supports only SVG files.
+
+      // highlightedDates: [
+      //   { date: new Date('2019-07-10'), color: '#ee17bf' },
+      //   { date: new Date('2019-07-12'), color: '#50f2b1' },
+      //   { date: new Date('2019-07-14'), color: '#f2ef50' },
+      //   { date: new Date('2019-08-10'), color: '#ee17bf' },
+      //   { date: new Date('2019-08-12'), color: '#50f2b1' },
+      //   { date: new Date('2019-08-14'), color: '#f2ef50' },
+      // ],
+      // isSundayHighlighted: {
+      //   fontColor: 'red'
+      // }
+    };
+
+  }
+  showkeyboard(){
+    this.keyboard.show();
+  }
+
+  logout() {
+    this.showAlert();
+  }
+
+  async  showAlert() {
+    const prompt = this.alertController.create({
+      header: "Appointment",
+      message: "Are you sure you want to logout?",
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: data => {
+            this.storage.set('islogin', false);
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+            console.log('No clicked');
+          }
+        }
+      ]
+    });
+    (await prompt).present();
+  }
+
 
   removeControl(control,i){
     if(this.playerCount == 0){
@@ -449,35 +619,77 @@ export class CreateappointmentPage implements OnInit {
   }
 
   addtext(index,control){
-    console.log(index);
-    this.unaddvalue = control.value.value;
-    console.log(control.value.value);
+      console.log(index);
+      this.unaddvalue = control.value.value;
+      console.log(control.value.value);
+
+     
+      this.notearray[index] = control.value.value
+      //this.notearray.push(control.value.value);
+         
   }
   
   addControl(control,index){
     console.log(control);
+    console.log(index);
 
     // let object1 = {
     //   'Notes': control.value.value
     // }
-    if(this.notearray.length == index+1){
-      this.playerCount = this.curr;
-      this.curr= this.playerCount+ 1;
-      this.playerCount=this.playerCount+1;
-      this.myForm.addControl('player' + this.playerCount, new FormControl('', Validators.required));
+    if(this.notearray.length <= 9)
+    {
+    if(this.notearray.length == index + 1 )
+    {
+      if(this.playerCount <= 9)
+      {
+        if(this.playerCount <= 8)
+        {
+            this.playerCount = this.curr;
+            console.log('If Current Player: ' + this.playerCount);
+
+            this.curr= this.playerCount+ 1;
+            console.log('If Current : ' + this.curr);
+
+            this.playerCount=this.playerCount+1;
+            console.log('If Current End : ' + this.playerCount);
+
+          
+            this.myForm.addControl('player' + this.playerCount, new FormControl('', Validators.required));
+            console.log('If player : ' + this.playerCount);
+        }
+        else
+        {
+          this.authservice.alertshow("Maximum 10  Notes Allow");
+        }
+      }
+     
     }
-    else{
-      if(this.playerCount <= 9 ){
-        if(this.playerCount <= 8){
+    else
+    {
+      if(this.playerCount <= 9)
+      {
+        if(this.playerCount <= 8)
+        {
           this.curr = this.playerCount + 1;
-      this.notearray.push(control.value.value);
-      this.playerCount=this.playerCount+1;
-        this.myForm.addControl('player' + this.playerCount, new FormControl('', Validators.required));
-        console.log('player' + this.playerCount);
+          console.log('Else Current : ' + this.curr);
+
+          this.notearray.push(control.value.value);
+          console.log('Else Array List : ' + this.notearray);
+
+          this.playerCount=this.playerCount+1;
+          console.log('Else Player Count : ' + this.playerCount);
+
+          this.myForm.addControl('player' + this.playerCount, new FormControl('', Validators.required));
+          console.log('Else player : ' + this.playerCount);
+        }
       }
     }
-    }
-    
+  }
+  else
+  {
+    this.authservice.alertshow("Maximum 10 Notes Allow");
+  }
+    //control.value.value=null;
     console.log(this.notearray)
   }
 
@@ -486,256 +698,286 @@ export class CreateappointmentPage implements OnInit {
     console.log(event);
   }
 
-  ChangeWheel(event){
-    console.log(event);
-    console.log(this.wheel);
-    this.wheelvalue = event.detail.value.WheelType;
-    if(this.wheel != null && this.selectedtire == undefined){
-      if(this.lfw == undefined){
-        this.lfw = this.wheel.WheelType;
-        this.lrw = undefined;
-        this.rfw = undefined;
-        this.rrw = undefined;
-      }
-      else if (this.lrw == undefined){
-          this.lrw = this.wheel.WheelType;
-          this.rfw = undefined;
-          this.rrw = undefined;
-        }
-         else if (this.rfw == undefined){
-         this.rfw= this.wheel.WheelType;
-          this.rrw = undefined;
-        }else if (this.rrw == undefined){
-          this.rrw = this.wheel.WheelType;
-    }
-      if(this.lfw != undefined && this.lft != undefined && this.c1 == false){
-        this.s1 = false;
-        this.b2 = false;
-        this.s2 = true;
-        this.c1=true;
-        this.b1=true;
-      }
-     else if(this.lrw != undefined && this.lrt != undefined && this.c2 == false){
-        this.s2 = false;
-        this.b3 = false;
-        this.s3 = true;
-        this.c2=true;
-        this.b2=true;
-      }
-      else if(this.rfw != undefined && this.rft != undefined && this.c3 == false){
-        this.s3 = false;
-        this.b4 = false;
-        this.s4 = true;
-        this.c3=true;
-        this.b3=true;
-      }
-      else if(this.rrw != undefined && this.rrt != undefined && this.c4 == false){
-        this.s4 = false;
-        this.c4=true;
-        this.b4=true;
-      }
-    // if(this.lfw == undefined){  
-    //   this.lfw = this.wheel.WheelType;
-    //   this.lrw = undefined;     
-    // }else if (this.lrw == undefined){
-    //   this.lrw = this.wheel.WheelType;
-    //   this.rfw = undefined;
-    // }else if (this.rfw == undefined){
-    //   this.rfw= this.wheel.WheelType;
-    //   this.rrw = undefined;
-    // }else if (this.rrw == undefined){
-    //   this.rrw = this.wheel.WheelType;
-    // }
-    if(this.wheel != null && this.tire != null){
-      this.tire=null;
-      setTimeout(() => {
-        this.wheel = null;
-      }, 100);
+
+  //  start Change Wheel
+  ChangeWheel(event)
+  {
+      // check if tire is seleccted or not
+     /* console.log("selectedtire: " + this.selectedtire);
       
-    } 
-  }
-  else{
-    if(this.selectedtire == "t1"){
-        this.lfw = this.wheel.WheelType;
-        if(this.wheel != null && this.tire != null){
+      if (!this.selectedtire) 
+      {
+        alert('show error message' + this.selectedtire);  
+        return;
+      }*/
+      console.log(event);
+      console.log(this.wheel);
+      this.wheelvalue = event.detail.value.WheelType;
+      console.log(this.wheel);
+      if(this.wheel != null && this.selectedtire == undefined)
+      {
+              if(this.lfw == undefined){
+                this.lfw = this.wheel.WheelType;
+                this.lrw = undefined;
+                this.rfw = undefined;
+                this.rrw = undefined;
+              }
+                else if (this.lrw == undefined){
+                    this.lrw = this.wheel.WheelType;
+                    this.rfw = undefined;
+                    this.rrw = undefined;
+                  }
+                    else if (this.rfw == undefined){
+                    this.rfw= this.wheel.WheelType;
+                      this.rrw = undefined;
+                    }
+                        else if (this.rrw == undefined){
+                          this.rrw = this.wheel.WheelType;
+                    }
+              if(this.lfw != undefined && this.lft != undefined && this.c1 == false){
+                this.s1 = false;
+                this.b2 = false;
+                this.s2 = true;
+                this.c1=true;
+                this.b1=true;
+              }
+                  else if(this.lrw != undefined && this.lrt != undefined && this.c2 == false){
+                      this.s2 = false;
+                      this.b3 = false;
+                      this.s3 = true;
+                      this.c2=true;
+                      this.b2=true;
+                    }
+                          else if(this.rfw != undefined && this.rft != undefined && this.c3 == false){
+                            this.s3 = false;
+                            this.b4 = false;
+                            this.s4 = true;
+                            this.c3=true;
+                            this.b3=true;
+                          }
+                              else if(this.rrw != undefined && this.rrt != undefined && this.c4 == false){
+                                this.s4 = false;
+                                this.c4=true;
+                                this.b4=true;
+                              }
+                                          // if(this.lfw == undefined){  
+                                          //   this.lfw = this.wheel.WheelType;
+                                          //   this.lrw = undefined;     
+                                          // }else if (this.lrw == undefined){
+                                          //   this.lrw = this.wheel.WheelType;
+                                          //   this.rfw = undefined;
+                                          // }else if (this.rfw == undefined){
+                                          //   this.rfw= this.wheel.WheelType;
+                                          //   this.rrw = undefined;
+                                          // }else if (this.rrw == undefined){
+                                          //   this.rrw = this.wheel.WheelType;
+                                          // }
+              if(this.wheel != null && this.tire != null){
+                this.tire=null;
+                setTimeout(() => {
+                  this.wheel = null;
+                }, 100);
+                
+              } 
+      }
+  
+      else
+      {
+          if(this.selectedtire == "t1"){
+              this.lfw = this.wheel.WheelType;
+              if(this.wheel != null && this.tire != null){
+                this.wheel = null;
+                setTimeout(() => {
+                  this.tire=null;
+                  this.s1= false;
+                  this.b1= true;
+                  this.c1= true;
+                }, 100);
+                
+              }
+          }
+            else if(this.selectedtire == "t2"){
+              this.lrw = this.wheel.WheelType;
+              if(this.wheel != null && this.tire != null){
+                this.wheel = null;
+                setTimeout(() => {
+                  this.tire=null;
+                  this.s2= false;
+                  this.b2= true;
+                  this.c2= true;
+                }, 100);
+                
+              }
+            }
+              else if(this.selectedtire == "t3"){
+                this.rfw= this.wheel.WheelType;
+                if(this.wheel != null && this.tire != null){
+                  this.wheel = null;
+                  setTimeout(() => {
+                    this.tire=null;
+                    this.s3= false;
+                    this.b3= true;
+                    this.c3= true;
+                  }, 100);
+                  
+                }
+              }
+                  else if(this.selectedtire == "t4"){
+                    this.rrw = this.wheel.WheelType;
+                    if(this.wheel != null && this.tire != null){
+                      this.wheel = null;
+                      setTimeout(() => {
+                        this.tire=null;
+                        this.s4= false;
+                        this.b4= true;
+                        this.c4= true;
+                      }, 100);
+                      
+                    }
+                  }
+      }
+     
+     
+  }   //  End Change Wheel
+  
+  //------------------------------------------ 
+  
+  // Start Change Tire
+  
+  ChangeTire(event)
+  {
+      console.log(event);
+      console.log(this.tire);
+      if(this.tire != null && this.selectedtire == undefined)
+      {
+          this.tirevalue = event.detail.value.WheelDepth;
+          if(this.lft == undefined){
+            this.lft = this.tire.WheelDepth;
+            this.lrt = undefined;
+            this.rft = undefined;
+            this.rrt = undefined;
+          }
+              else if(this.lrt == undefined){
+                  this.lrt = this.tire.WheelDepth;
+                  this.rft = undefined;
+                  this.rrt = undefined;
+                }
+                else if(this.rft == undefined){
+                    this.rft = this.tire.WheelDepth;
+                    this.rrt = undefined;
+                  }
+                  else if(this.rrt == undefined){
+                    this.rrt = this.tire.WheelDepth;
+                  }   
+          if(this.lfw != undefined && this.lft != undefined && this.c1 == false){
+            this.s1 = false;
+            this.b2 = false;
+            this.s2 = true;
+            this.c1=true;
+            this.b1=true;
+          }
+              else if(this.lrw != undefined && this.lrt != undefined && this.c2 == false){
+                this.s2 = false;
+                this.b3 = false;
+                this.s3 = true;
+                this.c2=true;
+                this.b2=true;
+              }
+                else if(this.rfw != undefined && this.rft != undefined && this.c3 == false){
+                  this.s3 = false;
+                  this.b4 = false;
+                  this.s4 = true;
+                  this.c3=true;
+                  this.b3=true;
+                }
+                  else if(this.rrw != undefined && this.rrt != undefined && this.c4 == false) {
+                    this.s4 = false;
+                    this.c4=true;
+                    this.b4=true;
+                  }
+                        // if(this.lft == undefined){
+                        //   this.lft = this.tire.WheelDepth;
+                        //   this.lrt = undefined;
+                        // }else if(this.lrt == undefined){
+                        //   this.lrt = this.tire.WheelDepth;
+                        //   this.rft = undefined;
+                        // }else if(this.rft == undefined){
+                        //   this.rft = this.tire.WheelDepth;
+                        //   this.rrt = undefined;
+                        // }else if(this.rrt == undefined){
+                        //   this.rrt = this.tire.WheelDepth;
+                        // }   
+  
+          if(this.wheel != null && this.tire != null)
+          {
           this.wheel = null;
           setTimeout(() => {
             this.tire=null;
-            this.s1= false;
-            this.b1= true;
-            this.c1= true;
           }, 100);
           
+          }
+  
+         // this.selectedtire = null;
+      }
+      else
+      {
+        if(this.selectedtire == "t1"){
+          this.lft = this.tire.WheelDepth;
+          if(this.wheel != null && this.tire != null){
+            this.wheel = null;
+            setTimeout(() => {
+              this.tire=null;
+              this.s1= false;
+              this.b1= true;
+              this.c1= true;
+            }, 100);
+            
+          }
         }
-    }
-    else if(this.selectedtire == "t2"){
-      this.lrw = this.wheel.WheelType;
-      if(this.wheel != null && this.tire != null){
-        this.wheel = null;
-        setTimeout(() => {
-          this.tire=null;
-          this.s2= false;
-          this.b2= true;
-          this.c2= true;
-        }, 100);
-        
-      }
-    }
-    else if(this.selectedtire == "t3"){
-      this.rfw= this.wheel.WheelType;
-      if(this.wheel != null && this.tire != null){
-        this.wheel = null;
-        setTimeout(() => {
-          this.tire=null;
-          this.s3= false;
-          this.b3= true;
-          this.c3= true;
-        }, 100);
-        
-      }
-    }
-    else if(this.selectedtire == "t4"){
-      this.rrw = this.wheel.WheelType;
-      if(this.wheel != null && this.tire != null){
-        this.wheel = null;
-        setTimeout(() => {
-          this.tire=null;
-          this.s4= false;
-          this.b4= true;
-          this.c4= true;
-        }, 100);
-        
-      }
-    }
-  }
-   
-  }
-
-  ChangeTire(event){
-    console.log(event);
-    console.log(this.tire);
-    if(this.tire != null && this.selectedtire == undefined){
-    this.tirevalue = event.detail.value.WheelDepth;
-    if(this.lft == undefined){
-      this.lft = this.tire.WheelDepth;
-      this.lrt = undefined;
-      this.rft = undefined;
-      this.rrt = undefined;
-    }
-   else if(this.lrt == undefined){
-        this.lrt = this.tire.WheelDepth;
-        this.rft = undefined;
-        this.rrt = undefined;
-      }
-      else if(this.rft == undefined){
+        else if(this.selectedtire == "t2"){
+          this.lrt = this.tire.WheelDepth;
+          if(this.wheel != null && this.tire != null){
+            this.wheel = null;
+            setTimeout(() => {
+              this.tire=null;
+              this.s2= false;
+              this.b2= true;
+              this.c2= true;
+            }, 100);
+            
+          }
+        }
+        else if(this.selectedtire == "t3"){
           this.rft = this.tire.WheelDepth;
-          this.rrt = undefined;
-        }else if(this.rrt == undefined){
+          if(this.wheel != null && this.tire != null){
+            this.wheel = null;
+            setTimeout(() => {
+              this.tire=null;
+              this.s3= false;
+              this.b3= true;
+              this.c3= true;
+            }, 100);
+            
+          }
+        }
+        else if(this.selectedtire == "t4"){
           this.rrt = this.tire.WheelDepth;
-        }   
-    if(this.lfw != undefined && this.lft != undefined && this.c1 == false){
-      this.s1 = false;
-      this.b2 = false;
-      this.s2 = true;
-      this.c1=true;
-      this.b1=true;
-    }
-    else if(this.lrw != undefined && this.lrt != undefined && this.c2 == false){
-      this.s2 = false;
-      this.b3 = false;
-      this.s3 = true;
-      this.c2=true;
-      this.b2=true;
-    }
-    else if(this.rfw != undefined && this.rft != undefined && this.c3 == false){
-      this.s3 = false;
-      this.b4 = false;
-      this.s4 = true;
-      this.c3=true;
-      this.b3=true;
-    }
-    else if(this.rrw != undefined && this.rrt != undefined && this.c4 == false) {
-      this.s4 = false;
-      this.c4=true;
-      this.b4=true;
-    }
-    // if(this.lft == undefined){
-    //   this.lft = this.tire.WheelDepth;
-    //   this.lrt = undefined;
-    // }else if(this.lrt == undefined){
-    //   this.lrt = this.tire.WheelDepth;
-    //   this.rft = undefined;
-    // }else if(this.rft == undefined){
-    //   this.rft = this.tire.WheelDepth;
-    //   this.rrt = undefined;
-    // }else if(this.rrt == undefined){
-    //   this.rrt = this.tire.WheelDepth;
-    // }   
-
-    if(this.wheel != null && this.tire != null){
-    this.wheel = null;
-    setTimeout(() => {
-      this.tire=null;
-    }, 100);
-    
-  }
-}
-else{
-  if(this.selectedtire == "t1"){
-    this.lft = this.tire.WheelDepth;
-    if(this.wheel != null && this.tire != null){
-      this.wheel = null;
-      setTimeout(() => {
-        this.tire=null;
-        this.s1= false;
-        this.b1= true;
-        this.c1= true;
-      }, 100);
-      
-    }
-  }
-  else if(this.selectedtire == "t2"){
-    this.lrt = this.tire.WheelDepth;
-    if(this.wheel != null && this.tire != null){
-      this.wheel = null;
-      setTimeout(() => {
-        this.tire=null;
-        this.s2= false;
-        this.b2= true;
-        this.c2= true;
-      }, 100);
-      
-    }
-  }
-  else if(this.selectedtire == "t3"){
-    this.rft = this.tire.WheelDepth;
-    if(this.wheel != null && this.tire != null){
-      this.wheel = null;
-      setTimeout(() => {
-        this.tire=null;
-        this.s3= false;
-        this.b3= true;
-        this.c3= true;
-      }, 100);
-      
-    }
-  }
-  else if(this.selectedtire == "t4"){
-    this.rrt = this.tire.WheelDepth;
-    if(this.wheel != null && this.tire != null){
-      this.wheel = null;
-      setTimeout(() => {
-        this.tire=null;
-        this.s4= false;
-        this.b4= true;
-        this.c4= true;
-      }, 100);
-      
-    }
-    
-  }
-}
-  }
+          if(this.wheel != null && this.tire != null){
+            this.wheel = null;
+            setTimeout(() => {
+              this.tire=null;
+              this.s4= false;
+              this.b4= true;
+              this.c4= true;
+            }, 100);
+            
+          }
+          
+        }
+      }
+  } //  End Change Tire
+  
+  
 
   edittw(val){
    
@@ -800,6 +1042,7 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000'; 
       this.txt9color = '#000'; 
+      this.backdisabled = false;
       
     }
     else if (op == '2') {
@@ -823,6 +1066,7 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000'; 
       this.txt9color = '#000'; 
+      this.backdisabled = true;
     }
     else if (op == '3') {
       this.title = 'Maintenance & Repairs';
@@ -845,12 +1089,27 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000'; 
       this.txt9color = '#000'; 
+      this.backdisabled = true;
     }
-    else if (op == '4') {      
-      //if(this.opArray == '' || this.opArray == null || this.opArray == undefined){
-       // this.authservice.showToast("Please select opcode first");
-       // this.activestep(3);
-      //}else{
+    else if (op == '4') 
+    {      
+      var finalopcode = [];
+      for(let i = 0 ; i<this.codelist.length;i++){
+        if(this.codelist[i].isChecked == true){
+          finalopcode.push(this.codelist[i]);
+        }
+      }
+  
+      if(this.sub == '' || this.sub == null || this.sub == undefined){
+        this.authservice.alertshow("Please fill the Subject");
+        this.activestep(3);
+      }
+      else if(finalopcode.length == 0){
+        this.authservice.alertshow("Please select opcode");
+        this.activestep(3);
+      }
+      
+      else{
         this.title = 'Transportation';
         this.button1Color = '#fff';
         this.button2Color = '#fff';
@@ -871,8 +1130,9 @@ else{
         this.txt7color = '#000';
         this.txt8color = '#000';
         this.txt9color = '#000';
-      //}
-     
+        this.backdisabled = true;
+      }
+
     }
     else if (op == '5') {
       this.title = 'Advisors & Teams';
@@ -895,10 +1155,11 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000';
       this.txt9color = '#000';
+      this.backdisabled = true;
     }
     else if (op == '6') {      
       if(this.advisorid == '' || this.advisorid == null || this.advisorid == undefined){
-        this.authservice.showToast("Please select advisor first");
+        this.authservice.alertshow("Please select advisor first");
         this.activestep(5);
       }else{
       this.title = 'Date & Time';
@@ -921,6 +1182,7 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000';
       this.txt9color = '#000';
+      this.backdisabled = true;
       }
     }
     else if (op == '7') {
@@ -945,6 +1207,7 @@ else{
       this.txt7color = '#fff';
       this.txt8color = '#000';
       this.txt9color = '#000';
+      this.backdisabled = true;
     }
     else if (op == '8') {
       // this.events.publish("Appointmentdata",this.Appoinmentdata);
@@ -968,6 +1231,7 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#fff';
       this.txt9color = '#000';
+      this.backdisabled = true;
     }
     else if (op == '9') {
       // this.events.publish("Appointmentdata",this.Appoinmentdata);
@@ -991,8 +1255,10 @@ else{
       this.txt7color = '#000';
       this.txt8color = '#000';
       this.txt9color = '#fff';
+      this.backdisabled = true;
     }
   }
+
 
   //for Customer Info
 
@@ -1082,24 +1348,24 @@ ChangeCity(event){
 
 UpdateCustomerInfo(){
   // if(this.fname== null || this.fname=='' || this.fname==undefined){
-  //   this.authservice.showToast("Please enter first name");
+  //   this.authservice.alertshow("Please enter first name");
   // }else if(this.lname== null || this.lname=='' || this.lname==undefined){
-  //   this.authservice.showToast("Please enter last name");
+  //   this.authservice.alertshow("Please enter last name");
   // }
    if(this.saddress== null || this.saddress=='' || this.saddress==undefined){
-    this.authservice.showToast("Please enter Street Address");
+    this.authservice.alertshow("Please enter Street Address");
   }else if(this.countryid== null || this.countryid=='' || this.countryid==undefined){
-    this.authservice.showToast("Please select country");
+    this.authservice.alertshow("Please select country");
   }else if(this.stateid== null || this.stateid=='' || this.stateid==undefined){
-    this.authservice.showToast("Please select state");
+    this.authservice.alertshow("Please select state");
   }else if(this.cityid== null || this.cityid=='' || this.cityid==undefined){
-    this.authservice.showToast("Please select city");
+    this.authservice.alertshow("Please select city");
   }
   // else if(this.mobile== null || this.mobile=='' || this.mobile==undefined){
-  //   this.authservice.showToast("Please enter mobile no.");
+  //   this.authservice.alertshow("Please enter mobile no.");
   // }
   // else if(this.email== null || this.email=='' || this.email==undefined){
-  //   this.authservice.showToast("Please enter email");
+  //   this.authservice.alertshow("Please enter email");
   // }
   else{   
     this.authservice.presentLoading();
@@ -1107,7 +1373,7 @@ UpdateCustomerInfo(){
       this.res = res;
       console.log(this.res);
       this.authservice.dismissLoading();
-      this.authservice.showToast(this.res.Message);  
+      this.authservice.alertshow(this.res.Message);  
     })
   }
  
@@ -1205,21 +1471,39 @@ this.trimid = event.detail.value;
 console.log(this.trimid);
 }
 
-ChangeColor(event){
+
+/*ChangeColor(event){
 this.colorid = event.detail.value;
 console.log(this.colorid);
-}
+}*/
+
+ChangeColor(event){
+  this.colorid = event.detail.value;
+  console.log(this.colorid);
+  for(let i=0 ;i<this.colors.length;i++)
+  {
+    if(this.colorid == this.colors[i].ColorId){
+      this.colorname = this.colors[i].ColorName;
+    }
+   }
+  } 
 
 GetVehicleDetailByVINCustomerID(){
   setTimeout(() => {
     if(this.appointmentid == undefined){
       this.appointmentid = "0";
     }
+  console.log(this.dealerid);
+  console.log(this.CustomerId);
+  console.log(this.VIN);
+  console.log(this.appointmentid);
   
   this.authservice.GetVehicleDetailByVINCustomerID(this.dealerid,this.CustomerId,this.VIN,this.appointmentid).subscribe(res =>{
     this.vehicledata = res;
+    console.log(this.vehicledata);
     this.vin = this.vehicledata[0].VIN;
     this.authservice.setvin(this.vin);
+
     this.yearid = this.vehicledata[0].YearId;
     setTimeout(() => {
       for(let i=0 ;i<this.years.length;i++){
@@ -1232,6 +1516,7 @@ GetVehicleDetailByVINCustomerID(){
     if(this.appointmentid == "0"){
       this.appointmentid = undefined;
     }
+    
     this.makeid = this.vehicledata[0].MakeId;
     setTimeout(() => {
       for(let i=0 ;i<this.make.length;i++){
@@ -1255,7 +1540,23 @@ GetVehicleDetailByVINCustomerID(){
     
     
     this.trimid = this.vehicledata[0].TrimId;
-    this.colorid = this.vehicledata[0].ColorId;
+    //this.colorid = this.vehicledata[0].ColorId;
+
+    console.log(this.vehicledata[0].ColorId);
+
+    console.log(this.vehicledata[0]);
+    
+     this.colorid = this.vehicledata[0].ColorId;
+     setTimeout(() => {
+       for(let i=0 ;i<this.colors.length;i++){
+         if(this.colorid == this.colors[i].ColorId){
+           this.colorname = this.colors[i].ColorName;
+         }
+       }
+ 
+       console.log(this.colorname);
+     }, 3000);
+
     this.mileage = this.vehicledata[0].Milage;
     this.avgmileage = this.vehicledata[0].AverageMilesMonth;
     this.licenseplate =  this.vehicledata[0].LicensePlate;
@@ -1267,20 +1568,20 @@ GetVehicleDetailByVINCustomerID(){
 
 UpdateVehicleInfo(){
 if(this.vin== null || this.vin=='' || this.vin==undefined){
-this.authservice.showToast("Please enter VIN");
+this.authservice.alertshow("Please enter VIN");
 }else if(this.yearid== null || this.yearid=='' || this.yearid==undefined || this.yearid == "0"){
-this.authservice.showToast("Please select Year");
+this.authservice.alertshow("Please select Year");
 }else if(this.makeid== null || this.makeid=='' || this.makeid==undefined || this.makeid == "0"){
-this.authservice.showToast("Please select Make");
+this.authservice.alertshow("Please select Make");
 }else if(this.modelid== null || this.modelid=='' || this.modelid==undefined || this.modelid == "0"){
-this.authservice.showToast("Please select Model");
+this.authservice.alertshow("Please select Model");
 }else{
 this.authservice.presentLoading();
 this.authservice.InsertVehicle(this.CustomerId,this.colorid,this.licenseplate,this.avgmileage,this.mileage,this.vin,this.makeid,this.yearid,this.modelid,this.trimid,this.userid,this.dealerid).subscribe(res =>{
   this.res = res;
   console.log(this.res);
   this.authservice.dismissLoading();
-  this.authservice.showToast(this.res.Message);
+  this.authservice.alertshow(this.res.Message);
 })
 }
 }
@@ -1523,20 +1824,29 @@ prev(val){
 SelectOP(event,data){
   console.log(data);
   let checked = 0;
-  if(data.isChecked == true ){
-    if(this.checkop.length == 0){
+  if(data.isChecked == true )
+  {
+
+    this.checkop.push(data.OpCode);
+
+    /*if(this.checkop.length == 0)
+    {
       this.checkop.push(data.OpCode);
     }
-    else{
+    else
+    {
       for(let i = 0;i <this.checkop.length;i++){
-        if(this.checkop[i] == data.OpCode){
-         
+        if(this.checkop[i] == data.OpCode)
+        {
+        
         }
-        else{
+        else
+        {
           this.checkop.push(data.OpCode);
+          console.log("Else OP Check:" , this.checkop);
         }
       }
-    }
+    }*/
     //this.checkop = [... new Set(this.checkop)];
         
         console.log(this.checkop);
@@ -1546,7 +1856,9 @@ SelectOP(event,data){
     //   }
     // }
    //this.codelist.push(data);
-  }else{
+  }
+  else
+  {
     for(let i = 0;i <this.checkop.length;i++){
       if(this.checkop[i] == data.OpCode){
         this.checkop.splice(i,1);
@@ -1572,6 +1884,13 @@ SelectOP(event,data){
 
  TransNext(){
   this.ionContent.scrollToTop();
+ /* if(this.transportdata.TransportationName == null || this.transportdata.TransportationName  == '' || this.transportdata.TransportationName  == undefined){
+    this.authservice.alertshow("Please Select Transportation");
+   
+  }
+  else{
+    this.activestep(5);
+  } */
   if(this.tvalue != 'Drop Off'){
     // this.events.publish('step:created', "step4");
   }else{
@@ -1586,6 +1905,7 @@ GetTransportationList(){
   this.authservice.GetTransportationList(this.dealerid).subscribe(res =>{
     this.transportdata = res;
     console.log(this.transportdata);
+    console.log(this.transportdata.TransportationName);
     
     if(this.rescustvin.data.Transportation){
       this.tvalue = this.rescustvin.data.Transportation;
@@ -1675,7 +1995,7 @@ ChangeWeekDay(event) {
 AdvisorNext(){
   this.ionContent.scrollToTop();
   if(this.advisorid == null || this.advisorid == '' || this.advisorid == undefined){
-    this.authservice.showToast("Please Select Advisor")
+    this.authservice.alertshow("Please Select Advisor")
   }else{
     // this.events.publish('advisorid', this.advisorid);
     this.activestep(6);
@@ -1724,6 +2044,7 @@ AdvisorSelection(id,e){
       x.checked = true;
     }
   })  
+  console.log("advisor id",this.advisorid);
 }
 
 // For data/time
@@ -1731,9 +2052,9 @@ AdvisorSelection(id,e){
 DateNext(){
   this.ionContent.scrollToTop();
   if(this.sdate == '' || this.sdate == null || this.sdate == undefined){
-    this.authservice.showToast("Please select date")
+    this.authservice.alertshow("Please select date")
   }else if(this.sdate == '' || this.sdate == null || this.sdate == undefined){
-    this.authservice.showToast("Please select time slot")
+    this.authservice.alertshow("Please select time slot")
   }else{
     // this.events.publish('step:created', "step6");
     this.activestep(7);
@@ -1748,24 +2069,99 @@ GetTimeIntervals(){
     this.timeid = this.appointmentid;
   }
   // this.authservice.presentLoading();
+  console.log(this.dealerid);
+  console.log(this.advisorid);
+  console.log(this.sdate1);
+  console.log(this.timeid);
+
   this.authservice.GetTimeIntervals(this.dealerid,this.advisorid,this.sdate1,this.timeid).subscribe(res =>{
     this.intervaldata = res;
     console.log(this.intervaldata);
     // this.authservice.dismissLoading();
     if(this.intervaldata[0].TimeInerrvals == "null"){
-      this.authservice.showToast(this.intervaldata[0].message);
+      this.authservice.alertshow(this.intervaldata[0].message);
       this.sdate = "";
     }    
   })
+
+  //this.checktimeslot();
 }
 
 ChangeDate(event){
   this.sdate1 =this.datepipe.transform(this.sdate, 'MM/dd/yyyy');
   console.log(this.sdate1);
   this.GetTimeIntervals();
+
+ 
+  //this.checktimeslot();
+
+}
+checktimeslot(){
+  var currentdate1;
+  currentdate1 =this.datepipe.transform(this.currentdate, 'MM/dd/yyyy');
+  
+  console.log(currentdate1);
+  console.log(this.sdate1);
+  
+  if(currentdate1 == this.sdate1)
+  {
+   // Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10')
+    this.Temptime = (moment(new Date).format('h:mm A'));
+    console.log(this.Temptime);
+  }
+
 }
 
+
 ChangeTime(event){
+ 
+  if(this.rescustvin.data){
+   
+     if(this.interval == undefined){
+       this.interval = this.rescustvin.data.AppointmentTime;
+     }
+  
+    // this.timeid = this.interval;
+     this.intervaldata.forEach(el =>{
+       el.checked = false;
+       if(this.interval == el.timeid){
+         el.checked = true;
+       }
+     })
+   }
+ 
+   this.interval = this.interval;
+   this.Promisetime = this.interval;
+ 
+ 
+   
+   for(let i=0;i<this.intervaldata.length;i++){
+     if(this.interval == this.intervaldata[i].TimeInerrvals){
+       this.AppointmentTime = this.intervaldata[i].AppointmentTimeId;
+      
+     }
+   }
+
+   if(this.interval == '' || this.interval == null || this.interval == undefined)
+   {
+    this.Tempinterval = this.interval;
+  
+   }
+   //this.Tempinterval = this.interval;
+   console.log(this.Tempinterval);
+   
+   console.log(this.interval);
+   console.log(this.AppointmentTime);
+   
+  // console.log(this.interval);
+   //console.log(this.timeid);
+   
+  
+ }
+
+ 
+
+/*ChangeTime(event){
   
   this.interval = this.interval;
   this.Promisetime = this.interval;
@@ -1776,7 +2172,7 @@ ChangeTime(event){
   }
   console.log(this.interval);
   console.log(this.AppointmentTime);
-}
+}*/
 
 // async presentAlertCheckbox() {
 //   var email,text;
@@ -2089,29 +2485,42 @@ Gotopic(){
     }
   }
  // if(this.appointmentid != "" && this.isupdate == false){
-  if(this.unaddvalue != "" || this.unaddvalue != null || this.unaddvalue != undefined){
-    if(this.unaddvalue){
+  
+ /* if(this.unaddvalue != "" && this.unaddvalue != null && this.unaddvalue != undefined)
+  {
+    if(this.unaddvalue  && this.unaddvalue.length > 0 && this.unaddvalue.trim() !='' ) 
+    {
+      console.log('Add Value Time: ',this.unaddvalue);
+     // this.myForm.addControl('player' + this.unaddvalue, new FormControl('', Validators.required));
+ 
+    //  this.notearray.push(this.myForm.addControl('player' + this.unaddvalue, new FormControl('', Validators.required)));  
       this.notearray.push(this.unaddvalue);
+      console.log('Next Time: ',this.notearray);
     }
-   
-  }
+      
+  }*/
+
 // }
     //console.log(this.myForm.value.player1)
     this.WipersAndLightsList = [];
      if(finalopcode.length == 0){
-       this.authservice.showToast("Please select opcode");
+       this.authservice.alertshow("Please select opcode");
      }
+    /*else if(this.transportdata.TransportationName == null || this.transportdata.TransportationName  == '' || this.transportdata.TransportationName  == undefined){
+      this.authservice.alertshow("Please Select Transportation");
+     
+    }*/
     else if(this.advisorid == '' || this.advisorid == null || this.advisorid == undefined){
-      this.authservice.showToast("Please select advisor");
+      this.authservice.alertshow("Please select advisor");
     }else if(this.sdate == '' || this.sdate == null || this.sdate == undefined){
-      this.authservice.showToast("Please select date");
+      this.authservice.alertshow("Please select date");
     }else if(this.interval == '' || this.interval == null || this.interval == undefined){
-      this.authservice.showToast("Please select timeslot");
+      this.authservice.alertshow("Please select timeslot");
      // if(this.appointmentid != "" || this.appointmentid == undefined){
     } 
     
    else if(this.notearray.length == 0){
-      this.authservice.showToast("Please enter note");
+      this.authservice.alertshow("Please enter note");
     }
     else{  
     //this.authservice.presentLoading();
@@ -2194,7 +2603,8 @@ Gotopic(){
     this.cname = "";
   }
 
-  var fnotearr = this.notearray.join();
+  var fnotearr = this.notearray.join('~');
+  console.log("Notes Detail:" +  fnotearr);
   if(this.appointmentid == undefined){
      this.appointmentid = "";
     // this.authservice.InsertAppointment(this.dealerid,this.CustomerId,this.fname,this.lname,this.cname,this.userid,"Pending",fnotearr,this.sdate1,this.Promisetime,this.AppointmentTime,this.tvalue,this.colorid,this.licenseplate,this.avgmileage,this.mileage,this.VIN,this.makeid,this.yearid,
@@ -2276,7 +2686,17 @@ Gotopic(){
     }
     this.authservice.setappdata(appointmentdata);
 
+   /* if (this.isupdate = true) {
+      this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:true} });
+ 
+    }
+    else{
+      
+      this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:false} });
+ 
+    }*/
     this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:false} });
+ 
   }
   else{
     // this.authservice.UpdateAppointment(this.dealerid,this.CustomerId,this.fname,this.lname,this.cname,this.userid,"Pending",fnotearr,this.sdate1,this.Promisetime,this.AppointmentTime,this.tvalue,this.colorid,this.licenseplate,this.avgmileage,this.mileage,this.VIN,this.makeid,this.yearid,
@@ -2312,7 +2732,7 @@ Gotopic(){
       "CreatedBy":this.userid,
       "CreatedFor":this.advisorid,
       "Status":"Pending",
-      "NotesList":this.notes,
+      "NotesList":fnotearr,
       "PromiseDate":this.sdate1,
       "Promisetime":this.Promisetime,
       "AppointmentTime":this.AppointmentTime,
@@ -2359,6 +2779,17 @@ Gotopic(){
       "Notes":this.sub
     }
     this.authservice.setappdata(appointmentdata);
+    console.log(appointmentdata);
+   
+    /*if (this.isupdate = true) {
+      this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:true} });
+ 
+    }
+    else{
+      
+      this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:false} });
+ 
+    }*/
     this.router.navigate(['/takeimage'],{ queryParams: {AppointmentId :this.appointmentid,backpage:"true",Isedit:true} });
 
   }

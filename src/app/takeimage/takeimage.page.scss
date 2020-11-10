@@ -64,7 +64,9 @@ ion-footer {
   background-color: #fff;
 }
 .rowone{
-    height: 110px;overflow: hidden;
+     //height: 110px;
+     height: 160px;
+    overflow: hidden;
 }
 
 .colcss{
@@ -127,16 +129,16 @@ ion-segment {
         border-radius: 0%
     }
     .image{
-        background-image: url(../../assets/imgs/c.png);margin-bottom: 20%;background-position-y: 255px
+        background-image: url(../../assets/imgs/cars.png);margin-bottom: 20%;background-position-y: 255px
     }
    
   }
-  /* ----------- iPad Pro ----------- */
+  /* ----------- iPad  ----------- */
 /* Portrait and Landscape */
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
     .imgcss{
     border-radius: 0px;
-    height: 75px;
+    height: 130px;
     width: 230px;
     }
     .sc-ion-card-ios-h {
@@ -180,10 +182,66 @@ ion-segment {
         //width: 400px;
     }
     .image{
-        background-image: url(../../assets/imgs/c.png);
+        background-image: url(../../assets/imgs/cars.png);
         background-size: 265px;
     }
     // ion-label{
     //     font-style: italic;
     // }
+}
+ /* ----------- iPad Pro ----------- */
+/*  Landscape */
+@media (min-width: 1024px) and (max-width: 1366px)  {
+    .imgcss{
+        border-radius: 0px;
+        height: 140px;
+        width: 295px;
+        }
+        .sc-ion-card-ios-h {
+            height: 213px;
+            --background: var(--ion-item-background,transparent);
+            --color: var(--ion-color-step-600,#666);
+            margin-left: 16px;
+            margin-right: 16px;
+             margin-top: 0px; 
+            margin-bottom: 0px;
+            border-radius: 8px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-transition: -webkit-transform .5s cubic-bezier(.12,.72,.29,1);
+            transition: -webkit-transform .5s cubic-bezier(.12,.72,.29,1);
+            transition: transform .5s cubic-bezier(.12,.72,.29,1);
+            transition: transform .5s cubic-bezier(.12,.72,.29,1),-webkit-transform .5s cubic-bezier(.12,.72,.29,1);
+            font-size: 14px;
+            -webkit-box-shadow: 0 4px 16px rgba(0,0,0,.12);
+            box-shadow: 0 4px 16px rgba(0,0,0,.12);
+        }
+        .vcard{
+            margin: 10px;border: 1px solid #000;border-radius: 6px;height: 300px;width: 375px
+        }
+        .vp{
+            font-size: 40px;position: absolute;
+            top: calc(50% - 10px);
+            left: calc(50% - 5px);
+            color: white!important;
+        }
+        .vr{
+            font-size: 40px;
+            margin-top: -280px;
+            position: absolute;
+            color: white!important;
+        }
+        .vimg{
+            border-radius: 0%;
+            height:287px;
+            position: relative;
+            display: inline-block;
+            //width: 400px;
+        }
+      
+    .image{
+        background-image: url(../../assets/imgs/cars.png);
+        background-size: 265px;
+        background-position-x:370px;
+    }
 }

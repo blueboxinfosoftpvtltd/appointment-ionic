@@ -8,59 +8,49 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="car" class="icons"></ion-icon>
-    </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">VIN</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-input type='text' maxlength="17" placeholder='VIN' [(ngModel)]='vin' class="inputcss"></ion-input>
-    </ion-col>
-  </ion-row>
 
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="calendar" class="icons"></ion-icon>
+  <ion-row >
+    <ion-col size="12" size-lg>
+        <ion-row class="rawcss">
+            <ion-col size="1" style="align-self: center">
+              <ion-icon name="car" class="icons"></ion-icon>
+            </ion-col>
+            <ion-col ion-item size="11">
+              <ion-input type='text' maxlength="17" placeholder='VIN' [(ngModel)]='vin' class="inputcss"></ion-input>
+            </ion-col>
+        </ion-row>                
     </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">Year</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-select placeholder="Year" class="selectcss" (ionChange)="ChangeYear($event)">
-        <ion-select-option value="{{y.YearId}}" *ngFor="let y of years">{{y.Year}}</ion-select-option>
-      </ion-select>
-    </ion-col>
-  </ion-row>
+    
+</ion-row>
 
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="car" class="icons"></ion-icon>
+<ion-row >
+    <ion-col size="6" size-lg>
+        <ion-row class="rawcss">
+            <ion-col size="2" style="align-self: center">
+              <ion-icon name="calendar" class="icons"></ion-icon>
+            </ion-col>
+            <ion-col ion-item size="10">
+              <ion-select placeholder="Year" class="selectcss" (ionChange)="ChangeYear($event)">
+                <ion-select-option value="{{y.YearId}}" *ngFor="let y of years">{{y.Year}}</ion-select-option>
+              </ion-select>
+              </ion-col>
+        </ion-row>
     </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">Make</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-select placeholder="Make" class="selectcss" (ionChange)="ChangeMake($event)">
-        <ion-select-option value="{{m.MakeId}}" *ngFor="let m of make">{{m.Make}}</ion-select-option>
-      </ion-select>
-    </ion-col>
-  </ion-row>
+  <ion-col size="6" size-lg>
+      <ion-row class="rawcss">
+          <ion-col size="2" style="align-self: center">
+            <ion-icon name="car" class="icons"></ion-icon>
+          </ion-col>
+          <ion-col ion-item size="10">
+            <ion-select placeholder="Make" class="selectcss" (ionChange)="ChangeMake($event)">
+              <ion-select-option value="{{m.MakeId}}" *ngFor="let m of make">{{m.Make}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+      </ion-row>                
+  </ion-col>
+  
+</ion-row>
 
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="car" class="icons"></ion-icon>
-    </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">Model </ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-select placeholder="Model" class="selectcss" (ionChange)="ChangeModel($event)">
-        <ion-select-option value="{{modeldetail.ModelId}}" *ngFor="let modeldetail of model">{{modeldetail.Modal}}</ion-select-option>
-      </ion-select>
-    </ion-col>
-  </ion-row>
 
   <!-- <ion-row class="rawcss">
       <ion-col size="1" style="align-self: center">
@@ -75,32 +65,35 @@
           </ion-select>                      
       </ion-col>
   </ion-row> -->
-
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="color-filter" class="icons"></ion-icon>
+  <ion-row >
+      <ion-col size="6" size-lg>
+          <ion-row class="rawcss">
+              <ion-col size="2" style="align-self: center">
+                <ion-icon name="car" class="icons"></ion-icon>
+              </ion-col>
+              <ion-col ion-item size="10">
+                <ion-select placeholder="Model" class="selectcss" (ionChange)="ChangeModel($event)">
+                  <ion-select-option value="{{modeldetail.ModelId}}" *ngFor="let modeldetail of model">{{modeldetail.Modal}}</ion-select-option>
+                </ion-select>
+              </ion-col>
+          </ion-row>
+      </ion-col>
+    <ion-col size="6" size-lg>
+        <ion-row class="rawcss">
+            <ion-col size="2" style="align-self: center">
+              <ion-icon name="color-filter" class="icons"></ion-icon>
+            </ion-col>
+            <ion-col ion-item size="10">
+              <ion-select placeholder="Color" class="selectcss" (ionChange)="ChangeColor($event)">
+                <ion-select-option value="{{color.ColorId}}" *ngFor="let color of colors">{{color.ColorName}}</ion-select-option>
+              </ion-select>
+            </ion-col>
+        </ion-row>                
     </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">Color</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-select placeholder="Color" class="selectcss" (ionChange)="ChangeColor($event)">
-        <ion-select-option value="{{color.ColorId}}" *ngFor="let color of colors">{{color.ColorName}}</ion-select-option>
-      </ion-select>
-    </ion-col>
+   
   </ion-row>
-
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="speedometer" class="icons"></ion-icon>
-    </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">Mileage</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-input type='tel' placeholder='Mileage' [(ngModel)]='mileage' class="inputcss"></ion-input>
-    </ion-col>
-  </ion-row>
+  
+  
 
   <!-- <ion-row class="rawcss">
       <ion-col size="1" style="align-self: center">
@@ -113,20 +106,31 @@
         <ion-input type='tel' placeholder='Average Miles/Month' [(ngModel)]='avgmileage' class="inputcss"></ion-input>
       </ion-col>
     </ion-row> -->
-
-
-  <ion-row class="rawcss">
-    <ion-col size="1" style="align-self: center">
-      <ion-icon name="car" class="icons"></ion-icon>
-    </ion-col>
-    <ion-col ion-item size="5" class="colcss">
-      <ion-label class="labelcss">License Plate</ion-label>
-    </ion-col>
-    <ion-col ion-item size="6">
-      <ion-input type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
-    </ion-col>
-  </ion-row>
-
+    <ion-row >
+        <ion-col size="6" size-lg>
+            <ion-row class="rawcss">
+                <ion-col size="2" style="align-self: center">
+                  <ion-icon name="speedometer" class="icons"></ion-icon>
+                </ion-col>
+                <ion-col ion-item size="10">
+                  <ion-input type='tel' placeholder='Mileage' [(ngModel)]='mileage' class="inputcss"></ion-input>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    <!--   <ion-col size="6" size-lg>
+          <ion-row class="rawcss">
+              <ion-col size="2" style="align-self: center">
+                <ion-icon name="car" class="icons"></ion-icon>
+              </ion-col>
+              <ion-col ion-item size="10">
+                <ion-input type='text' placeholder='License Plate' [(ngModel)]='licenseplate' class="inputcss"></ion-input>
+              </ion-col>
+          </ion-row>                
+      </ion-col>-->
+    
+    </ion-row>
+    
+    
   <!-- <ion-row style="margin-top: 28%;margin-right: 10px;" class="btn">
         <ion-col>
             <ion-button expand="full" class="footerbtn" (click)="UpdateVehicleInfo()">Submit</ion-button>
@@ -135,9 +139,21 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row style="margin-top: 8%;margin-right: 10px;bottom: 30px;justify-content: center">
-    <!-- <ion-col size="12" style="text-align: center"> -->
-      <ion-button size="small" class="footerbtn" (click)="UpdateVehicleInfo()">Submit</ion-button>
-    <!-- </ion-col> -->
-  </ion-row>
+  <ion-toolbar>
+    
+    <ion-row >
+        <ion-col size="12" size-lg>
+            <ion-row>
+                <ion-col ion-item size="6" style="text-align: right; ">
+                    <ion-button size="small" class="footerbtn" (click)="UpdateVehicleInfo()">Submit</ion-button>
+                </ion-col>
+                <ion-col ion-item size="6" style="justify-content: center">
+                    <ion-button size="small" class="clearbtn" (click)="ClearCustomerInfo()">Clear</ion-button>
+                </ion-col>
+    
+            </ion-row>                
+        </ion-col>
+       
+    </ion-row>
+</ion-toolbar>
 </ion-footer>

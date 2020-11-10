@@ -11,6 +11,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AddvehiclePageModule } from './addvehicle/addvehicle.module'
 import { AddnewopcodePageModule } from './addnewopcode/addnewopcode.module';
+
+import { SearchopcodePageModule } from './searchopcode/searchopcode.module';
+
 import { PopoverPageModule } from './popover/popover.module'
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { AppSchedulerComponent } from './scheduler/scheduler.component';
@@ -29,7 +32,7 @@ import { MessageService } from './message.service';
 import { EventService } from './event.service';
 import { LoaderService } from './loader.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule , HttpXhrBackend, HttpBackend} from '@angular/common/http';
+import { HttpClientModule , HttpXhrBackend, HttpBackend, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { SchedulerModule} from 'sw-scheduler';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
@@ -52,6 +55,11 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 //import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-capture-plus/ngx';
 //import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import * as firebase from 'firebase';
+import { LogInterceptor } from './interceptors/LogInterceptor';
+
+import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBh2JUhyoH4ud90Cd4cffv5crtXhoCzv88",
@@ -83,9 +91,11 @@ firebase.initializeApp(firebaseConfig);
     AddvehiclePageModule,
     PopoverPageModule,
     AddnewopcodePageModule,
+    SearchopcodePageModule,
     HighlightimagePageModule,
     CitylistPageModule,
     ComponentsModule,
+    Ionic4DatepickerModule,
     IonicStorageModule.forRoot()
   ],
   providers: [
@@ -109,10 +119,12 @@ firebase.initializeApp(firebaseConfig);
     Media,
     StreamingMedia,
     FileTransfer,
+    Keyboard,
     //ideoCapturePlus,
    // FileTransfer,
     // PreviewAnyFile,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  },
+    { provide: HTTP_INTERCEPTORS, useClass: LogInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

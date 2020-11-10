@@ -27,6 +27,7 @@ export class AddvehiclePage  {
   avgmileage: any;
   res: any;
   dealerid: any;
+  empdealerid: any;
   userid: any;
   constructor(private storage: Storage,public modalCtrl : ModalController,private navParams: NavParams,private authservice:AuthService,private loc : Location) {
     
@@ -41,12 +42,29 @@ export class AddvehiclePage  {
     this.storage.get('userid').then((val) => {
       console.log('userid', val);
       this.userid = val;
-      this.getYears();
-    this.getMake();
-    this.getColors();
-    this.GetTrimDetails();
-    this.CustomerId = this.navParams.data.CustomerId;
-    this.modalTitle = this.navParams.data.paramTitle;
+
+    /*  this.storage.get('Employee_id').then((val) => {
+        console.log(val);
+        console.log(this.dealerid);
+  
+        this.empdealerid = val.filter((item) => {
+          console.log(item);
+          return item.DealershipId == this.dealerid;
+  
+        });
+        console.log(this.empdealerid);
+        if(this.empdealerid.length > 0)
+        {
+          this.userid = this.empdealerid[0].PKEmployeeID;
+        }
+        console.log(this.userid);*/
+        
+        this.getYears();
+        this.getMake();
+        this.getColors();
+        this.GetTrimDetails();
+        this.CustomerId = this.navParams.data.CustomerId;
+        this.modalTitle = this.navParams.data.paramTitle;
     });
     
   }
@@ -126,25 +144,48 @@ ChangeColor(event){
 
 UpdateVehicleInfo(){
   if(this.vin== null || this.vin=='' || this.vin==undefined){
-    this.authservice.showToast("Please enter VIN");
+    this.authservice.alertshow("Please enter VIN");
   }else if(this.yearid== null || this.yearid=='' || this.yearid==undefined){
-    this.authservice.showToast("Please select Year");
+    this.authservice.alertshow("Please select Year");
   }else if(this.makeid== null || this.makeid=='' || this.makeid==undefined){
-    this.authservice.showToast("Please select Make");
+    this.authservice.alertshow("Please select Make");
   }else if(this.modelid== null || this.modelid=='' || this.modelid==undefined){
-    this.authservice.showToast("Please select Model");
+    this.authservice.alertshow("Please select Model");
+  }else if(this.colorid== null || this.colorid=='' || this.colorid==undefined){
+    this.authservice.alertshow("Please select Color");
   }else{
     this.authservice.presentLoading();
+    if (this.mileage == null || this.mileage == '' || this.mileage == undefined) 
+    {
+      this.mileage = "";
+    }
+    console.log(this.mileage);
     this.authservice.InsertVehicle(this.CustomerId,this.colorid,this.licenseplate,this.avgmileage,this.mileage,this.vin,this.makeid,this.yearid,this.modelid,this.trimid,this.userid,this.dealerid).subscribe(res =>{
       this.res = res;
       console.log(this.res);
       this.authservice.dismissLoading();
-      this.authservice.showToast(this.res.Message);
+      this.authservice.alertshow(this.res.Message);
+     
+     // this.loc.back();
       this.modalCtrl.dismiss();
-      this.loc.back();
     })
   }
  
 }
+
+
+ClearCustomerInfo()
+  {
+    this.vin="";
+    this.makeid="0";
+    this.yearid = "0";
+    this.modelid="0";
+    this.colorid="0";
+    this.mileage = "";
+    this.licenseplate = "";
+  //  this.authservice.presentLoading();
+  }
+
+
 
 }

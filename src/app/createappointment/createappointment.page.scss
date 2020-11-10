@@ -75,12 +75,38 @@
 .inputcss{
     font-size: 15px;
 }
+ion-input {
+    &.inputcss {
+        --placeholder-color: #000000;
+        font-size:16px;
+        margin-left: -5px;
+        
+
+      //  --placeholder-opacity: 1;
+    }
+}
+
+fieldset 
+{
+    border-radius: 6px;
+    border-color: #ccc;
+    margin: 20px 15px;
+    padding: 15px;
+}
+
+legend
+{
+    width: auto !important;
+    border: none;
+    font-size: small;
+    color: #000;
+}
 .colcss{
     padding: 14px;
 }
 .selectcss{
     font-size: 15px;
-    margin-left: -15px;
+    margin-left: -13px;
 }
 .btn {
     position: fixed;
@@ -133,6 +159,32 @@
     color: #FFFFFF;
     font-weight: bold;
  }
+ ion-textarea {
+    &.textareacss {
+        --placeholder-color: #000000;
+        font-size:16px;
+       
+        max-width:100%;
+        
+      //  --placeholder-opacity: 1;
+    }
+}
+
+ion-input {
+    &.cinputcss {
+        --placeholder-color:rgb(0, 0, 0);
+        font-size:16px;
+        margin-left: -65px;
+    }
+}
+
+item-radio-checked{
+ &.timeslot {
+    background-color: #a0a;
+}
+}
+
+
 //  ion-label{
 //     font-style: italic;
 // }
@@ -158,9 +210,9 @@
         --border-width: 0.55px 0 0;
         height: 75px;
         }
-   
+ 
   }
-  /* ----------- iPad Pro ----------- */
+  /* ----------- iPad  ----------- */
 /* Portrait and Landscape */
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
     img {
@@ -168,21 +220,107 @@
         border: 0;
     }
     .st3{
-        margin-top: 46px;margin-left: 320px;
+        margin-top: 46px;margin-left: 251px;
     }
     .st4{
-        margin-top: 194px;margin-left: 320px;
+        margin-top: 194px;margin-left: 251px;
     }
     .st1{
-        margin-top: 46px;margin-left: 183px;
+        margin-top: 46px;margin-left: 114px;
     }
     .st2{
-        margin-top: 194px;margin-left: 183px;
+        margin-top: 194px;margin-left: 114px;
     }
 
     .footer-ios ion-toolbar:first-child {
         --border-width: 0.55px 0 0;
         height: 75px;
         }
+ 
    
+}
+
+ /* ----------- iPad  Pro ----------- */
+/* Portrait and Landscape */
+@media only screen and (min-width: 1024px) and (max-width: 1366px) {
+    img {
+        max-width: 270px;
+        border: 0;
+    }
+    .st3{
+        margin-top: 46px;margin-left: 305px;
+    }
+    .st4{
+        margin-top: 194px;margin-left: 305px;
+    }
+    .st1{
+        margin-top: 46px;margin-left: 168px;
+    }
+    .st2{
+        margin-top: 194px;margin-left: 168px;
+    }
+
+    .footer-ios ion-toolbar:first-child {
+        --border-width: 0.55px 0 0;
+        height: 75px;
+        }
+ 
+   
+}
+
+  
+ion-item.bgcolors{
+    --border-width: 1px;
+    --border-style: solid;
+    --border-color: #000000;
+   // border: 1px solid #000000;
+   // background: #ffffff;
+    --background-activated:rgb(241, 255, 1) !important;
+}
+.bgcolors.item-radio-checked{
+    background: #f1ff01;
+    --background-activated:rgb(241, 255, 1) !important;
+}
+ 
+ion-item.transaltion{
+    --background-activated:rgb(241, 255, 1) !important;
+}
+.transaltion.item-radio-checked{
+    background: #f1ff01;
+    --background-activated:rgb(241, 255, 1) !important;
+}
+
+ion-item.hydrated{
+   /* --border-width: 1px;
+    --border-style: solid;
+    --border-color: #000000;*/
+    border: 1px solid #000000 ;
+}
+.hydrated.item-radio-checked{
+    --background: #f1ff01 !important;
+    --background-activated:rgb(241, 255, 1) !important;
+}
+.hydrated.item-interactive-disabled{
+    
+    --background: #4cae4c !important;
+    --background-activated: #4cae4c !important;
+    --color: #ffffff;
+    font-size: large;
+
+}
+.hydrated.item-active-disabled{
+    
+    --background: rgb(241, 255, 1) !important;
+    --background-activated: rgb(241, 255, 1) !important;
+    --color: #ffffff;
+    font-size: large;
+
+}
+
+ion-radio.hydrated {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border: 1px solid #000000;
+    border-radius: 50%;
 }

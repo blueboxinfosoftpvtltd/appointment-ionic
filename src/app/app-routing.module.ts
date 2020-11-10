@@ -38,6 +38,8 @@ const routes: Routes = [
   
   { path: 'citylist', loadChildren: './citylist/citylist.module#CitylistPageModule' },
   { path: 'video', loadChildren: './video/video.module#VideoPageModule' },
+  { path: 'rohistorypdf', loadChildren: './rohistorypdf/rohistorypdf.module#RohistorypdfPageModule' },
+  { path: 'searchopcode', loadChildren: './searchopcode/searchopcode.module#SearchopcodePageModule' },
 ];
 
 @NgModule({
