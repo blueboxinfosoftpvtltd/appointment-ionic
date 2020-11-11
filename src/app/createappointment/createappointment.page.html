@@ -17,19 +17,19 @@
         <ion-title style="color: #ffffff">{{title}}</ion-title>
     </ion-toolbar>
 </ion-header>
-<div ion-fixed class="thumnails">
+<div ion-fixed id="thumnails" class="thumnails">
     <div class="list-thumbnail">
-        <ion-row style="flex: 20" nowrap class="img-thumb" scrollX="true">
-            <ion-col ion-item no-lines col-3 style="margin-top: 5px;">
+        <ion-row style="flex: 20" id="img-thumb" nowrap class="img-thumb" scrollX="true">
+            <ion-col id="btn_1" ion-item no-lines col-3 style="margin-top: 5px;">
                 <!-- <button class="btnstyle" ion-button full (click)="activestep('1')" [ngStyle]="{'background-color': button1Color,'color' : txt1color,'padding': padding, 'border' : border}">Customer Info</button> -->
                 <ion-button size="small" class="btnstyle" (click)="activestep('1')" size="small" [ngStyle]="{'background-color': button1Color,'color' : txt1color,'padding': padding, 'border' : border}"
                     Fill="clear">Customer Info</ion-button>
             </ion-col>
-            <ion-col ion-item no-lines col-3 style="margin-top: 5px;">
+            <ion-col id="btn_2" ion-item no-lines col-3 style="margin-top: 5px;">
                 <ion-button size="small" class="btnstyle" (click)="activestep('2')" [ngStyle]="{'background-color': button2Color,'color' : txt2color,'padding': padding, 'border' : border}"
                     Fill="clear">Vehicle Info</ion-button>
             </ion-col>
-            <ion-col ion-item no-lines col-3 style="margin-top: 5px;">
+            <ion-col id="btn_3" ion-item no-lines col-3 style="margin-top: 5px;">
                 <ion-button size="small" class="btnstyle" (click)="activestep('3')" [ngStyle]="{'background-color': button3Color,'color' : txt3color,'padding': padding, 'border' : border}"
                     Fill="clear">Maintenance & Repairs</ion-button>
             </ion-col>

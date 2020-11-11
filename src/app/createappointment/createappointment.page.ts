@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild  } from '@angular/core';
+import { Component, OnInit,ViewChild, ElementRef  } from '@angular/core';
 import { Events,ModalController,AlertController } from '@ionic/angular';
 import { AddnewopcodePage } from '../addnewopcode/addnewopcode.page';
 import { AuthService } from '../../app/auth.service';
@@ -13,6 +13,8 @@ import { zip } from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 
+declare var $: any;
+
 @Component({
   selector: 'app-createappointment',
   templateUrl: './createappointment.page.html',
@@ -20,8 +22,9 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 })
 export class CreateappointmentPage implements OnInit {
   @ViewChild(IonContent,{static: false}) ionContent: IonContent;
-  
   @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild("buttonContainerRef", { static: false }) buttonContainerRef : ElementRef;
+
   WipersAndLightsList: any =  [];
   WheelsAndTiresList: any =  [];
   notearray: any =  [];
@@ -1018,7 +1021,29 @@ export class CreateappointmentPage implements OnInit {
 
   }
 
-  activestep(op) {
+  scrollToCenter(_page: any) {
+    const page = parseInt(_page);
+    const element = document.getElementById("thumnails");
+    const scrollWidth = element.scrollWidth;
+    const clientWidth = element.clientWidth;
+    const centerOfScreen = clientWidth/2;
+
+    const target = document.getElementById("btn_"+page);
+    const targetLeft = target.offsetLeft;
+
+    console.log('target left : ' + targetLeft);
+    
+
+    console.log("scroll : " + scrollWidth + " client : " + clientWidth + " offset : " + offsetWidth);
+    
+    element.scrollLeft = 300;
+
+  }
+
+  activestep(op: any) {
+
+    this.scrollToCenter(op);
+
     this.step = op;
     this.ionContent.scrollToTop();
     if (op == '1') {
