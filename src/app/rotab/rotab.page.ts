@@ -364,6 +364,35 @@ export class RotabPage implements OnInit {
 
   }
 
+  logout() {
+    this.showAlert();
+  }
+
+  async  showAlert() {
+    const prompt = this.alertController.create({
+      header: "Appointment",
+      message: "Are you sure you want to logout?",
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: data => {
+            this.storage.set('islogin', false);
+            this.router.navigateByUrl('/login', { replaceUrl: true });
+
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+            console.log('No clicked');
+          }
+        }
+      ]
+    });
+    (await prompt).present();
+  }
+
   //for Customer Info
   back(){
     let object = {
