@@ -45,6 +45,7 @@ export class SignaturePage implements OnInit {
   
   appno:any;
   dealername: string;
+  isSignatureDrawn: boolean = false;
 
   //ExtraImageList:any[]=[];
   public signaturePadOptions: Object = {
@@ -56,7 +57,6 @@ export class SignaturePage implements OnInit {
   };
   isDrawing: any;
   signature: any;
-
 
   isEnabled: any;
   dealer: any;
@@ -162,6 +162,7 @@ export class SignaturePage implements OnInit {
 
   drawComplete() {
     this.isDrawing = false;
+    this.isSignatureDrawn = true;
   }
 
   drawStart() {
@@ -177,9 +178,21 @@ export class SignaturePage implements OnInit {
    // this.router.navigateByUrl('/home');
   }
 
-  savePad() {
-    this.signature = this.signaturePad.toDataURL();
+  async savePad() {
 
+    // if signature is not drawn show an error
+    if (!this.isSignatureDrawn) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Please draw your signature.',
+        buttons: ['Ok']
+      });
+  
+      await alert.present();
+      return;
+    }
+
+    this.signature = this.signaturePad.toDataURL();
     /*if (this.signature != '' && this.signature == undefined) {
       //  this.signature = this.signaturePad.toDataURL();
       this.signature = '';
@@ -232,6 +245,8 @@ export class SignaturePage implements OnInit {
 
   clearPad() {
     this.signaturePad.clear();
+    this.signature = null;
+    this.isSignatureDrawn = false;
   }
   
 

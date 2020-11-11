@@ -373,6 +373,7 @@ export class RotabPage implements OnInit {
       header: "Appointment",
       message: "Are you sure you want to logout?",
       backdropDismiss: false,
+
       buttons: [
         {
           text: 'Yes',
