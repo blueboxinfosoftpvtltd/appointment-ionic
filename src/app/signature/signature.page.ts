@@ -839,16 +839,17 @@ export class SignaturePage implements OnInit {
         const image = images[index];
         let base64data = "";
         let extension = "";
-        if (image.indexOf("png") !== -1) {
-          extension = "png";
-          base64data = image.replace("data:image/png;base64,", "");
-        } else {
+        if (image.indexOf("jpeg") !== -1) {
           extension = "jpg";
           base64data = image.replace("data:image/jpeg;base64,", "");
+        } else {
+          extension = "png";
+          base64data = image.replace("data:image/png;base64,", "");
         }
 
-        console.log("upload_data : ", base64data);
-    
+        console.log("upload_data : " + extension);
+        console.log(base64data);
+      
         await this.uploadSingleImage(
           appointmentdata,
           base64data,
