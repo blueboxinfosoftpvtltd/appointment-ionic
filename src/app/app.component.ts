@@ -42,10 +42,10 @@ export class AppComponent {
       title: 'Take Photo',
       icon: 'ios-camera'
     },
-    {
-      title: 'Signature',
-      icon: 'ios-create'
-    },
+    // {
+    //   title: 'Signature',
+    //   icon: 'ios-create'
+    // },
     {
       title: 'RFID',
       icon: 'ios-create'

@@ -1096,15 +1096,15 @@ export class TakeimagePage implements OnInit {
   }
 
   Save() {
-    console.log(this.CompleteImage);
+    console.log(this.selectedCarImageData);
     let uimage = [];
     let uorder = [];
-    this.CompleteImage.forEach((element) => {
+    this.selectedCarImageData.forEach((element) => {
       if (!uimage.includes(element)) {
         uimage.push(element);
       }
     });
-    this.displayorder.forEach((element) => {
+    this.selectedCarImageIndex.forEach((element) => {
       if (!uorder.includes(element)) {
         uorder.push(element);
       }
@@ -1112,7 +1112,7 @@ export class TakeimagePage implements OnInit {
     this.takeimage = uimage.join();
     this.takeorder = uorder.join();
 
-    if (this.CompleteImage.length == 0 && this.vlist.length == 0) {
+    if (this.selectedCarImageData.length == 0 && this.vlist.length == 0) {
       this.authservice.alertshow("Pick Atleast Image Or Video");
     } else {
       if (this.Page) {
@@ -1148,7 +1148,7 @@ export class TakeimagePage implements OnInit {
             //  this.router.navigate(['/signature'],{ queryParams: {AppointmentId : this.AppointmentId , Page: this.Page,VIN: this.VIN,ROnumber : this.ronumber} });
           }, (error) => {
             this.authservice.dismissLoading();
-            this.authservice.showToast("Unable to update RO.");
+            this.authservice.showToast("Unable to update images or videos.");
           });
       } else {
         var appointmentdata = this.authservice.getappdata();
