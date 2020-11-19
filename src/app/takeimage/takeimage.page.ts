@@ -162,6 +162,27 @@ export class TakeimagePage implements OnInit {
     // this.OpenModel('dnc',"1");
   }
 
+  ngOnDestroy() {
+    this.videourl = null;
+    this.files = [];
+    this.imgurl = null;
+
+    this.imgbase64 = null;
+    this.vlist = [];
+    this.vidlist = [];
+    this.vnlist = [];
+    this.vimglist = [];
+    this.vimgbaselist = [];
+    this.imgname = null;
+    this.vimgnamelist = [];
+
+    this.authservice.setvidlist(this.vidlist);
+    this.authservice.setvlist(this.vlist);
+    this.authservice.setvimglist(this.vimglist);
+    this.authservice.setvnlist(this.vnlist);
+    this.authservice.setvimgnamelist(this.vimgnamelist);
+  }
+
   ngOnInit() {
     this.plt.ready().then(() => {
       this.path = this.file.documentsDirectory;
@@ -1090,6 +1111,7 @@ export class TakeimagePage implements OnInit {
     });
     this.takeimage = uimage.join();
     this.takeorder = uorder.join();
+
     if (this.CompleteImage.length == 0 && this.vlist.length == 0) {
       this.authservice.alertshow("Pick Atleast Image Or Video");
     } else {
@@ -1119,9 +1141,14 @@ export class TakeimagePage implements OnInit {
             this.data = res;
             console.log(this.data);
             this.authservice.dismissLoading();
-            this.authservice.showToast(this.data.Message);
+            if (this.data.Message) {
+              this.authservice.showToast(this.data.Message);
+            }
             this.router.navigateByUrl("/home");
             //  this.router.navigate(['/signature'],{ queryParams: {AppointmentId : this.AppointmentId , Page: this.Page,VIN: this.VIN,ROnumber : this.ronumber} });
+          }, (error) => {
+            this.authservice.dismissLoading();
+            this.authservice.showToast("Unable to update RO.");
           });
       } else {
         var appointmentdata = this.authservice.getappdata();
@@ -1140,7 +1167,7 @@ export class TakeimagePage implements OnInit {
             // "CompleteImage": this.takeimage,
             // "takeorder": this.takeorder
           };
-
+  
           //  this.router.navigate(['/signature'], { queryParams: { app: true } });
           if (this.isedit == "true") {
             this.router.navigate(["/signature"], {
@@ -1170,7 +1197,7 @@ export class TakeimagePage implements OnInit {
             // "takeorder": this.takeorder
           };
           this.authservice.setimagedata(imgdata);
-
+  
           //this.router.navigate(['/signature'], { queryParams: { ro: true } });
           if (this.isedit == "true") {
             this.router.navigate(["/signature"], {
@@ -1186,7 +1213,7 @@ export class TakeimagePage implements OnInit {
             });
           }
         }
-      }
+      }  
     }
   }
 
