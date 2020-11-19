@@ -76,9 +76,13 @@ export class AuthService {
   }
 
   async dismissLoading() {
-    console.log("loader dismiss");
-    this.loading.dismiss();
-    this.loading = null;
+    if (this.loading != null) {
+      console.log("loader dismiss");
+      this.loading.dismiss();
+      this.loading = null;
+    } else {
+      this.loadingController.dismiss();
+    }
   }
   async alertshow(msg) {
     const alert = await this.alertController.create({

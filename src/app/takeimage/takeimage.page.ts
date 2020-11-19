@@ -1224,89 +1224,70 @@ export class TakeimagePage implements OnInit {
     this.router.navigate(["/moreimage"]);
   }
 
-  // upload(){
-
-  // }
   video() {
     // this.streamingMedia.playVideo("https://testdoc0101.s3.amazonaws.com/Appointment/1/KNDJN2A29E7716766_20200601184638/KNDJN2A29E7716766_20200601184638.mp4?AWSAccessKeyId=AKIARH5747A23AQBWOPR&Expires=1591174607&Signature=BkxKepvnS6jihmCG1m0wrr1vV5c%3D");
-    this.authservice.presentLoading();
-    //     var cdate = (moment(new Date).format('YYYYMMDDHHmmss'));
-    //     this.path = this.file.documentsDirectory + MEDIA_FOLDER_NAME;
-    //    // let path = this.file.documentsDirectory;
-    //    this.file.copyFile(this.file.applicationDirectory + "www/assets/", 'vd.mov', this.path, cdate+'.mov')
-    //    .then((entries) => {
-    //      console.log(entries);
-    //      let dirpath = entries.nativeURL;
-    //      let dirpathsegment = dirpath.split('/');
-    //      dirpathsegment.pop();
-    //      dirpath = dirpathsegment.join('/');
-    //      var cdate = (moment(new Date).format('YYYYMMDDHHmmss'));
-    //     var vin = this.authservice.getvin();
-    //     var option:CreateThumbnailOptions = {fileUri:dirpath+'/'+entries.name,width:512, height:256, atTime:5, outputFileName: vin+'_'+cdate, quality:50 };
-    //     this.videoEditor.createThumbnail(option).then(result=>{
-    //       console.log(result);
-    //       let imgdirpath = 'file://'+result;
-    //       console.log(imgdirpath);
-    //       let fileName = imgdirpath.substr(imgdirpath.lastIndexOf('/') + 1);
-    //       this.imgname = fileName;
-    //       this.imgname = this.imgname.split(".");
-    //       this.imgname = this.imgname[0];
-    //       console.log(fileName);
-    //      let imgdirpathsegment = imgdirpath.split('/');
-    //      imgdirpathsegment.pop();
-    //      imgdirpath = imgdirpathsegment.join('/');
-    //         this.file.readAsDataURL(imgdirpath,fileName).then((res)=>{
-    //        console.log(res);
-    //        var parts = res.split(";base64,");
-    //        var contentType = parts[0].replace("data:", "");
-    //        var base64 = parts[1];
-    //        this.imgbase64 = base64;
-    //       // var byteArray = this.base64ToByteArray(base64);
-    //      //  console.log(byteArray);
-
-    //       // this.file.readAsArrayBuffer(imgdirpath,fileName).then(async (buffer)=>{
-    //       //  //console.log(buffer);
-    //       // await this.uploadimg(buffer,fileName);
-    //        this.file.readAsArrayBuffer(dirpath,entries.name).then(async (buffer)=>{
-    //        //console.log(buffer);
-    //       await this.upload(buffer,entries.name);
-
-    //     //  },
-    //     //  err => this.authservice.dismissLoading()
-    //     //  )
-
-    //      },
-    //      err => this.authservice.dismissLoading()
-    //      )
-
-    //   },
-    //   err => this.authservice.dismissLoading()
-    //   )
-    // },
-    // err => this.authservice.dismissLoading()
-    // )
-    //     //  this.file.readAsArrayBuffer(dirpath,entries.name).then(async (buffer)=>{
-    //     //    //console.log(buffer);
-    //     //   await this.upload(buffer,entries.name);
-
-    //     //  },
-    //     //  err => this.authservice.dismissLoading()
-    //     //  )
-    //     },
-    //     err => this.authservice.dismissLoading()
-    //     )
-
+    // this.authservice.presentLoading();
     this.mediaCapture.captureVideo().then(
       (data: MediaFile[]) => {
+        this.authservice.dismissLoading();
         if (data.length > 0) {
+          console.log("VIDEO_DATA", data);
+          
           console.log("VIDEO_PATH", data[0].fullPath);
           this.copyFileToLocalDir(data[0].fullPath);
 
           //this.streamingMedia.playVideo("file://"+data[0].fullPath);
         }
       },
-      (err: CaptureError) => this.authservice.dismissLoading()
+      (err: CaptureError) => {
+        console.log("CAPTURE_ERROR", err);
+
+        this.dummyUpload();
+        
+        this.authservice.dismissLoading();
+      }
     );
+  }
+
+  dummyUpload() {
+    const name = "DummyVideo.mp4";
+    this.videourl = "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/KNDPM3AC7J7393422/20201118111456/KNDPM3AC7J7393422_20201118111456.mp4";
+    this.imgbase64 = "";
+    this.imgurl = "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/Images/KNDPM3AC7J7393422/20201118/KNDPM3AC7J7393422_20201118111456_52889.jpg";
+    this.imgname = "DummyImage.jpg";
+
+    let fdata = {
+      VideoName: name,
+      VideoPath: this.videourl,
+      ImagePath: this.imgbase64,
+      // ImagePath : this.videourl
+    };
+    //this.videolist.push(fdata);
+    this.files.push(fdata);
+    this.vlist.push(this.videourl);
+    this.vimglist.push(this.imgurl);
+    this.vnlist.push(name);
+    this.vimgbaselist.push(this.imgbase64);
+    this.vimgnamelist.push(this.imgname);
+
+    console.log('FILES_DATA', JSON.stringify(this.files));
+    console.log("VLIST", JSON.stringify(this.vlist));
+    console.log("VIMGLIST", JSON.stringify(this.vimglist));
+    console.log("VNLIST", JSON.stringify(this.vnlist));
+    console.log("VIDLIST", JSON.stringify(this.vidlist));
+    console.log("VIMGNAMELIST", JSON.stringify(this.vimgnamelist));
+    console.log("VIMGBASELIST", JSON.stringify(this.vimgbaselist));
+
+    this.authservice.setvidlist(this.vidlist);
+    this.authservice.setvlist(this.vlist);
+    this.authservice.setvimglist(this.vimglist);
+    this.authservice.setvnlist(this.vnlist);
+    this.authservice.setvimgnamelist(this.vimgnamelist);
+
+    this.authservice.dismissLoading();
+
+    // this.authservice.setvideodata(fdata);
+    this.presentAlert4("Video upload successfully");
   }
 
   copyFileToLocalDir(fullPath) {
@@ -1369,7 +1350,7 @@ export class TakeimagePage implements OnInit {
               var parts = res.split(",");
               var contentType = parts[0].replace("data:", "");
               var base64 = parts[1];
-              this.imgbase64 = base64;
+              this.imgbase64 = base64; 
               // console.log(this.imgbase64);
               // var byteArray = this.base64ToByteArray(base64);
               //  console.log(byteArray);
@@ -1423,12 +1404,6 @@ export class TakeimagePage implements OnInit {
     if (uploadedCarImagespath.length > 0) {
       this.imgurl = uploadedCarImagespath[0];
     }
-    /*   for(let i=0;i< uploadedCarImagespath.length;i++){
-            if(uploadedCarImagespath.length > 0)
-            {
-              this.imgurl = uploadedCarImagespath[i];
-            }
-          }*/
     console.log("THUMBNAIL_PATH", JSON.stringify(uploadedCarImagespath));
   }
 
@@ -1604,8 +1579,10 @@ export class TakeimagePage implements OnInit {
       console.log("params", JSON.stringify(params));
 
       bucket.upload(params, (err, data) => {
-        console.log("Response is", JSON.stringify(data));
+        console.log("VIDEO_UPLOAD_RESPONSE", JSON.stringify(data));
         if (err) {
+          console.log('VIDEO_UPLOAD_ERROR', err);
+          
           reject(err);
         } else {
           this.videourl = data.Location;
@@ -1631,8 +1608,7 @@ export class TakeimagePage implements OnInit {
           this.vimgbaselist.push(this.imgbase64);
           this.vimgnamelist.push(this.imgname);
 
-          //console.log('FILES_DATA', JSON.stringify(this.files));
-
+          console.log('FILES_DATA', JSON.stringify(this.files));
           console.log("VLIST", JSON.stringify(this.vlist));
           console.log("VIMGLIST", JSON.stringify(this.vimglist));
           console.log("VNLIST", JSON.stringify(this.vnlist));
@@ -1724,7 +1700,7 @@ export class TakeimagePage implements OnInit {
           handler: () => {
             console.log("Video List - 2 : " + this.videolist);
             console.log(i);
-            console.log(this.isedit);
+            console.log("IS_EDIT :", this.isedit);
 
             //  this.videolist2 = this.authservice.getvideolist();
             console.log("Video Test List : " + this.videolist);
@@ -1755,8 +1731,13 @@ export class TakeimagePage implements OnInit {
                   this.userid
                 )
                 .subscribe((res) => {
-                  console.log(res);
-                  console.log(this.videolist);
+                  console.log("VIDEO_DELETED", res);
+                  this.files.splice(i, 1);
+                  this.vlist.splice(i, 1);
+                  this.vnlist.splice(i, 1);
+                  this.vimglist.splice(i, 1);
+                  this.vimgbaselist.splice(i, 1);
+                  this.vimgnamelist.splice(i, 1);
 
                   /*    this.videolist = this.videolist.filter((item => {
                     console.log(item);
@@ -1764,13 +1745,9 @@ export class TakeimagePage implements OnInit {
             
                   }));
                   console.log(this.videolist);*/
+                }, (error) => {
+                  console.log("DELETE_VIDEO_ERROR : " + error);
                 });
-              this.files.splice(i, 1);
-              this.vlist.splice(i, 1);
-              this.vnlist.splice(i, 1);
-              this.vimglist.splice(i, 1);
-              this.vimgbaselist.splice(i, 1);
-              this.vimgnamelist.splice(i, 1);
             } else {
               this.files.splice(i, 1);
               this.vlist.splice(i, 1);
