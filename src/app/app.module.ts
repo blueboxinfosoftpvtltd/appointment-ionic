@@ -55,10 +55,11 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 //import { VideoCapturePlus, VideoCapturePlusOptions, } from '@ionic-native/video-capture-plus/ngx';
 //import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import * as firebase from 'firebase';
-import { LogInterceptor } from './interceptors/LogInterceptor';
+import { LogInterceptor } from './interceptors/log.interceptor';
 
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
+import { CommonInterceptor } from './interceptors/common.interceptor';
 
 
 var firebaseConfig = {
@@ -81,8 +82,8 @@ firebase.initializeApp(firebaseConfig);
   entryComponents: [],
   imports: [
     BrowserModule,
-    ReactiveFormsModule ,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
    // HttpClientInMemoryWebApiModule.forRoot(InMemEventService, {delay: 1500, dataEncapsulation: false}),
     SchedulerModule,
@@ -124,7 +125,8 @@ firebase.initializeApp(firebaseConfig);
    // FileTransfer,
     // PreviewAnyFile,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  },
-    { provide: HTTP_INTERCEPTORS, useClass: LogInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LogInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CommonInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

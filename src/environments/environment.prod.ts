@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseApiUrl: "http://appointmentapiprod.itsguru.com/api/Appointment"
 };
