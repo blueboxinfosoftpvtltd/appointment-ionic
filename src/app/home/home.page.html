@@ -49,7 +49,8 @@
           "
         >
           <ion-select
-            value="{{dealername}}"
+            [value]="dealerid"
+            [(ngModel)]="dealerid"
             (ionChange)="ChangeDealership($event)"
             style="
               max-width: 100% !important;
@@ -60,9 +61,9 @@
           >
             <ion-select-option
               style="white-space: normal"
-              *ngFor="let dealer of dealers"
-              value="{{dealer.DealershipId}}"
-              >{{dealer.DealershipName}}</ion-select-option
+              *ngFor="let dr of dealers"
+              [value]="dr.DealershipId"
+              >{{dr.DealershipName}}</ion-select-option
             >
           </ion-select>
         </ion-item>
@@ -150,7 +151,8 @@
         >
           <ion-select
             [selectedText]="dealer"
-            value="{{dealername}}"
+            [value]="dealername"
+            [(ngModel)]="dealerid"
             (ionChange)="ChangeDealership($event)"
             style="
               max-width: 100% !important;
