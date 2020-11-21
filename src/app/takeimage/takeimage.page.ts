@@ -1256,7 +1256,6 @@ export class TakeimagePage implements OnInit {
     // this.authservice.presentLoading();
     this.mediaCapture.captureVideo().then(
       (data: MediaFile[]) => {
-        this.authservice.dismissLoading();
         if (data.length > 0) {
           console.log("VIDEO_DATA", data);
           
@@ -1318,6 +1317,8 @@ export class TakeimagePage implements OnInit {
   }
 
   copyFileToLocalDir(fullPath) {
+    this.authservice.presentLoading();
+
     let myPath = fullPath;
     // Make sure we copy from the right location
     if (fullPath.indexOf("file://") < 0) {
@@ -1378,28 +1379,9 @@ export class TakeimagePage implements OnInit {
               var contentType = parts[0].replace("data:", "");
               var base64 = parts[1];
               this.imgbase64 = base64; 
-              // console.log(this.imgbase64);
-              // var byteArray = this.base64ToByteArray(base64);
-              //  console.log(byteArray);
-
-              //this.file.readAsArrayBuffer(imgdirpath,fileName).then(async (buffer)=>{
-              //console.log(buffer);
-              //await this.uploadimg(buffer,fileName);
               this.file.readAsArrayBuffer(dirpath, entries.name).then(
                 async (buffer) => {
-                  //   console.log(buffer);
                   await this.upload(buffer, entries.name);
-
-                  //  },
-                  //  err => this.authservice.dismissLoading()
-                  //  )
-                  //    this.file.readAsArrayBuffer(dirpath,entries.name).then(async (buffer)=>{
-                  //    //console.log(buffer);
-                  //   await this.upload(buffer,entries.name);
-
-                  //  },
-                  //  err => this.authservice.dismissLoading()
-                  //  )
                 },
                 (err) => this.authservice.dismissLoading()
               );
@@ -1606,6 +1588,7 @@ export class TakeimagePage implements OnInit {
       console.log("params", JSON.stringify(params));
 
       bucket.upload(params, (err, data) => {
+        this.authservice.dismissLoading();
         console.log("VIDEO_UPLOAD_RESPONSE", JSON.stringify(data));
         if (err) {
           console.log('VIDEO_UPLOAD_ERROR', err);
@@ -1613,7 +1596,6 @@ export class TakeimagePage implements OnInit {
           reject(err);
         } else {
           this.videourl = data.Location;
-          this.authservice.dismissLoading();
           // let vdata={
           //   "VideoNameList" : name,
           //   "VideoPathList" : this.videourl,
