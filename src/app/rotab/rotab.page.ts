@@ -409,6 +409,13 @@ export class RotabPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.opcoderes = [];
+    this.authservice.setopcodero(null);
+    console.log('opcodes', this.authservice.getopcodero());
+    
+  }
+
   logout() {
     this.showAlert();
   }
