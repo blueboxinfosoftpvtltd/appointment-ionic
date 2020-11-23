@@ -61,8 +61,6 @@ export class AuthService {
 
   //this.url = "http://appointmentapi.itsguru.com/api/Appointment";
    this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
-
-
   }
 
   async presentLoading() {

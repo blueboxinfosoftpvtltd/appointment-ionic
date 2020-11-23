@@ -25,6 +25,8 @@ import { zip } from "rxjs/operators";
 import { ThrowStmt } from "@angular/compiler";
 import { runInThisContext } from "vm";
 import { SearchopcodePage } from "../searchopcode/searchopcode.page";
+import { RoService } from '../services/ro.service';
+import { VoidRo } from '../forms/void-ro';
 
 @Component({
   selector: "app-rotab",
@@ -269,7 +271,8 @@ export class RotabPage implements OnInit {
     private alertController: AlertController,
     public platform: Platform,
     public screenOrientation: ScreenOrientation,
-    public ngzone: NgZone
+    public ngzone: NgZone,
+    private roService: RoService
   ) {
     this.alphaarr = [
       "A",
@@ -445,14 +448,20 @@ export class RotabPage implements OnInit {
     (await prompt).present();
   }
 
-  //for Customer Info
   back() {
-    let object = {
-      refresh: true,
-    };
-
-    this.router.navigate(["/appointment"], { queryParams: { Page: "ro" } });
+    this.authservice.presentLoading();
+    // call void ro before going back, to remove unwanted ro number.
+    this.voidRo().then((data) => {
+      this.authservice.dismissLoading();
+      // once the ro removed go back to appontment page
+      this.authservice.showToast(data["Message"]);
+      let object = {
+        refresh: true,
+      };
+      this.router.navigate(["/appointment"], { queryParams: { Page: "ro" } });
+    })
   }
+
   getCountry() {
     this.authservice.GetCountry(this.dealerid).subscribe((res) => {
       this.country = res;
@@ -2018,7 +2027,18 @@ export class RotabPage implements OnInit {
     // this.cc = this.addrolist[i].StoryDesc;
   }
 
-  voidro() {}
+  async voidRo() {
+    const data: VoidRo = {
+      Comments: "CANCELLED_BY_USER",
+      PKRONumber: this.rono,
+      DlrshipId: this.dealerid,
+      UserId: this.userid,
+      IDSFlag: 1
+    }
+
+    return await this.roService.voidRo(data);
+  }
+  
   delete(data) {
     console.log(data);
     this.authservice.presentLoading();
