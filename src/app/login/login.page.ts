@@ -121,6 +121,17 @@ export class LoginPage {
           console.log('login res', this.res);
           this.employeeMapList = this.res.employeeMapList;
 
+          // this.authservice.dismissLoading();
+          // // AppointmentId=35205&Page=TakeImage&VIN=564564564564564kj&Isedit=true
+          // let params = {
+          //   "AppointmentId" : 35205,
+          //   "Page" : "TakeImage",
+          //   "VIN" : "564564564564564kj",
+          //   "Isedit" : true
+          // }
+          // this.router.navigate(['takeimage'], { queryParams: params });
+          // return;
+
           if (this.res.Code == 200) {
             if (this.res.IDSFlag == "0") {
               this.authservice.setids(this.res.IDSFlag);

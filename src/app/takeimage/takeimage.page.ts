@@ -381,7 +381,7 @@ export class TakeimagePage implements OnInit {
           .getcarimage(this.delarid, appid, rono)
           .subscribe((res) => {
             this.getres = res;
-            console.log(this.getres);
+            console.log("GET_CAR_IMAGE", this.getres);
             if (this.getres == null) {
             } else {
               if (this.getres) {
@@ -391,11 +391,17 @@ export class TakeimagePage implements OnInit {
 
                 for (let i = 0; i < this.getres.length; i++) {
                   const image = this.getres[i];
-                  console.log("captureDataUrl" + image.DisplayOrder + " : " + image.ImagePath);
-                  
+                  console.log(
+                    "captureDataUrl" +
+                      image.DisplayOrder +
+                      " : " +
+                      image.ImagePath
+                  );
+
                   // car images
                   if (image.ImageType == 0) {
-                    this["captureDataUrl" + image.DisplayOrder] = image.ImagePath;
+                    this["captureDataUrl" + image.DisplayOrder] =
+                      image.ImagePath;
 
                     // this.imglist.push(this.getres[i]);
 
@@ -1095,33 +1101,47 @@ export class TakeimagePage implements OnInit {
     // this.router.navigate(['/signature'],{ queryParams: {AppointmentId : this.AppointmentId , Page:"Signatue",VIN: this.VIN} });
   }
 
-  Save() {
-    console.log(this.selectedCarImageData);
-    let uimage = [];
-    let uorder = [];
-    this.selectedCarImageData.forEach((element) => {
-      if (!uimage.includes(element)) {
-        uimage.push(element);
-      }
-    });
-    this.selectedCarImageIndex.forEach((element) => {
-      if (!uorder.includes(element)) {
-        uorder.push(element);
-      }
-    });
-    this.takeimage = uimage.join();
-    this.takeorder = uorder.join();
-
+  async Save() {
     if (this.selectedCarImageData.length == 0 && this.vlist.length == 0) {
       this.authservice.alertshow("Pick Atleast Image Or Video");
     } else {
       if (this.Page) {
+        this.authservice.presentLoading();
+        let uimage = [];
+        let uorder = [];
+        // var appdata = {
+        //   VIN: this.VIN,
+        //   AppointmentId: this.AppointmentId,
+        // }
+
+        // console.log('APP_DATA', appdata);
+        
+        // let uploadedCarImagespath = await this.uploadImages(
+        //   appdata,
+        //   this.selectedCarImageData
+        // );
+
+        this.selectedCarImageData.forEach((element) => {
+          if (!uimage.includes(element)) {
+            uimage.push(element);
+          }
+        });
+        this.selectedCarImageIndex.forEach((element) => {
+          if (!uorder.includes(element)) {
+            uorder.push(element);
+          }
+        });
+        this.takeimage = uimage.join();
+        this.takeorder = uorder.join();
+
+        console.log('TAKEIMAGE', this.takeimage);
+        console.log('TAKEORDER', this.takeorder);
+    
         var vidl = this.vidlist.join();
         var vnamel = this.vnlist.join();
         var vpathl = this.vlist.join();
         var ipathl = this.vimgbaselist.join();
         var inamel = this.vimgnamelist.join();
-        this.authservice.presentLoading();
         this.authservice
           .CarImageInsert(
             this.delarid,
@@ -1137,19 +1157,22 @@ export class TakeimagePage implements OnInit {
             ipathl,
             inamel
           )
-          .subscribe((res) => {
-            this.data = res;
-            console.log(this.data);
-            this.authservice.dismissLoading();
-            if (this.data.Message) {
-              this.authservice.showToast(this.data.Message);
+          .subscribe(
+            (res) => {
+              this.data = res;
+              console.log(this.data);
+              this.authservice.dismissLoading();
+              if (this.data.Message) {
+                this.authservice.showToast(this.data.Message);
+              }
+              this.router.navigateByUrl("/home");
+              //  this.router.navigate(['/signature'],{ queryParams: {AppointmentId : this.AppointmentId , Page: this.Page,VIN: this.VIN,ROnumber : this.ronumber} });
+            },
+            (error) => {
+              this.authservice.dismissLoading();
+              this.authservice.showToast("Unable to update images or videos.");
             }
-            this.router.navigateByUrl("/home");
-            //  this.router.navigate(['/signature'],{ queryParams: {AppointmentId : this.AppointmentId , Page: this.Page,VIN: this.VIN,ROnumber : this.ronumber} });
-          }, (error) => {
-            this.authservice.dismissLoading();
-            this.authservice.showToast("Unable to update images or videos.");
-          });
+          );
       } else {
         var appointmentdata = this.authservice.getappdata();
         var rodata = this.authservice.getrocdata();
@@ -1167,7 +1190,7 @@ export class TakeimagePage implements OnInit {
             // "CompleteImage": this.takeimage,
             // "takeorder": this.takeorder
           };
-  
+
           //  this.router.navigate(['/signature'], { queryParams: { app: true } });
           if (this.isedit == "true") {
             this.router.navigate(["/signature"], {
@@ -1197,7 +1220,7 @@ export class TakeimagePage implements OnInit {
             // "takeorder": this.takeorder
           };
           this.authservice.setimagedata(imgdata);
-  
+
           //this.router.navigate(['/signature'], { queryParams: { ro: true } });
           if (this.isedit == "true") {
             this.router.navigate(["/signature"], {
@@ -1213,7 +1236,7 @@ export class TakeimagePage implements OnInit {
             });
           }
         }
-      }  
+      }
     }
   }
 
@@ -1258,7 +1281,7 @@ export class TakeimagePage implements OnInit {
       (data: MediaFile[]) => {
         if (data.length > 0) {
           console.log("VIDEO_DATA", data);
-          
+
           console.log("VIDEO_PATH", data[0].fullPath);
           this.copyFileToLocalDir(data[0].fullPath);
 
@@ -1269,7 +1292,7 @@ export class TakeimagePage implements OnInit {
         console.log("CAPTURE_ERROR", err);
 
         // this.dummyUpload();
-        
+
         this.authservice.dismissLoading();
       }
     );
@@ -1277,9 +1300,11 @@ export class TakeimagePage implements OnInit {
 
   dummyUpload() {
     const name = "DummyVideo.mp4";
-    this.videourl = "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/KNDPM3AC7J7393422/20201118111456/KNDPM3AC7J7393422_20201118111456.mp4";
+    this.videourl =
+      "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/KNDPM3AC7J7393422/20201118111456/KNDPM3AC7J7393422_20201118111456.mp4";
     this.imgbase64 = "";
-    this.imgurl = "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/Images/KNDPM3AC7J7393422/20201118/KNDPM3AC7J7393422_20201118111456_52889.jpg";
+    this.imgurl =
+      "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/Images/KNDPM3AC7J7393422/20201118/KNDPM3AC7J7393422_20201118111456_52889.jpg";
     this.imgname = "DummyImage.jpg";
 
     let fdata = {
@@ -1296,7 +1321,7 @@ export class TakeimagePage implements OnInit {
     this.vimgbaselist.push(this.imgbase64);
     this.vimgnamelist.push(this.imgname);
 
-    console.log('FILES_DATA', JSON.stringify(this.files));
+    console.log("FILES_DATA", JSON.stringify(this.files));
     console.log("VLIST", JSON.stringify(this.vlist));
     console.log("VIMGLIST", JSON.stringify(this.vimglist));
     console.log("VNLIST", JSON.stringify(this.vnlist));
@@ -1378,7 +1403,7 @@ export class TakeimagePage implements OnInit {
               var parts = res.split(",");
               var contentType = parts[0].replace("data:", "");
               var base64 = parts[1];
-              this.imgbase64 = base64; 
+              this.imgbase64 = base64;
               this.file.readAsArrayBuffer(dirpath, entries.name).then(
                 async (buffer) => {
                   await this.upload(buffer, entries.name);
@@ -1591,8 +1616,8 @@ export class TakeimagePage implements OnInit {
         this.authservice.dismissLoading();
         console.log("VIDEO_UPLOAD_RESPONSE", JSON.stringify(data));
         if (err) {
-          console.log('VIDEO_UPLOAD_ERROR', err);
-          
+          console.log("VIDEO_UPLOAD_ERROR", err);
+
           reject(err);
         } else {
           this.videourl = data.Location;
@@ -1617,7 +1642,7 @@ export class TakeimagePage implements OnInit {
           this.vimgbaselist.push(this.imgbase64);
           this.vimgnamelist.push(this.imgname);
 
-          console.log('FILES_DATA', JSON.stringify(this.files));
+          console.log("FILES_DATA", JSON.stringify(this.files));
           console.log("VLIST", JSON.stringify(this.vlist));
           console.log("VIMGLIST", JSON.stringify(this.vimglist));
           console.log("VNLIST", JSON.stringify(this.vnlist));
@@ -1739,24 +1764,27 @@ export class TakeimagePage implements OnInit {
                   this.ronumber,
                   this.userid
                 )
-                .subscribe((res) => {
-                  console.log("VIDEO_DELETED", res);
-                  this.files.splice(i, 1);
-                  this.vlist.splice(i, 1);
-                  this.vnlist.splice(i, 1);
-                  this.vimglist.splice(i, 1);
-                  this.vimgbaselist.splice(i, 1);
-                  this.vimgnamelist.splice(i, 1);
+                .subscribe(
+                  (res) => {
+                    console.log("VIDEO_DELETED", res);
+                    this.files.splice(i, 1);
+                    this.vlist.splice(i, 1);
+                    this.vnlist.splice(i, 1);
+                    this.vimglist.splice(i, 1);
+                    this.vimgbaselist.splice(i, 1);
+                    this.vimgnamelist.splice(i, 1);
 
-                  /*    this.videolist = this.videolist.filter((item => {
+                    /*    this.videolist = this.videolist.filter((item => {
                     console.log(item);
                     return item.VideoMasterID != this.Videoid;
             
                   }));
                   console.log(this.videolist);*/
-                }, (error) => {
-                  console.log("DELETE_VIDEO_ERROR : " + error);
-                });
+                  },
+                  (error) => {
+                    console.log("DELETE_VIDEO_ERROR : " + error);
+                  }
+                );
             } else {
               this.files.splice(i, 1);
               this.vlist.splice(i, 1);

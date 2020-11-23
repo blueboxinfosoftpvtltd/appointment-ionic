@@ -1012,6 +1012,8 @@ export class AuthService {
       "IDSFlag": this.idsflag,
       "RONumber": rono
     }
+    console.log('GET_CAR_IMAGE', cardata);
+    
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.url + "/GetCarImage", cardata, { headers: headers })
