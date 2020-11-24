@@ -19,29 +19,7 @@ import { CustomerService } from "../services/customer.service";
 })
 export class CreatecustPage implements OnInit {
   // @ViewChild('inputId', {  static: false })  inputElement: IonInput;
-  customerForm: FormGroup = new FormGroup({
-    firstName: new FormControl("", []),
-    lastName: new FormControl("", []),
-    companyName: new FormControl("", []),
-    addressLine1: new FormControl("", [Validators.required]),
-    addressLine2: new FormControl("", []),
-    country: new FormControl("", []),
-    state: new FormControl("", []),
-    city: new FormControl("", [Validators.required]),
-    zipcode: new FormControl("", []),
-    mobile: new FormControl("", [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^\d{10}$")]),
-    workPhone: new FormControl("", []),
-    homePhone: new FormControl("", []),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    carVIN: new FormControl("", [Validators.required]),
-    carModel: new FormControl("", []),
-    carYear: new FormControl("", []),
-    carColor: new FormControl("", []),
-    carMake: new FormControl("", []),
-    carMileage: new FormControl("", []),
-    username: new FormControl("", [Validators.required]),
-    password: new FormControl("", []),
-  });
+  customerForm: FormGroup;
 
   countryid: any;
   stateid: any;
@@ -127,13 +105,69 @@ export class CreatecustPage implements OnInit {
     this.storage.get("username").then((val) => {
       this.newusername = val;
     });
+
+    this.customerForm = new FormGroup({
+      firstName: new FormControl("", []),
+      lastName: new FormControl("", []),
+      companyName: new FormControl("", []),
+      addressLine1: new FormControl("", [Validators.required]),
+      addressLine2: new FormControl("", []),
+      country: new FormControl("", []),
+      state: new FormControl("", []),
+      city: new FormControl("", [Validators.required]),
+      zipcode: new FormControl("", []),
+      mobile: new FormControl("", [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+      ]),
+      workPhone: new FormControl(""),
+      homePhone: new FormControl(""),
+      email: new FormControl("", [Validators.required, Validators.email]),
+      carVIN: new FormControl("", [Validators.required]),
+      carModel: new FormControl("", []),
+      carYear: new FormControl("", []),
+      carColor: new FormControl("", []),
+      carMake: new FormControl("", []),
+      carMileage: new FormControl("", []),
+      username: new FormControl("", [Validators.required]),
+      password: new FormControl("", []),
+    });
+
+    this.registerCustomValidations();
   }
 
-  //   ngAfterViewInit() {
-  //     setTimeout(() => {
-  //        this.inputElement.setFocus();
-  //   }, 400);
-  // }
+  registerCustomValidations() {
+    this.customerForm.get("homePhone").valueChanges.subscribe((newValue) => {
+      if (newValue && newValue.toString().length > 0) {
+        this.customerForm
+          .get("homePhone")
+          .setValidators([
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ]);
+          
+      } else {
+        this.customerForm.get("homePhone").clearValidators();
+      }
+    });
+    this.customerForm.get("homePhone").updateValueAndValidity();
+
+    this.customerForm.get("workPhone").valueChanges.subscribe((newValue) => {
+      if (newValue && newValue.toString().length > 0) {
+        this.customerForm
+          .get("workPhone")
+          .setValidators([
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ]);          
+      } else {
+        this.customerForm.get("workPhone").clearValidators();
+      }
+    });
+    this.customerForm.get("workPhone").updateValueAndValidity();
+  }
+
   logout() {
     this.showAlert();
   }
@@ -190,9 +224,10 @@ export class CreatecustPage implements OnInit {
     this.authservice.GetCountry(this.dealerid).subscribe((res) => {
       this.countries = res;
       // set default country to USA
-      this.countryid = 1;
-      // load states
-      this.getState();
+      let c = this.countries.find((item) => item.CountryName == "USA");
+      if (c) {
+        this.countryid = c.CountryId;
+      }
     });
   }
 
@@ -201,10 +236,11 @@ export class CreatecustPage implements OnInit {
       .GetState(this.countryid, this.dealerid)
       .subscribe((res) => {
         this.state = res;
-        console.log("states", this.state);
-
         // set default state to Texas
-        this.stateid = 45;
+        let s = this.state.find((item) => item.StateName == "Texas");
+        if (s) {
+          this.stateid = s.StateId;
+        }
       });
   }
 
@@ -339,43 +375,49 @@ export class CreatecustPage implements OnInit {
     this.authservice
       .InsertNewCustomer(
         this.dealerid,
-        this.customerForm.get('firstName').value,
-        this.customerForm.get('lastName').value,
-        this.customerForm.get('companyName').value,
-        this.customerForm.get('addressLine1').value,
-        this.customerForm.get('country').value,
-        this.customerForm.get('state').value,
-        this.customerForm.get('city').value,
-        this.customerForm.get('mobile').value,
-        this.customerForm.get('email').value,
-        this.customerForm.get('carVIN').value,
-        this.customerForm.get('username').value,
-        this.customerForm.get('password').value,
-        this.customerForm.get('addressLine2').value,
-        this.customerForm.get('zipcode').value,
-        this.customerForm.get('homePhone').value,
-        this.customerForm.get('workPhone').value,
-        this.customerForm.get('carYear').value,
-        this.customerForm.get('carMake').value,
-        this.customerForm.get('carModel').value,
-        this.trimid,
-        this.customerForm.get('carColor').value,
-        this.customerForm.get('carMileage').value,
-        this.avgmileage,
+        this.customerForm.get("firstName").value,
+        this.customerForm.get("lastName").value,
+        this.customerForm.get("companyName").value,
+        this.customerForm.get("addressLine1").value,
+        this.customerForm.get("country").value,
+        this.customerForm.get("state").value,
+        this.customerForm.get("city").value,
+        this.customerForm.get("mobile").value,
+        this.customerForm.get("email").value,
+        this.customerForm.get("carVIN").value,
+        this.customerForm.get("username").value,
+        this.customerForm.get("password").value,
+        this.customerForm.get("addressLine2").value,
+        this.customerForm.get("zipcode").value,
+        this.customerForm.get("homePhone").value,
+        this.customerForm.get("workPhone").value,
+        this.customerForm.get("carYear").value,
+        this.customerForm.get("carMake").value,
+        this.customerForm.get("carModel").value,
+        0,
+        this.customerForm.get("carColor").value,
+        this.customerForm.get("carMileage").value,
+        0,
         this.licenseplate,
         this.userid
       )
-      .subscribe((res) => {
-        this.res = res;
-        console.log(this.res);
-        this.authservice.dismissLoading();
-        this.authservice.showToast(this.res.Message);
-        let object = {
-          Page: this.Page,
-        };
-        //this.router.navigate(['/createcust'],{ queryParams: object });
-        this.router.navigate(["/appointment"], { queryParams: object });
-      });
+      .subscribe(
+        (res) => {
+          this.res = res;
+          console.log(this.res);
+          this.authservice.dismissLoading();
+          this.authservice.showToast(this.res.Message);
+          let object = {
+            Page: this.Page,
+          };
+          //this.router.navigate(['/createcust'],{ queryParams: object });
+          this.router.navigate(["/appointment"], { queryParams: object });
+        },
+        (error) => {
+          this.authservice.dismissLoading();
+          this.authservice.showToast("Unable to save the customer.");
+        }
+      );
   }
 
   getFormValidationErrors() {
@@ -593,6 +635,7 @@ export class CreatecustPage implements OnInit {
         });
     }
   }
+
   cityselect() {
     this.openmodel();
   }

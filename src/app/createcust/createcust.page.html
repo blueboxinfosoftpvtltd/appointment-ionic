@@ -247,14 +247,27 @@
             </ion-col>
             <ion-col ion-item size="10">
               <ion-input
-                type="number"
-                maxlength="11"
+                type="tel"
+                maxlength="10"
+                minlength="10"
                 placeholder="Work Phone"
                 formControlName="workPhone"
                 class="inputcss"
               ></ion-input>
             </ion-col>
           </ion-row>
+          <ion-text
+            *ngIf="customerForm.get('workPhone').hasError('required') && customerForm.get('workPhone').touched"
+            color="danger"
+            class="ion-margin-top"
+            >The work phone number is required.</ion-text
+          >
+          <ion-text
+            *ngIf="(customerForm.get('workPhone').hasError('minlength') || customerForm.get('workPhone').hasError('maxlength')) && customerForm.get('workPhone').touched"
+            color="danger"
+            class="ion-margin-top"
+            >The work phone number is invalid.</ion-text
+          >
         </ion-col>
       </ion-row>
 
@@ -266,14 +279,21 @@
             </ion-col>
             <ion-col ion-item size="10">
               <ion-input
-                type="number"
+                type="tel"
                 maxlength="10"
+                minlength="10"
                 placeholder="Home Phone"
                 formControlName="homePhone"
                 class="inputcss"
               ></ion-input>
             </ion-col>
           </ion-row>
+          <ion-text
+            *ngIf="(customerForm.get('homePhone').hasError('minlength') || customerForm.get('homePhone').hasError('maxlength')) && customerForm.get('homePhone').touched"
+            color="danger"
+            class="ion-margin-top"
+            >The home phone number is invalid.</ion-text
+          >
         </ion-col>
         <ion-col size="6" size-lg>
           <ion-row class="rawcss">
