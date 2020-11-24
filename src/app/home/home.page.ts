@@ -149,13 +149,11 @@ export class HomePage {
         // call get appointment api to load
         this.updateData();
         
-        if (this.dealers == undefined) {
-          this.authservice.getDealership().subscribe((res) => {
-            this.dealers = res;
-            this.authservice.setdealers(res);
-          });
-        }
-        
+        this.authservice.getDealership().subscribe((res) => {
+          this.dealers = res;
+          this.authservice.setdealers(res);
+        });
+
         //this.isEnabled ="false";
         if (data.refresh) {
           this.authservice.presentLoading();

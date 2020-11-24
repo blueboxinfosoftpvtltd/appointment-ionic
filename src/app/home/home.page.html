@@ -34,13 +34,12 @@
 
   <!-- slot="fixed" -->
   <div>
-    <ion-row class="row1" *ngIf="isEnabled == 'false'">
+    <ion-row class="row1">
       <ion-col size="2">
         <p style="margin-left: 35px; margin-top: 15px">Dealership</p>
       </ion-col>
       <ion-col size="4">
         <ion-item
-          *ngIf="isEnabled == 'false'"
           style="
             border: 1px solid #acadaf;
             margin-left: 10px;
@@ -49,6 +48,7 @@
           "
         >
           <ion-select
+            [disabled]="isEnabled == 'true'"
             [value]="dealerid"
             [(ngModel)]="dealerid"
             (ionChange)="ChangeDealership($event)"
@@ -99,107 +99,6 @@
       </ion-col>
 
       <ion-col size="6" *ngIf="ActiveSegment == 'ro'">
-        <ion-row>
-          <ion-col size="8">
-            <ion-item lines="none">
-              <ion-label>{{selecttxt}}</ion-label>
-              <ion-checkbox
-                color="primary"
-                [(ngModel)]="ismyapp1"
-                (ionChange)="myapp1($event)"
-                slot="start"
-              ></ion-checkbox>
-            </ion-item>
-          </ion-col>
-          <ion-col size="4">
-            <ion-button
-              style="
-                width: 100%;
-                height: 35px;
-                --background: #374767;
-                margin-left: -35px;
-              "
-              (click)="doRefresh($event)"
-            >
-              <ion-icon
-                slot="start"
-                name="refresh"
-                style="height: 18px"
-              ></ion-icon>
-              Refresh
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="row1" *ngIf="isEnabled == 'true'">
-      <ion-col size="2">
-        <p style="margin-left: 35px; margin-top: 15px">Dealership</p>
-      </ion-col>
-      <ion-col size="4">
-        <ion-item
-          lines="none"
-          *ngIf="isEnabled == 'true'"
-          style="
-            border: 2px solid #acadaf;
-            margin-left: 0px;
-            margin-right: 10px;
-            border-radius: 5px;
-            pointer-events: none;
-          "
-        >
-          <ion-select
-            [selectedText]="dealer"
-            [value]="dealername"
-            [(ngModel)]="dealerid"
-            (ionChange)="ChangeDealership($event)"
-            style="
-              max-width: 100% !important;
-              width: 100%;
-              font-size: 15px;
-              margin-left: -10px;
-            "
-          >
-            <ion-select-option
-              *ngFor="let dealer of dealers"
-              value="{{dealer.DealershipId}}"
-              >{{dealer.DealershipName}}</ion-select-option
-            >
-          </ion-select>
-        </ion-item>
-      </ion-col>
-
-      <ion-col size="6" size-lg *ngIf="ActiveSegment == 'app'">
-        <ion-row>
-          <ion-col size="8">
-            <ion-item lines="none">
-              <ion-label>{{selecttxt}}</ion-label>
-              <ion-checkbox
-                color="primary"
-                [(ngModel)]="ismyapp"
-                (ionChange)="myapp($event)"
-                slot="start"
-              ></ion-checkbox>
-            </ion-item>
-          </ion-col>
-          <ion-col size="4">
-            <ion-button
-              style="width: 100%; height: 35px; --background: #374767"
-              (click)="doRefresh($event)"
-            >
-              <ion-icon
-                slot="start"
-                name="refresh"
-                style="height: 18px"
-              ></ion-icon>
-              Refresh
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-
-      <ion-col size="6" size-lg *ngIf="ActiveSegment == 'ro'">
         <ion-row>
           <ion-col size="8">
             <ion-item lines="none">
