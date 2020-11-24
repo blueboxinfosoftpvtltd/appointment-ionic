@@ -1190,7 +1190,7 @@ export class AuthService {
 
   getrodashboard(dlrid, showall, sid, from, to, val, op) {
 
-    var fname, lname, cname, vin,ro;
+    var fname, lname, cname, vin, ro;
     if (op && val) {
       if (op == "fname") {
         fname = val;

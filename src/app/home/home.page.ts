@@ -89,9 +89,21 @@ export class HomePage {
     this.currenttime = moment(new Date()).format("HH:mm");
     this.activatedRoute.queryParams.subscribe((data) => {
 
+      // update valirables from request params
+      this.isEnabled = data.ISEnable;
+      this.dealerid = parseInt(data.dealerId);
+      this.dealername = data.dealerName;
+      this.dealers = this.authservice.getdealers();
+      
       this.storage.forEach((value, key, index) => {
         console.log(index, key, value);
         switch (key) {
+          case 'dealerid':
+            this.dealerid = value;
+            break;
+          case 'dealername':
+            this.dealername = value;
+            break;
           case 'userid':
             this.advisorid = value;
             break;
@@ -134,12 +146,6 @@ export class HomePage {
             break;
         }
       }).then(() => {
-        // update valirables from request params
-        this.isEnabled = data.ISEnable;
-        this.dealerid = parseInt(data.dealerId);
-        this.dealername = data.dealerName;
-        this.dealers = this.authservice.getdealers();
-
         // call get appointment api to load
         this.updateData();
         
@@ -216,6 +222,8 @@ export class HomePage {
   Isapp() {
     this.ActiveSegment = "app";
     this.selecttxt = "My Appointment";
+
+    this.updateData();
   }
 
   Isro() {
@@ -325,6 +333,8 @@ export class HomePage {
   }
 
   myapp1(e) {
+    console.log('myapp1 change');
+    
     if (this.ActiveSegment == "ro") {
       this.rodata = [];
       this.storage.get("dealerid").then((val) => {
@@ -431,24 +441,6 @@ export class HomePage {
     });
     this.storage.get("userid").then((val) => {
       this.advisorid = val;
-      /* this.storage.get('Employee_id').then((val) => {
-      console.log(val);
-      console.log(this.tempdealerid);
-
-      this.empdealerid = val.filter((item) => {
-        console.log(item);
-        return item.DealershipId == this.tempdealerid;
-
-      });
-      console.log(this.empdealerid);
-
-      if(this.empdealerid.length > 0)
-      {
-        this.advisorid = this.empdealerid[0].PKEmployeeID;
-      }
-      
-      console.log(this.advisorid);*/
-
       this.storage.get("dealerid").then((val) => {
         this.dealerid = val;
         var appointment;
@@ -684,7 +676,7 @@ export class HomePage {
         this.storage.get("showallro").then((val) => {
           this.authservice
             .getrodashboard(
-              event.detail.value,
+              this.dealerid,
               val,
               this.advisorid,
               0,
