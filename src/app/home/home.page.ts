@@ -88,107 +88,107 @@ export class HomePage {
     this.currentDateor = moment(new Date()).format("YYYY-MM-DD");
     this.currenttime = moment(new Date()).format("HH:mm");
     this.activatedRoute.queryParams.subscribe((data) => {
-
       // update valirables from request params
       this.isEnabled = data.ISEnable;
       this.dealerid = parseInt(data.dealerId);
       this.dealername = data.dealerName;
       this.dealers = this.authservice.getdealers();
-      
-      this.storage.forEach((value, key, index) => {
-        console.log(index, key, value);
-        switch (key) {
-          case 'dealerid':
-            this.dealerid = value;
-            break;
-          case 'dealername':
-            this.dealername = value;
-            break;
-          case 'userid':
-            this.advisorid = value;
-            break;
-          case 'fullname':
-            this.uname = value;
-            break;          
-          case 'idsflag':
-            this.authservice.setids(value);
-            break;
-          case 'from':
-            this.from = value;
-            break;
-          case 'to':
-            this.to = value;
-            break;
-          case 'username':
-            this.username = value;
-            break;
-          case 'isenable':
-            if (this.isEnabled == undefined) {
-              this.isEnabled = value;
-            }
-            break;
-          case 'showallro':
-            if (value == undefined) {
-              this.ismyapp1 = true;
-            } else {
-              if (value == "1") {
+
+      this.storage
+        .forEach((value, key, index) => {
+          console.log(index, key, value);
+          switch (key) {
+            case "dealerid":
+              this.dealerid = value;
+              break;
+            case "dealername":
+              this.dealername = value;
+              break;
+            case "userid":
+              this.advisorid = value;
+              break;
+            case "fullname":
+              this.uname = value;
+              break;
+            case "idsflag":
+              this.authservice.setids(value);
+              break;
+            case "from":
+              this.from = value;
+              break;
+            case "to":
+              this.to = value;
+              break;
+            case "username":
+              this.username = value;
+              break;
+            case "isenable":
+              if (this.isEnabled == undefined) {
+                this.isEnabled = value;
+              }
+              break;
+            case "showallro":
+              if (value == undefined) {
                 this.ismyapp1 = true;
               } else {
-                this.ismyapp1 = false;
+                if (value == "1") {
+                  this.ismyapp1 = true;
+                } else {
+                  this.ismyapp1 = false;
+                }
               }
-            }
-            break;
+              break;
 
-          case 'showall':
-            break;
-        
-          default:
-            break;
-        }
-      }).then(() => {
-        // call get appointment api to load
-        this.updateData();
-        
-        this.authservice.getDealership().subscribe((res) => {
-          this.dealers = res;
-          this.authservice.setdealers(res);
-        });
+            case "showall":
+              break;
 
-        //this.isEnabled ="false";
-        if (data.refresh) {
-          this.authservice.presentLoading();
-  
-          setTimeout(() => {
-            this.authservice.dismissLoading();
-          }, 5000);
-          console.log("ionViewDidLoad call");
-          this.storage.get("showall").then((val) => {
-            if (val == undefined) {
-              this.ismyapp = true;
-            } else {
-              if (val == "1") {
+            default:
+              break;
+          }
+        })
+        .then(() => {
+          // call get appointment api to load
+          this.updateData();
+
+          this.authservice.getDealership().subscribe((res) => {
+            this.dealers = res;
+            this.authservice.setdealers(res);
+          });
+
+          //this.isEnabled ="false";
+          if (data.refresh) {
+            this.authservice.presentLoading();
+
+            setTimeout(() => {
+              this.authservice.dismissLoading();
+            }, 5000);
+            console.log("ionViewDidLoad call");
+            this.storage.get("showall").then((val) => {
+              if (val == undefined) {
                 this.ismyapp = true;
               } else {
-                this.ismyapp = false;
+                if (val == "1") {
+                  this.ismyapp = true;
+                } else {
+                  this.ismyapp = false;
+                }
               }
-            }
-          });
-          this.storage.get("showallro").then((val) => {
-            if (val == undefined) {
-              this.ismyapp1 = true;
-            } else {
-              if (val == "1") {
+            });
+            this.storage.get("showallro").then((val) => {
+              if (val == undefined) {
                 this.ismyapp1 = true;
               } else {
-                this.ismyapp1 = false;
+                if (val == "1") {
+                  this.ismyapp1 = true;
+                } else {
+                  this.ismyapp1 = false;
+                }
               }
-            }
-          });
-        }  
-      });
+            });
+          }
+        });
       this.grid = Array(Math.ceil(this.items.length / 3));
     });
-
   }
   logout() {
     this.showAlert();
@@ -229,45 +229,39 @@ export class HomePage {
     this.to = 10;
     this.fromd = 0;
     this.tod = 10;
+    this.rodata = [];
 
-    /*  this.from = 6;
-    this.to = 22;
-    this.fromd = 6;
-    this.tod = 22;*/
     this.ActiveSegment = "ro";
     this.selecttxt = "My RO";
-    if (this.rodata.length == 0) {
-      this.authservice.presentLoading();
-      setTimeout(() => {
-        this.authservice.dismissLoading();
-      }, 5000);
-      this.storage.get("showallro").then((val) => {
-        if (val == undefined) {
+    this.authservice.presentLoading();
+    setTimeout(() => {
+      this.authservice.dismissLoading();
+    }, 5000);
+    this.storage.get("showallro").then((val) => {
+      if (val == undefined) {
+        this.ismyapp1 = true;
+      } else {
+        if (val == "1") {
           this.ismyapp1 = true;
         } else {
-          if (val == "1") {
-            this.ismyapp1 = true;
-          } else {
-            this.ismyapp1 = false;
-          }
+          this.ismyapp1 = false;
         }
-        this.authservice
-          .getrodashboard(this.dealerid, val, this.advisorid, 0, 10, "", "")
-          .subscribe(
-            (res) => {
-              if (res != null) {
-                this.rod = res;
-                for (let i = 0; i < this.rod.length; i++) {
-                  this.rodata.push(this.rod[i]);
-                }
-
+      }
+      this.authservice
+        .getrodashboard(this.dealerid, val, this.advisorid, 0, 10, "", "")
+        .subscribe(
+          (res) => {
+            if (res != null) {
+              this.rod = res;
+              for (let i = 0; i < this.rod.length; i++) {
+                this.rodata.push(this.rod[i]);
               }
-              this.authservice.dismissLoading();
-            },
-            (err) => this.authservice.dismissLoading()
-          );
-      });
-    }
+            }
+            this.authservice.dismissLoading();
+          },
+          (err) => this.authservice.dismissLoading()
+        );
+    });
   }
 
   selectoption(index) {
@@ -324,15 +318,15 @@ export class HomePage {
     } else {
       this.storage.set("showall", "0");
     }
-    
+
     if (this.ActiveSegment == "app") {
       this.updateData();
     }
   }
 
   myapp1(e) {
-    console.log('myapp1 change');
-    
+    console.log("myapp1 change");
+
     if (this.ActiveSegment == "ro") {
       this.rodata = [];
       this.storage.get("dealerid").then((val) => {
@@ -673,15 +667,7 @@ export class HomePage {
       } else if (this.ActiveSegment == "ro") {
         this.storage.get("showallro").then((val) => {
           this.authservice
-            .getrodashboard(
-              this.dealerid,
-              val,
-              this.advisorid,
-              0,
-              10,
-              "",
-              ""
-            )
+            .getrodashboard(this.dealerid, val, this.advisorid, 0, 10, "", "")
             .subscribe(
               (res) => {
                 if (res == null) {
