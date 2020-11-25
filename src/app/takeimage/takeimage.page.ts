@@ -1095,7 +1095,7 @@ export class TakeimagePage implements OnInit {
       (err: CaptureError) => {
         console.log("CAPTURE_ERROR", err);
 
-        this.dummyUpload();
+        // this.dummyUpload();
 
         this.authservice.dismissLoading();
       }
