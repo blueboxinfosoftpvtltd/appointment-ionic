@@ -320,19 +320,12 @@
         style="text-align: -webkit-right"
       >
         <ion-card class="vcard">
-          <!-- <ion-label (click)="playvideo(data.url)">{{data.name}}</ion-label> -->
-          <!-- {{data.VideoMasterID}}
-            {{data.ImagePath}}
-            {{data.VideoPath}}-->
           <ion-row>
             <ion-col style="text-align: center">
-              <!-- <img class="vimg" src={{data.ImagePath}}/> -->
               <img
                 class="vimg"
                 [src]="'data:image/jpeg;base64,'+data.ImagePath"
               />
-              <!--<img class="vimg" [src]="data.ImagePath"/>-->
-              <!--  <img class="vimg" [src]="data.ImagePath"/>-->
             </ion-col>
           </ion-row>
           <ion-row style="justify-content: center">

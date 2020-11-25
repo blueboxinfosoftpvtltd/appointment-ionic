@@ -203,120 +203,6 @@ export class TakeimagePage implements OnInit {
       this.username = val;
     });
 
-    this.videolist = this.authservice.getvideolist();
-    console.log(this.videolist);
-    if (this.videolist) {
-      console.log(this.videolist.length);
-      for (let i = 0; i < this.videolist.length; i++) {
-        console.log("Video " + i + " name:" + this.videolist[i].VideoName);
-        // this.files.push(this.videolist[i]);
-        console.log("Image " + i + " Path:" + this.videolist[i].ImagePath);
-
-        this.getBase64ImageFromURL(this.videolist[i].ImagePath).subscribe(
-          (base64data) => {
-            var name, vurl, imgurl;
-            name = this.videolist[i].VideoName;
-            vurl = this.videolist[i].VideoPath;
-
-            this.vid = this.videolist[i].VideoMasterID;
-            console.log(this.vid);
-
-            /*
-        this.vlist.push(this.videolist[i].VideoPath);
-        this.vnlist.push(this.videolist[i].VideoName);
-        this.vimgnamelist.push(this.videolist[i].ImageName);
-        this.vimglist.push(this.videolist[i].ImagePath);
-       */
-            /*imgurl = this.videolist[i].ImagePath;
-         console.log("Image " + i + " URL:" + imgurl);*/
-            imgurl = base64data;
-            console.log("Image " + i + " BASE:" + base64data);
-
-            let fdata = {
-              VideoMasterID: this.vid,
-              VideoName: name,
-              VideoPath: vurl,
-              ImagePath: imgurl,
-            };
-
-            this.files.push(fdata);
-            this.vimgbaselist.push(base64data);
-          }
-        );
-        console.log("Loop : " + i);
-        console.log("Loop in Video Length: " + this.videolist.length);
-      }
-      this.authservice.setvideolist("");
-    }
-
-    //this.videolist2=[];
-    /*this.videolist2 = this.authservice.getvideolist();
-  
-    if(this.videolist2){
-      
-      for(let i=0; i<this.videolist2.length;i++){
-       // this.files.push(this.videolist[i]);
-       console.log(this.videolist2[i]);
-       
-       this.getBase64ImageFromURL(this.videolist2[i].ImagePath).subscribe(base64data => {
-       var name,vurl,imgurl;
-       name = this.videolist2[i].VideoName;
-       vurl = this.videolist2[i].VideoPath;
-       
-       this.vid = this.videolist2[i].VideoMasterID;
-       console.log(this.vid);
-       
-        this.vidlist.push(this.videolist2[i].VideoMasterID);
-        this.vlist.push(this.videolist2[i].VideoPath);
-        this.vnlist.push(this.videolist2[i].VideoName);
-        this.vimgnamelist.push(this.videolist2[i].ImageName);
-        this.vimglist.push(this.videolist2[i].ImagePath);
-
-        console.log('VIDLIST', JSON.stringify(this.vidlist));
-        console.log('VLIST', JSON.stringify(this.vlist));
-        console.log('VNLIST', JSON.stringify(this.vnlist));
-        console.log('VIMGNAMELIST', JSON.stringify(this.vimgnamelist));
-        console.log('VIMGLIST', JSON.stringify(this.vimglist));
-    
-        
-       
-          imgurl = base64data;
-          console.log(base64data);
-          let fdata = {
-            VideoMasterID : this.vid,
-            VideoName : name,
-            VideoPath : vurl,
-            ImagePath:imgurl
-          }
-        
-          this.files.push(fdata);
-          console.log(this.files);
-          this.vimgbaselist.push(base64data);
-        })
-        console.log('Loop : ' + i);
-        console.log('Loop in Video Length: ' + this.videolist2.length);
-      }
-      console.log('Video End List : ' + this.videolist2);
-      this.authservice.setvideolist("");
-    }*/
-
-    // var cdate = (moment(new Date).format('YYYYMMDDHHmmss'));
-    // var vin = this.authservice.getvin();
-    // console.log(vin+'_'+cdate);
-    // let fdata = {
-    //   name : "demo",
-    //   url : "https://firebasestorage.googleapis.com/v0/b/appointment-1cebd.appspot.com/o/videos%2FKNDJN2A20J7554004_20200520154044.mov?alt=media&token=a50f5004-fe5f-4e4d-a21c-f924e8162d03",
-    //   image:"https://firebasestorage.googleapis.com/v0/b/appointment-1cebd.appspot.com/o/images%2FKNDJN2A29E7716766_20200520170218.jpg?alt=media&token=0c4a15a3-de3c-4a26-b7e2-beb3afd76b82"
-    // }
-    // this.files.push(fdata);
-    // let fdata = {
-    //   VideoName : name,
-    //   VideoPath :"https://firebasestorage.googleapis.com/v0/b/appointment-1cebd.appspot.com/o/videos%2FKNDJN2A20J7554004_20200520154044.mov?alt=media&token=a50f5004-fe5f-4e4d-a21c-f924e8162d03",
-    //   ImagePath:"https://firebasestorage.googleapis.com/v0/b/appointment-1cebd.appspot.com/o/images%2FKNDJN2A29E7716766_20200526093902.jpg?alt=media&token=a61c1ede-e04d-404b-a036-81e2b65750a5"
-    // }
-    //  this.files.push(fdata);
-    //  this.files.push(fdata);
-    //  this.files.push(fdata);
     this.backdisabled = true;
     this.ActiveSegment = "pic";
     this.activatedRoute.queryParams.subscribe((data) => {
@@ -402,50 +288,6 @@ export class TakeimagePage implements OnInit {
                   if (image.ImageType == 0) {
                     this["captureDataUrl" + image.DisplayOrder] =
                       image.ImagePath;
-
-                    // this.imglist.push(this.getres[i]);
-
-                    // this.displayorder.push(this.getres[i].DisplayOrder);
-                    // this.getBase64ImageFromURL(this.getres[i].ImagePath).subscribe(base64data => {
-                    // this["captureDataUrl" + (this.getres[i].DisplayOrder)] = 'data:image/jpeg;base64,' + base64data;
-                    // this.CompleteImage.push(base64data);
-
-                    // console.log(this.displayorder);
-                    //this.base64Image = 'data:image/jpg;base64,'+base64data;
-                    // });
-                    // console.log(this.captureDataUrl);
-                  }
-
-                  if (this.getres[i].VideoName != "") {
-                    this.getBase64ImageFromURL(
-                      this.getres[i].ImagePath
-                    ).subscribe((base64data) => {
-                      var name, vurl, imgurl;
-                      name = this.getres[i].VideoName;
-                      vurl = this.getres[i].VideoPath;
-
-                      /*   this.vid = this.getres[i].VideoMasterID;
-                      console.log(this.vid);*/
-
-                      /*  this.vlist.push(this.getres[i].VideoPath);
-                       this.vnlist.push(this.getres[i].VideoName);
-                       this.vimgnamelist.push(this.getres[i].ImageName);
-                       this.vimglist.push(this.getres[i].ImagePath);*/
-
-                      imgurl = base64data;
-                      console.log(base64data);
-                      let fdata1 = {
-                        VideoMasterID: " ",
-                        VideoName: name,
-                        VideoPath: vurl,
-                        ImagePath: imgurl,
-                      };
-                      //  console.log(fdata1);
-
-                      console.log(this.files);
-                      //this.files.push(fdata1);
-                      //this.vimgbaselist.push(base64data);
-                    });
                   }
 
                   if (this.getres[i].ImageType == 2) {
@@ -474,64 +316,37 @@ export class TakeimagePage implements OnInit {
         /* Image List End */
 
         /* Video List start */
+        this.authservice
+          .GetCarVideoList(this.delarid, appid, rono)
+          .subscribe((response: any[]) => {
+            if (response != null) {
+              for (let i = 0; i < response.length; i++) {
+                const video = response[i];
 
-        /*  this.authservice.GetCarVideoList(this.delarid,appid,rono).subscribe((res => {
-          if (res != null) {
-            console.log(res);
-            
-          }
-          
-          this.getvideores = res;
-          console.log(this.getvideores); 
-          if (this.getvideores == null) {
+                if (video.VideoName != "") {
+                  this.getBase64ImageFromURL(video.VideoImgPath).subscribe(
+                    (base64data) => {
+                      var name, vurl, imgurl;
+                      name = video.VideoName;
+                      vurl = video.VideoPath;
 
-          }
-          else {
-            if (this.getvideores) {
-            
-              for (let i = 0; i < this.getvideores.length; i++) {
-              
-                if(this.getvideores[i].VideoName != ""){
-                
-                    this.getBase64ImageFromURL(this.getvideores[i].ImagePath).subscribe(base64data => {
-                      var name,vurl,imgurl;
-                      name = this.getvideores[i].VideoName;
-                      vurl = this.getvideores[i].VideoPath;
-                      this.vlist.push(this.getvideores[i].VideoPath);
-                      this.vnlist.push(this.getvideores[i].VideoName);
-                      this.vimgnamelist.push(this.getvideores[i].ImageName);
-                      this.vimglist.push(this.getvideores[i].ImagePath);
-                      
-                        imgurl = base64data;
-                        console.log(base64data);
-                        let fdata1 = {
-                          VideoName : name,
-                          VideoPath : vurl,
-                          ImagePath:imgurl
-                        }
-                      //  console.log(fdata1);
-                      
-                        console.log(this.files);
-                        //this.files.push(fdata1);
+                      imgurl = base64data;
+                      let fdata1 = {
+                        VideoMasterID: video.VideoMasterID,
+                        VideoName: name,
+                        VideoPath: vurl,
+                        ImagePath: imgurl,
+                      };
 
-                      //  console.log('FILES_DATA', JSON.stringify(this.files));
-                      // this.vimgbaselist.push(base64data);
-
-                      
-                      })
-
-                }
-              else {
-                  this.signlist.push(this.getvideores[i]);
+                      console.log("files", this.files);
+                      this.files.push(fdata1);
+                      //this.vimgbaselist.push(base64data);
+                    }
+                  );
                 }
               }
-              // this.authservice.setCarExtraImages(eimage);
-              //this.authservice.setCarExtraImagesList(eimage);
             }
-            console.log(this.imglist);
-            console.log(this.signlist);
-          }
-        }))*/
+          });
         /* Video List End */
       }
       // console.log(this.dealerid);
@@ -1109,17 +924,6 @@ export class TakeimagePage implements OnInit {
         this.authservice.presentLoading();
         let uimage = [];
         let uorder = [];
-        // var appdata = {
-        //   VIN: this.VIN,
-        //   AppointmentId: this.AppointmentId,
-        // }
-
-        // console.log('APP_DATA', appdata);
-        
-        // let uploadedCarImagespath = await this.uploadImages(
-        //   appdata,
-        //   this.selectedCarImageData
-        // );
 
         this.selectedCarImageData.forEach((element) => {
           if (!uimage.includes(element)) {
@@ -1134,9 +938,9 @@ export class TakeimagePage implements OnInit {
         this.takeimage = uimage.join();
         this.takeorder = uorder.join();
 
-        console.log('TAKEIMAGE', this.takeimage);
-        console.log('TAKEORDER', this.takeorder);
-    
+        console.log("TAKEIMAGE", this.takeimage);
+        console.log("TAKEORDER", this.takeorder);
+
         var vidl = this.vidlist.join();
         var vnamel = this.vnlist.join();
         var vpathl = this.vlist.join();
@@ -1307,38 +1111,41 @@ export class TakeimagePage implements OnInit {
       "https://appointmentids.s3.amazonaws.com/Appointment/MONROEVILLE%20KIA/Images/KNDPM3AC7J7393422/20201118/KNDPM3AC7J7393422_20201118111456_52889.jpg";
     this.imgname = "DummyImage.jpg";
 
-    let fdata = {
-      VideoName: name,
-      VideoPath: this.videourl,
-      ImagePath: this.imgbase64,
-      // ImagePath : this.videourl
-    };
-    //this.videolist.push(fdata);
-    this.files.push(fdata);
-    this.vlist.push(this.videourl);
-    this.vimglist.push(this.imgurl);
-    this.vnlist.push(name);
-    this.vimgbaselist.push(this.imgbase64);
-    this.vimgnamelist.push(this.imgname);
+    this.getBase64ImageFromURL(this.imgurl).subscribe((data) => {
+      this.imgbase64 = data;
+      let fdata = {
+        VideoName: name,
+        VideoPath: this.videourl,
+        ImagePath: this.imgbase64,
+        // ImagePath : this.videourl
+      };
+      //this.videolist.push(fdata);
+      this.files.push(fdata);
+      this.vlist.push(this.videourl);
+      this.vimglist.push(this.imgurl);
+      this.vnlist.push(name);
+      this.vimgbaselist.push(this.imgbase64);
+      this.vimgnamelist.push(this.imgname);
 
-    console.log("FILES_DATA", JSON.stringify(this.files));
-    console.log("VLIST", JSON.stringify(this.vlist));
-    console.log("VIMGLIST", JSON.stringify(this.vimglist));
-    console.log("VNLIST", JSON.stringify(this.vnlist));
-    console.log("VIDLIST", JSON.stringify(this.vidlist));
-    console.log("VIMGNAMELIST", JSON.stringify(this.vimgnamelist));
-    console.log("VIMGBASELIST", JSON.stringify(this.vimgbaselist));
+      console.log("FILES_DATA", JSON.stringify(this.files));
+      console.log("VLIST", JSON.stringify(this.vlist));
+      console.log("VIMGLIST", JSON.stringify(this.vimglist));
+      console.log("VNLIST", JSON.stringify(this.vnlist));
+      console.log("VIDLIST", JSON.stringify(this.vidlist));
+      console.log("VIMGNAMELIST", JSON.stringify(this.vimgnamelist));
+      console.log("VIMGBASELIST", JSON.stringify(this.vimgbaselist));
 
-    this.authservice.setvidlist(this.vidlist);
-    this.authservice.setvlist(this.vlist);
-    this.authservice.setvimglist(this.vimglist);
-    this.authservice.setvnlist(this.vnlist);
-    this.authservice.setvimgnamelist(this.vimgnamelist);
+      this.authservice.setvidlist(this.vidlist);
+      this.authservice.setvlist(this.vlist);
+      this.authservice.setvimglist(this.vimglist);
+      this.authservice.setvnlist(this.vnlist);
+      this.authservice.setvimgnamelist(this.vimgnamelist);
 
-    this.authservice.dismissLoading();
+      this.authservice.dismissLoading();
 
-    // this.authservice.setvideodata(fdata);
-    this.presentAlert4("Video upload successfully");
+      // this.authservice.setvideodata(fdata);
+      this.presentAlert4("Video upload successfully");
+    });
   }
 
   copyFileToLocalDir(fullPath) {
@@ -1732,15 +1539,12 @@ export class TakeimagePage implements OnInit {
         {
           text: "Ok",
           handler: () => {
-            console.log("Video List - 2 : " + this.videolist);
+            console.log("Video List - 2 : ", this.files[i]);
             console.log(i);
             console.log("IS_EDIT :", this.isedit);
 
-            //  this.videolist2 = this.authservice.getvideolist();
-            console.log("Video Test List : " + this.videolist);
-
             if (this.isedit == "true") {
-              console.log("Remove Video Id :", JSON.stringify(this.vid));
+              console.log("Remove Video Id :", JSON.stringify(vid));
               console.log("Remove Delar Id : ", JSON.stringify(this.delarid));
               console.log(
                 "Remove Appointment Id :",
@@ -1749,16 +1553,11 @@ export class TakeimagePage implements OnInit {
               console.log("Remove Ro Number : ", JSON.stringify(this.ronumber));
               console.log("Remove User Id :", JSON.stringify(this.userid));
 
-              this.Videoid = this.vid;
-              console.log(this.Videoid);
-
               this.Videoid = vid;
-              console.log(this.Videoid);
-              console.log(this.videolist);
 
               this.authservice
                 .DeleteCarVideo(
-                  this.Videoid,
+                  vid,
                   this.delarid,
                   this.AppointmentId,
                   this.ronumber,
@@ -1774,14 +1573,10 @@ export class TakeimagePage implements OnInit {
                     this.vimgbaselist.splice(i, 1);
                     this.vimgnamelist.splice(i, 1);
 
-                    /*    this.videolist = this.videolist.filter((item => {
-                    console.log(item);
-                    return item.VideoMasterID != this.Videoid;
-            
-                  }));
-                  console.log(this.videolist);*/
+                    this.authservice.showToast("Video deleted successfully!");
                   },
                   (error) => {
+                    this.authservice.showToast("Unable to delete the video.");
                     console.log("DELETE_VIDEO_ERROR : " + error);
                   }
                 );
