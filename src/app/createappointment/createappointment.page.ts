@@ -1299,6 +1299,7 @@ export class CreateappointmentPage implements OnInit {
     this.authservice
       .GetCustomer(this.dealerid, this.CustomerId)
       .subscribe((res) => {
+        this.authservice.dismissLoading();
         this.customerdata = res;
         this.fname = this.customerdata[0].FirstName;
         this.lname = this.customerdata[0].LastName;

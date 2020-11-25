@@ -491,7 +491,6 @@ export class HomePage {
   }
 
   change(e) {
-    console.log(e);
     e.cancel = true;
     if (e.name === "currentView" || e.name === "currentDate") {
       //
@@ -690,6 +689,8 @@ export class HomePage {
   }
 
   bookSelectedAppointment(e) {
+    console.log('event', e);
+    
     e.cancel = true;
     setTimeout(() => {
       //var scheduler = new Scheduler(e);

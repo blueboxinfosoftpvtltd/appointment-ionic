@@ -179,6 +179,7 @@
     [currentDate]="currentDate"
     [startDayHour]="6"
     [endDayHour]="22"
+    [editing]='{allowAdding : false }'
     (onAppointmentDblClick)="bookSelectedAppointment($event)"
     (onAppointmentFormOpening)="empty($event)"
     (onOptionChanged)="change($event)"
