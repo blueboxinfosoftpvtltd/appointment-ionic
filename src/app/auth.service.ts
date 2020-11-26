@@ -82,8 +82,10 @@ export class AuthService {
       this.loading = null;
     } else {
       this.loadingController.dismiss();
+      this.loading = null;
     }
   }
+  
   async alertshow(msg) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",

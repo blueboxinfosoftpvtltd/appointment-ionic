@@ -966,9 +966,6 @@ export class HomePage {
     } else {
       appointment = "0";
     }
-
-    console.log("dealerid", this.dealerid);
-
     this.authservice
       .getappointdata(
         this.advisorid,
@@ -979,12 +976,12 @@ export class HomePage {
       )
       .subscribe(
         (res) => {
+          this.authservice.dismissLoading();
           if (res == null) {
             this.scheduler.instance.option("dataSource", []);
           } else {
             this.scheduler.instance.option("dataSource", res);
           }
-          this.authservice.dismissLoading();
         },
         (err) => this.authservice.dismissLoading()
       );
@@ -1067,7 +1064,7 @@ export class HomePage {
               .subscribe(
                 (res) => {
                   this.rod = res;
-                  // this.authservice.dismissLoading();
+                  this.authservice.dismissLoading();
                   if (this.rod == null) {
                     // e.target.complete();
                     // e.target.disabled = true;

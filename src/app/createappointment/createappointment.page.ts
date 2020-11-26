@@ -1299,7 +1299,6 @@ export class CreateappointmentPage implements OnInit {
     this.authservice
       .GetCustomer(this.dealerid, this.CustomerId)
       .subscribe((res) => {
-        this.authservice.dismissLoading();
         this.customerdata = res;
         this.fname = this.customerdata[0].FirstName;
         this.lname = this.customerdata[0].LastName;
@@ -1470,16 +1469,15 @@ export class CreateappointmentPage implements OnInit {
   }
 
   GetModelDetails() {
-    console.log(this.makeid);
+    this.authservice.presentLoading();
     this.authservice
       .GetModelDetails(this.makeid, this.dealerid)
       .subscribe((res) => {
+        this.authservice.dismissLoading();
         if (res != null) {
           this.model = res;
         }
-        this.authservice.dismissLoading();
-        console.log(this.model);
-      });
+      }, () => this.authservice.dismissLoading());
   }
 
   GetTrimDetails() {
@@ -1515,9 +1513,9 @@ export class CreateappointmentPage implements OnInit {
       if (this.makeid == this.make[i].MakeId) {
         this.makename = this.make[i].Make;
       }
-
-      this.GetModelDetails();
     }
+    this.GetModelDetails();
+
   }
 
   ChangeModel(event) {
