@@ -212,6 +212,7 @@ export class CreateappointmentPage implements OnInit {
   type: "string";
   username: any;
   newusername: any;
+  isAddNoteEnabled: boolean = false;
 
   public backdisabled = false;
 
@@ -332,11 +333,13 @@ export class CreateappointmentPage implements OnInit {
                     new FormControl("", Validators.required)
                   );
                 }
-
-                this.myForm.controls[text].setValue(
-                  this.rescustvin.data.NotesList[i].Notes
-                );
+                const noteValue = this.rescustvin.data.NotesList[i].Notes;
+                this.myForm.controls[text].setValue(noteValue);
                 index = i;
+                if (noteValue) {
+                  // if we have note then enable to add new note.
+                  this.isAddNoteEnabled = true;
+                }
                 // note.push(this.rescustvin.data.NotesList[i].Notes);
               }
             }
@@ -633,21 +636,26 @@ export class CreateappointmentPage implements OnInit {
     this.curr = this.playerCount - 1;
     console.log(control.key);
     this.myForm.removeControl(control.key);
-    //for (var i = 0; i < this.notearray.length; i++){
     this.notearray.splice(i, 1);
     this.playerCount--;
-    //  break;
-    // }
+    this.isAddNoteEnabled = true;
     console.log(this.notearray);
   }
 
   addtext(index, control) {
-    console.log(index);
-    this.unaddvalue = control.value.value;
-    console.log(control.value.value);
+    const value: string = control.value.value;
 
-    this.notearray[index] = control.value.value;
-    //this.notearray.push(control.value.value);
+    if (value.length > 0) {
+      this.unaddvalue = control.value.value;
+      this.notearray[index] = value;
+      // disable add note if current field is empty
+      this.isAddNoteEnabled = true;
+    } else {
+      this.isAddNoteEnabled = false;
+    }
+
+    console.log('isAddNoteEnabled', this.isAddNoteEnabled);
+  
   }
 
   addControl(control, index) {
@@ -674,6 +682,7 @@ export class CreateappointmentPage implements OnInit {
               "player" + this.playerCount,
               new FormControl("", Validators.required)
             );
+            this.isAddNoteEnabled = false;
             console.log("If player : " + this.playerCount);
           } else {
             this.authservice.alertshow("Maximum 10  Notes Allow");
@@ -695,6 +704,7 @@ export class CreateappointmentPage implements OnInit {
               "player" + this.playerCount,
               new FormControl("", Validators.required)
             );
+            this.isAddNoteEnabled = false;
             console.log("Else player : " + this.playerCount);
           }
         }

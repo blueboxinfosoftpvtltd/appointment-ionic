@@ -1519,7 +1519,7 @@
           *ngIf="i == curr && i != 0"
         ></ion-icon>
         <ion-icon
-          *ngIf="i == curr"
+          *ngIf="i == curr && isAddNoteEnabled"
           (click)="addControl(control,i)"
           name="md-add-circle"
         ></ion-icon>
