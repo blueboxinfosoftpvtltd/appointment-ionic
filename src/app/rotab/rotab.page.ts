@@ -25,8 +25,8 @@ import { zip } from "rxjs/operators";
 import { ThrowStmt } from "@angular/compiler";
 import { runInThisContext } from "vm";
 import { SearchopcodePage } from "../searchopcode/searchopcode.page";
-import { RoService } from '../services/ro.service';
-import { VoidRo } from '../forms/void-ro';
+import { RoService } from "../services/ro.service";
+import { VoidRo } from "../forms/void-ro";
 
 @Component({
   selector: "app-rotab",
@@ -415,8 +415,7 @@ export class RotabPage implements OnInit {
   ngOnDestroy() {
     this.opcoderes = [];
     this.authservice.setopcodero(null);
-    console.log('opcodes', this.authservice.getopcodero());
-    
+    console.log("opcodes", this.authservice.getopcodero());
   }
 
   logout() {
@@ -459,7 +458,7 @@ export class RotabPage implements OnInit {
         refresh: true,
       };
       this.router.navigate(["/appointment"], { queryParams: { Page: "ro" } });
-    })
+    });
   }
 
   getCountry() {
@@ -1271,7 +1270,10 @@ export class RotabPage implements OnInit {
 
   addro() {
     if (this.min == null || this.min == undefined || this.min == "") {
-      this.presentAlert3("Enter Mileage In");
+      this.presentAlert3("Please enter mileage in.");
+    } else if (this.min && this.mout && (parseInt(this.mout) < parseInt(this.min))) {
+      // check if mileage out greater than or equal to mileage in.
+      this.presentAlert3("The mileage out must be greater than or equal to mileage in.");
     } else if (
       this.tagno == null ||
       this.tagno == undefined ||
@@ -1284,12 +1286,7 @@ export class RotabPage implements OnInit {
       (this.rcode == "" && this.isrc == false)
     ) {
       this.presentAlert3("Enter Repair Code");
-    }
-
-    // else if(this.opdesc == null || this.opdesc == undefined || this.opdesc == ""){
-    //   this.presentAlert3("Enter Description");
-    // }
-    else if (
+    } else if (
       this.labourname == null ||
       this.labourname == undefined ||
       this.labourname == ""
@@ -1300,16 +1297,7 @@ export class RotabPage implements OnInit {
       if (this.addrolist == undefined) {
         line = this.alphaarr[0];
       } else {
-        //for(let i=0 ; i<this.addrolist.length;i++){
-        // if(this.istech == false){
-        // line = this.alphaarr[this.addrolist.length];
-        // this.rline = this.alphaarr[this.addrolist.length];
-        // }
-        // else{
         line = this.rline;
-        //this.rline = this.addrolist[this.addrolist.length - 1].Line;
-        //  }
-        // }
       }
 
       if (
@@ -1322,25 +1310,7 @@ export class RotabPage implements OnInit {
       if (this.rcode == undefined || this.rcode == "" || this.rcode == null) {
         this.rcode = "0";
       }
-      // let roadd={
-      //     "Line":line,
-      //     "LineDesc":this.opdesc,
-      //     "StoryDesc":this.cc,
-      //     "OpCode":this.rcode,
-      //     "LaborType":this.labourname,
-      //     "TechNo":this.techno,
-      //     "LbrCost":"0.00",
-      //     "LbrSaleAmts":"0.00",
-      //     "SoldHours":this.shours,
-      //     "SubletVendor":"",
-      //     "ReqLbrSale":"0.00",
-      //     "Skill":"",
-      //     "Campaign":"",
-      //     "CauseCode":"",
-      //     "NatureCode":"",
-      //     "Decline":"",
-      //     "NextLine":""
-      // }
+
       var l = this.rline;
       var ai;
       for (let i = 0; i < this.alphaarr.length; i++) {
@@ -2033,12 +2003,12 @@ export class RotabPage implements OnInit {
       PKRONumber: this.rono,
       DlrshipId: this.dealerid,
       UserId: this.userid,
-      IDSFlag: 1
-    }
+      IDSFlag: 1,
+    };
 
     return await this.roService.voidRo(data);
   }
-  
+
   delete(data) {
     console.log(data);
     this.authservice.presentLoading();

@@ -1464,7 +1464,7 @@ export class CreateappointmentPage implements OnInit {
       this.colors = res;
       //this.GetTrimDetails();
       this.GetVehicleDetailByVINCustomerID();
-      console.log(this.colors);
+      console.log('colors', this.colors);
     });
   }
 
@@ -1606,20 +1606,17 @@ console.log(this.colorid);
 
           this.trimid = this.vehicledata[0].TrimId;
           //this.colorid = this.vehicledata[0].ColorId;
-
-          console.log(this.vehicledata[0].ColorId);
-
-          console.log(this.vehicledata[0]);
-
-          this.colorid = this.vehicledata[0].ColorId;
+          
           setTimeout(() => {
-            for (let i = 0; i < this.colors.length; i++) {
-              if (this.colorid == this.colors[i].ColorId) {
-                this.colorname = this.colors[i].ColorName;
-              }
+            console.log('color id', this.vehicledata[0].ColorId);
+            this.colorid = this.vehicledata[0].ColorId;
+  
+            if (this.colors) {
+              const c = this.colors.find(item => item.ColorId == this.colorid);
+              console.log('colorfouund', c);
+              
+              this.colorname = c.ColorName;
             }
-
-            console.log(this.colorname);
           }, 3000);
 
           this.mileage = this.vehicledata[0].Milage;

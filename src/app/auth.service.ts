@@ -61,8 +61,8 @@ export class AuthService {
     public toastController: ToastController,
     public alertController: AlertController
   ) {
-    //this.url = "http://appointmentapi.itsguru.com/api/Appointment";
-    this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
+    this.url = "http://appointmentapi.itsguru.com/api/Appointment";
+    // this.url = "http://appointmentapiprod.itsguru.com/api/Appointment";
   }
 
   async presentLoading() {

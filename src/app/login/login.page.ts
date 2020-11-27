@@ -117,6 +117,7 @@ export class LoginPage {
       this.authservice
         .doLogin(this.username, this.password)
         .subscribe((res) => {
+          this.authservice.dismissLoading();
           this.res = res;
           console.log('login res', this.res);
           this.employeeMapList = this.res.employeeMapList;
