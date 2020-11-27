@@ -239,6 +239,12 @@
             class="ion-margin-top"
             >The mobile number is invalid.</ion-text
           >
+          <ion-text
+            *ngIf="(customerForm.get('mobile').hasError('pattern') && (!customerForm.get('mobile').hasError('minlength') && !customerForm.get('mobile').hasError('maxlength'))) && customerForm.get('mobile').touched"
+            color="danger"
+            class="ion-margin-top"
+            >Special characters not allowed in mobile number.</ion-text
+          >
         </ion-col>
         <ion-col size="6" size-lg>
           <ion-row class="rawcss">
@@ -268,6 +274,12 @@
             class="ion-margin-top"
             >The work phone number is invalid.</ion-text
           >
+          <ion-text
+          *ngIf="(customerForm.get('workPhone').hasError('pattern') && (!customerForm.get('workPhone').hasError('minlength') && !customerForm.get('workPhone').hasError('maxlength'))) && customerForm.get('workPhone').touched"
+          color="danger"
+          class="ion-margin-top"
+          >Special characters not allowed in work phone number.</ion-text
+        >
         </ion-col>
       </ion-row>
 
@@ -294,6 +306,12 @@
             class="ion-margin-top"
             >The home phone number is invalid.</ion-text
           >
+          <ion-text
+          *ngIf="(customerForm.get('homePhone').hasError('pattern') && (!customerForm.get('homePhone').hasError('minlength') && !customerForm.get('homePhone').hasError('maxlength'))) && customerForm.get('homePhone').touched"
+          color="danger"
+          class="ion-margin-top"
+          >Special characters not allowed in home phone number.</ion-text
+        >
         </ion-col>
         <ion-col size="6" size-lg>
           <ion-row class="rawcss">

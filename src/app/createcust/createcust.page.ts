@@ -120,6 +120,7 @@ export class CreatecustPage implements OnInit {
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(10),
+        Validators.pattern('^[0-9]+$'),
       ]),
       workPhone: new FormControl(""),
       homePhone: new FormControl(""),
@@ -134,10 +135,11 @@ export class CreatecustPage implements OnInit {
       password: new FormControl("", []),
     });
 
-    this.registerCustomValidations();
+    this.registerFormChanges();
   }
 
-  registerCustomValidations() {
+  registerFormChanges() {
+    // on home phone value change
     this.customerForm.get("homePhone").valueChanges.subscribe((newValue) => {
       if (newValue && newValue.toString().length > 0) {
         this.customerForm
@@ -145,6 +147,7 @@ export class CreatecustPage implements OnInit {
           .setValidators([
             Validators.minLength(10),
             Validators.maxLength(10),
+            Validators.pattern('^[0-9]+$'),
           ]);
           
       } else {
@@ -153,6 +156,7 @@ export class CreatecustPage implements OnInit {
     });
     this.customerForm.get("homePhone").updateValueAndValidity();
 
+    // on work phone value change
     this.customerForm.get("workPhone").valueChanges.subscribe((newValue) => {
       if (newValue && newValue.toString().length > 0) {
         this.customerForm
@@ -160,7 +164,8 @@ export class CreatecustPage implements OnInit {
           .setValidators([
             Validators.minLength(10),
             Validators.maxLength(10),
-          ]);          
+            Validators.pattern('^[0-9]+$'),
+          ]);
       } else {
         this.customerForm.get("workPhone").clearValidators();
       }
