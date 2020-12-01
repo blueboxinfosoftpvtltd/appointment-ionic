@@ -138,6 +138,11 @@ export class TakeimagePage implements OnInit {
   public backdisabled = false;
   username: any;
 
+  videoUploading = false;
+  videoLoaded = 0;
+  videoTotal = 0;
+  videoUploadPercentage = "";
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public toastCtrl: ToastController,
@@ -1213,7 +1218,10 @@ export class TakeimagePage implements OnInit {
               this.imgbase64 = base64;
               this.file.readAsArrayBuffer(dirpath, entries.name).then(
                 async (buffer) => {
-                  await this.upload(buffer, entries.name);
+                  await this.upload(buffer, entries.name).then(
+                    () => this.authservice.dismissLoading(),
+                    () => this.authservice.dismissLoading()
+                  );
                 },
                 (err) => this.authservice.dismissLoading()
               );
@@ -1419,56 +1427,73 @@ export class TakeimagePage implements OnInit {
 
       console.log("params", JSON.stringify(params));
 
-      bucket.upload(params, (err, data) => {
-        this.authservice.dismissLoading();
-        console.log("VIDEO_UPLOAD_RESPONSE", JSON.stringify(data));
-        if (err) {
-          console.log("VIDEO_UPLOAD_ERROR", err);
+      bucket
+        .upload(params, (err, data) => {
+          this.authservice.dismissLoading();
+          console.log("VIDEO_UPLOAD_RESPONSE", JSON.stringify(data));
+          if (err) {
+            this.authservice.showToast("Video Upload Error.");
+            console.log("VIDEO_UPLOAD_ERROR", err);
+            reject(err);
+          } else {
+            this.videourl = data.Location;
+            // let vdata={
+            //   "VideoNameList" : name,
+            //   "VideoPathList" : this.videourl,
+            //   "VideoType":"0",
+            //   "imgurl":this.imgurl,
+            //   "imgbase":this.imgbase64
+            // }
+            let fdata = {
+              VideoName: name,
+              VideoPath: this.videourl,
+              ImagePath: this.imgbase64,
+              // ImagePath : this.videourl
+            };
+            //this.videolist.push(fdata);
+            this.files.push(fdata);
+            this.vlist.push(this.videourl);
+            this.vimglist.push(this.imgurl);
+            this.vnlist.push(name);
+            this.vimgbaselist.push(this.imgbase64);
+            this.vimgnamelist.push(this.imgname);
 
-          reject(err);
-        } else {
-          this.videourl = data.Location;
-          // let vdata={
-          //   "VideoNameList" : name,
-          //   "VideoPathList" : this.videourl,
-          //   "VideoType":"0",
-          //   "imgurl":this.imgurl,
-          //   "imgbase":this.imgbase64
-          // }
-          let fdata = {
-            VideoName: name,
-            VideoPath: this.videourl,
-            ImagePath: this.imgbase64,
-            // ImagePath : this.videourl
-          };
-          //this.videolist.push(fdata);
-          this.files.push(fdata);
-          this.vlist.push(this.videourl);
-          this.vimglist.push(this.imgurl);
-          this.vnlist.push(name);
-          this.vimgbaselist.push(this.imgbase64);
-          this.vimgnamelist.push(this.imgname);
+            console.log("FILES_DATA", JSON.stringify(this.files));
+            console.log("VLIST", JSON.stringify(this.vlist));
+            console.log("VIMGLIST", JSON.stringify(this.vimglist));
+            console.log("VNLIST", JSON.stringify(this.vnlist));
+            console.log("VIDLIST", JSON.stringify(this.vidlist));
+            console.log("VIMGNAMELIST", JSON.stringify(this.vimgnamelist));
+            console.log("VIMGBASELIST", JSON.stringify(this.vimgbaselist));
 
-          console.log("FILES_DATA", JSON.stringify(this.files));
-          console.log("VLIST", JSON.stringify(this.vlist));
-          console.log("VIMGLIST", JSON.stringify(this.vimglist));
-          console.log("VNLIST", JSON.stringify(this.vnlist));
-          console.log("VIDLIST", JSON.stringify(this.vidlist));
-          console.log("VIMGNAMELIST", JSON.stringify(this.vimgnamelist));
-          console.log("VIMGBASELIST", JSON.stringify(this.vimgbaselist));
-
-          this.authservice.setvidlist(this.vidlist);
-          this.authservice.setvlist(this.vlist);
-          this.authservice.setvimglist(this.vimglist);
-          this.authservice.setvnlist(this.vnlist);
-          this.authservice.setvimgnamelist(this.vimgnamelist);
-
-          // this.authservice.setvideodata(fdata);
-          this.presentAlert4("Video upload successfully");
-          //this.streamingMedia.playVideo(data.Location);
-          // resolve(imageName);
-        }
-      });
+            this.authservice.setvidlist(this.vidlist);
+            this.authservice.setvlist(this.vlist);
+            this.authservice.setvimglist(this.vimglist);
+            this.authservice.setvnlist(this.vnlist);
+            this.authservice.setvimgnamelist(this.vimgnamelist);
+            // hide progress after video uploaded
+            this.videoUploading = false;
+            // this.authservice.setvideodata(fdata);
+            this.presentAlert4("Video upload successfully");
+            //this.streamingMedia.playVideo(data.Location);
+            // resolve(imageName);
+          }
+        })
+        .on("httpUploadProgress", (progress) => {
+          this.videoUploading = true;
+          this.videoLoaded = progress.loaded;
+          this.videoTotal = progress.total;
+          const percentage = (progress.loaded / progress.total) * 100;
+          this.videoUploadPercentage = percentage.toFixed(4);
+          console.log(
+            "UPLOAD_PROGRESS: " +
+              percentage +
+              "% " +
+              progress.loaded +
+              "/" +
+              progress.total
+          );
+        });
     });
 
     //  let storage = firebase.storage();

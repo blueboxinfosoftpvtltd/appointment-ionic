@@ -27,7 +27,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title style="color: #ffffff">Take Image</ion-title>
+    <ion-title style="color: #ffffff">Take Image <p *ngIf="videoUploading">{{ videoUploadPercentage }}%</p> </ion-title>
   </ion-toolbar>
 </ion-header>
 
