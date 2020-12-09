@@ -151,6 +151,7 @@ export class LoginPage {
               this.storage.set("username", this.res.UserName);
               this.storage.set("fullname", this.res.UserFullName);
             }
+            
             this.dealers = this.authservice.getdealers();
             for (let i = 0; i < this.dealers.length; i++) {
               if (this.dealers[i].DealershipId == this.res.DealershipId) {

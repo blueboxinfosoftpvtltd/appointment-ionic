@@ -655,8 +655,16 @@ export class HomePage {
     if (this.type == undefined) {
       this.type = "0";
     }
-
+    
     this.storage.set("dealerid", this.dealerid);
+
+    const selectedDealer = this.dealers.find(item => item.DealershipId == this.dealerid);
+    if (selectedDealer) {
+      this.dealername = selectedDealer.DealershipName;
+      this.storage.set("dealername", this.dealername);
+      this.storage.set("from", selectedDealer.FromTime);
+      this.storage.set("to", selectedDealer.ToTime);
+    }
 
     if (this.appointmentsData != undefined) {
       this.authservice.presentLoading();
