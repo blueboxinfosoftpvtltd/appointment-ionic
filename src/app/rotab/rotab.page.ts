@@ -2231,7 +2231,7 @@ export class RotabPage implements OnInit {
       this.istech = true;
       this.tecname = "";
     }
-    this.authservice.GetMOPCode(this.dealerid, 0, 10, val).subscribe((res) => {
+    this.authservice.GetMOPCodeByTextSearch(this.dealerid, 0, 10, val).subscribe((res) => {
       console.log(res);
       this.opcoderes = res;
       this.rcode = this.opcoderes[0].OpCode;

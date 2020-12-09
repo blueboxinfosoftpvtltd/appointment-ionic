@@ -606,6 +606,21 @@ export class AuthService {
     });
   }
 
+  GetMOPCodeByTextSearch(delarshipid, from, to, searchword) {
+    let opdata = {
+      DlrshipId: delarshipid,
+      From: from,
+      To: to,
+      OPCodeSearch: searchword,
+      IDSFlag: this.idsflag,
+    };
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/json");
+    return this.http.post(this.url + "/GetMOPCodeByTextSearch", opdata, {
+      headers: headers,
+    });
+  }
+
   MOPCodeInsert(opcode, sale, hours, desc, userid, dealerid) {
     let opdatainsert = {
       OpCode: opcode,
